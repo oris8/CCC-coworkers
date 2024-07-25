@@ -1,4 +1,5 @@
 import ThemeToggle from '@/components/ThemeToggle';
+import EyeIcon from '@/public/icons/visibility_on.svg';
 
 export default function Home() {
   return (
@@ -18,6 +19,7 @@ export default function Home() {
         <p className="text-3xl font-extrabold">안녕하세요</p>
         <p className="text-3xl font-black">안녕하세요</p>
       </div>
+      <EyeIcon className="size-[200px]" fill="red" />
     </div>
   );
 }
