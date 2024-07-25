@@ -1,6 +1,9 @@
+import ThemeToggle from '@/components/ThemeToggle';
+
 export default function Home() {
   return (
-    <div>
+    <div className="flex flex-col items-center justify-center space-y-4 py-4">
+      <ThemeToggle />
       <h1 className="inline-block bg-gradient-to-r from-red-500 via-green-500 to-violet-500 bg-clip-text text-6xl text-transparent">
         Hello World
       </h1>
