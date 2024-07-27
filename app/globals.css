@@ -69,3 +69,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .floating-shadow {
+    box-shadow: 0px 25px 50px -12px #00000040;
+  }
+}
