@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export default function LandingTopSection() {
   return (
-    <section className="mt-[60px] flex h-[calc(100vh-60px)] flex-col items-center">
+    <section className="flex h-[calc(100vh-60px)] flex-col items-center">
       {/* NOTE - 상단 랜딩 이미지 */}
       <div className="absolute -z-50 size-full">
         <Image
