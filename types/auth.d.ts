@@ -2,11 +2,7 @@ declare module '@ccc-types' {
   // ------------------ OAuth ------------------ //
   export type OAuthToken = string;
   export type AppSecret = string; // 간편 로그인을 위한 비밀 키
-
-  export enum OAuthProvider {
-    GOOGLE = 'GOOGLE',
-    KAKAO = 'KAKAO',
-  }
+  export type OAuthProvider = 'GOOGLE' | 'KAKAO';
 
   export interface OAuthApp {
     createdAt: DateString;

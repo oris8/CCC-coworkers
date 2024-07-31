@@ -1,33 +1,34 @@
 declare module '@ccc-types' {
   export type DisplayIndex = number; // integer($int32), minimum: 0
 
-  export enum FrequencyType { // export type FrequencyType = 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'ONCE';
-    DAILY = 'DAILY',
-    WEEKLY = 'WEEKLY',
-    MONTHLY = 'MONTHLY',
-    ONCE = 'ONCE',
-  }
+  export type FrequencyType = 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'ONCE';
 
   export interface Task {
     deletedAt: DateString;
-    recurringId: Id; // number($double)
+    recurringId: Id;
     frequency: FrequencyType | string;
-    userId: Id; // number($double)
+    userId: Id;
     date: DateString;
     doneAt?: DateString | null; // nullable: true
-    description?: string; // NOTE 스웨거문서 미완성으로 인한..
+    description?: string;
     updatedAt: DateString;
     name: string;
-    id: Id; // number($double)
+    id: Id;
   }
 
   export interface GroupTask {
     groupId: Id;
-    displayIndex: number;
-    updateAt: DateString;
+    taskListId: Id;
+    displayIndex?: number;
+    monthDay: number;
+    weekDays: number[];
+    frequencyType: FrequencyType;
+    description?: string;
+    updatedAt: DateString;
     createdAt: DateString;
     name: Nickname;
     id: Id;
-    tasks: string[];
   }
+
+  // tasks: string[]
 }
