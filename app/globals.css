@@ -75,3 +75,11 @@
     box-shadow: 0px 25px 50px -12px #00000040;
   }
 }
+
+@layer utilities {
+  .center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
