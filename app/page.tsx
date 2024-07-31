@@ -2,6 +2,8 @@ import ThemeToggle from '@/components/ThemeToggle';
 import { PasswordInput } from '@/components/ui/PasswordInput';
 import { Input } from '@/components/ui/input';
 
+import ClientComponent from './ClientComponent';
+
 export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center space-y-4 py-4">
@@ -20,6 +22,7 @@ export default function Home() {
         <p className="text-3xl font-extrabold">안녕하세요</p>
         <p className="text-3xl font-black">안녕하세요</p>
       </div>
+      <ClientComponent />
       <Input />
       <PasswordInput />
     </div>

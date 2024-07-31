@@ -21,6 +21,7 @@ const buttonVariants = cva(commonClasses.base, {
       outlined: commonClasses.outlinedCommon,
       floating: commonClasses.floatingCommon,
       'floating-outlined': commonClasses.outlinedCommon,
+      'outlined-secondary': `bg-white text-text-default`,
     },
     size: {
       'x-small': 'w-fit h-[32px] rounded-[12px] text-[14px] px-[10px]',
