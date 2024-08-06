@@ -3,37 +3,17 @@
 import { DEFAULT_TOKEN_OPTIONS, ENDPOINTS } from '@/lib/api/API_CONSTANTS';
 import client from '@/lib/api/client/server';
 import {
+  AuthResponse,
   Id,
   OAuthProvider,
-  OAuthToken,
-  Password,
-  UrlType,
-  User,
+  SignInRequestBody,
+  SignInWithOAuthRequestBody,
+  SignUpRequestBody,
 } from '@ccc-types';
 import { jwtDecode } from 'jwt-decode';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-
-type PasswordAuthentication = {
-  passwordConfirmation: Password;
-  password: Password;
-};
-
-type SignUpRequestBody = Pick<User, 'image' | 'nickname' | 'email'> &
-  PasswordAuthentication;
-
-type SignInRequestBody = Pick<SignUpRequestBody, 'email' | 'password'>;
-interface SignInWithOAuthRequestBody {
-  state: string; // code를 얻을 때 사용하였던 state 값
-  redirectUri: UrlType; // example: http://localhost:3000/OAuth/kakao
-  token: OAuthToken;
-}
-interface AuthResponse {
-  refreshToken: string;
-  accessToken: string;
-  user: User;
-}
 
 function setTokenAndRedirection(accessToken: string, refreshToken: string) {
   cookies().set('accessToken', accessToken, DEFAULT_TOKEN_OPTIONS);
