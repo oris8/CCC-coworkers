@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Dialog,
   DialogContent,
@@ -88,7 +90,7 @@ function MakeTodoModal({ className = '' }) {
                     <textarea
                       placeholder="메모를 입력해주세요."
                       {...field}
-                      className="flex h-[75px] w-full max-w-[280px] resize-none rounded-md border border-input/10 bg-background-secondary px-4 py-[10px] text-sm text-primary ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground placeholder:text-text-default focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 sm:h-12 sm:text-base"
+                      className="flex h-[75px] w-full max-w-[280px] resize-none rounded-md border border-input/10 bg-background-secondary px-4 py-[10px] text-sm text-primary ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground placeholder:text-text-default focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 sm:text-base"
                     />
                     <FormMessage />
                   </FormItem>

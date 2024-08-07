@@ -26,7 +26,6 @@ const buttonVariants = cva(commonClasses.base, {
     size: {
       'x-small': 'w-fit h-[32px] rounded-[12px] text-[14px] px-[10px]',
       default: 'w-full h-[48px] text-[16px]',
-      icon: 'h-10 w-10',
     },
   },
   defaultVariants: {

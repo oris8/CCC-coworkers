@@ -9,7 +9,7 @@ const HistoryItem = ({ task }: { task: Task }) => (
     <p className="mr-[10px]">
       <s>{task.description}</s>
     </p>
-    <HamburgerIcon className="ml-auto cursor-pointer" />
+    <HamburgerIcon className="ml-auto h-[24px] w-[24px] cursor-pointer" />
   </div>
 );
 

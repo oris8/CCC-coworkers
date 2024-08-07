@@ -1,6 +1,7 @@
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
@@ -47,6 +48,7 @@ function TodoListModal({ className = '' }) {
       </DialogTrigger>
       <DialogContent hasCloseIcon>
         <DialogTitle>할 일 목록</DialogTitle>
+        <DialogDescription />
         <div className="gap- flex w-full max-w-[280px] flex-col gap-6">
           <Form {...form}>
             <form

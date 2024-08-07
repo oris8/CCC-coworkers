@@ -35,12 +35,12 @@ export const loginValidationSchema = z.object({
 
 export const authValidationSchema = z
   .object({
-    username: nameSchema,
+    nickname: nameSchema,
     email: emailSchema,
     password: passwordSchema,
-    passwordConfirm: passwordConfirmSchema,
+    passwordConfirmation: passwordConfirmSchema,
   })
-  .refine((data) => data.password === data.passwordConfirm, {
+  .refine((data) => data.password === data.passwordConfirmation, {
     path: ['passwordConfirm'],
     message: '비밀번호가 일치하지 않습니다.',
   });

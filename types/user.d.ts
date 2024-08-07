@@ -5,7 +5,7 @@ declare module '@ccc-types' {
   export type RoleType = 'ADMIN' | 'MEMBER';
 
   export interface User {
-    teamId: Id;
+    teamId: string;
     image?: UrlType | null;
     updatedAt: DateString;
     createdAt: DateString;
@@ -23,6 +23,7 @@ declare module '@ccc-types' {
     createdAt: DateString;
     image: UrlType;
     name: Nickname;
+    teamId: string;
     id: Id;
     members: Member[];
     taskLists: GroupTask[];

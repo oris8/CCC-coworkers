@@ -3,6 +3,7 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
@@ -16,6 +17,7 @@ function LogoutModal({ className = '', ...props }) {
       </DialogTrigger>
       <DialogContent>
         <DialogTitle>로그아웃 하시겠어요?</DialogTitle>
+        <DialogDescription />
         <div className="mt- mt-[24px] flex w-full max-w-[280px] gap-2">
           <DialogClose asChild>
             <Button variant="outlined-secondary">닫기</Button>

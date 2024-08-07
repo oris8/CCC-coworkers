@@ -2,14 +2,14 @@
 
 import { ENDPOINTS } from '@/lib/api/API_CONSTANTS';
 import client from '@/lib/api/client/client';
-import { GroupTask, Id, Task } from '@ccc-types';
+import { GroupTask, Id, Recurring, Task } from '@ccc-types';
 
 export async function createTask(
   groupId: Id,
   taskListId: Id,
   data: Partial<
     Pick<
-      GroupTask,
+      Recurring,
       'name' | 'description' | 'displayIndex' | 'frequencyType' | 'monthDay'
     >
   >

@@ -42,7 +42,7 @@ function ResetPasswordModal({ className = '' }) {
       <DialogTrigger className={className} asChild>
         <button
           type="button"
-          className="text-[14px] font-medium text-brand-primary underline"
+          className="w-full cursor-pointer text-[14px] font-medium text-brand-primary underline"
         >
           비밀번호를 잊으셨나요?
         </button>

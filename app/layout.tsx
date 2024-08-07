@@ -40,7 +40,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <nav className="sticky top-0 z-50 flex h-[60px] w-full items-center bg-background-secondary">
+            <nav className="sticky top-0 z-[70] flex h-[60px] w-full items-center bg-background-secondary">
               <div className="flex h-full w-full items-center justify-between px-4 py-5 xl:mx-auto xl:w-[1200px] xl:p-0">
                 <Link href="/">
                   {/* REVIEW - svgr vs Nextjs Image 태그 */}
