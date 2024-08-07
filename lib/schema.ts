@@ -41,6 +41,6 @@ export const authValidationSchema = z
     passwordConfirmation: passwordConfirmSchema,
   })
   .refine((data) => data.password === data.passwordConfirmation, {
-    path: ['passwordConfirm'],
+    path: ['passwordConfirmation'],
     message: '비밀번호가 일치하지 않습니다.',
   });
