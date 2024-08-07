@@ -48,7 +48,8 @@ export default class Client {
       ? finalConfig?.data
       : JSON.stringify(finalConfig?.data) || undefined;
 
-    let requestOptions: RequestInit = {
+    let requestOptions: Record<any, any> = {
+      // let requestOptions: RequestInit = {
       method: finalConfig.method,
       headers: requestHeaders,
       credentials: finalConfig.withCredentials ? 'include' : 'same-origin',
@@ -72,7 +73,7 @@ export default class Client {
     // 본 요청 실행
     try {
       const response = await fetch(
-        `${finalConfig.baseURL}${finalConfig.url}`,
+        `${requestOptions?.baseURL || finalConfig.baseURL}${finalConfig.url}`,
         requestOptions
       );
 
