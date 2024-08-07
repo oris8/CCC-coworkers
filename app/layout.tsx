@@ -12,6 +12,7 @@ const pretendardFont = localFont({
   src: '../public/fonts/PretendardVariable.woff2',
   preload: true,
   display: 'swap',
+  variable: '--font-pretendard',
 });
 
 export const metadata: Metadata = {
