@@ -1,7 +1,7 @@
 'use server';
 
 import { DEFAULT_TOKEN_OPTIONS, ENDPOINTS } from '@/lib/api/API_CONSTANTS';
-import client from '@/lib/api/client/server';
+import client from '@/lib/api/client/client';
 import {
   AuthResponse,
   Id,
@@ -15,6 +15,8 @@ import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
+/* eslint-disable consistent-return */
+
 function setTokenAndRedirection(accessToken: string, refreshToken: string) {
   cookies().set('accessToken', accessToken, DEFAULT_TOKEN_OPTIONS);
   cookies().set('refreshToken', refreshToken, {
@@ -25,7 +27,7 @@ function setTokenAndRedirection(accessToken: string, refreshToken: string) {
   redirect('/');
 }
 
-export async function signup(data: SignUpRequestBody): Promise<void> {
+export async function signup(data: SignUpRequestBody) {
   const { data: response, error } = await client<AuthResponse>(
     ENDPOINTS.AUTH.POST_SIGNUP,
     {
@@ -34,12 +36,21 @@ export async function signup(data: SignUpRequestBody): Promise<void> {
     }
   );
   if (error) {
-    throw new Error('회원가입에 실패했습니다', { cause: error });
+    return {
+      error: {
+        info: '회원가입에 실패했습니다.',
+        message: error.message,
+        ...error.cause,
+      },
+    };
   }
   setTokenAndRedirection(response.accessToken, response.refreshToken);
 }
 
-export async function login(data: SignInRequestBody): Promise<void> {
+export async function login(
+  data: SignInRequestBody,
+  options: { redirect?: boolean } = { redirect: true }
+) {
   const { data: response, error } = await client<AuthResponse>(
     ENDPOINTS.AUTH.POST_SIGNIN,
     {
@@ -48,16 +59,25 @@ export async function login(data: SignInRequestBody): Promise<void> {
     }
   );
   if (error) {
-    throw new Error('로그인에 실패했습니다', { cause: error });
+    return {
+      error: {
+        info: '로그인에 실패했습니다.',
+        message: error.message,
+        ...error.cause,
+      },
+    };
   }
-  setTokenAndRedirection(response.accessToken, response.refreshToken);
+  if (options.redirect)
+    setTokenAndRedirection(response.accessToken, response.refreshToken);
+
+  return { data };
 }
 
 // 가입되어있지 않을 경우엔 가입됩니다.
 export async function loginWithOAuth(
   provider: OAuthProvider,
   data: SignInWithOAuthRequestBody
-): Promise<void> {
+) {
   const { data: response, error } = await client<AuthResponse>(
     ENDPOINTS.AUTH.POST_SIGNIN_PROVIDER(provider),
     {
@@ -66,7 +86,13 @@ export async function loginWithOAuth(
     }
   );
   if (error) {
-    throw new Error('간편로그인에 실패했습니다', { cause: error });
+    return {
+      error: {
+        info: '간편로그인에 실패했습니다.',
+        message: error.message,
+        ...error.cause,
+      },
+    };
   }
   setTokenAndRedirection(response.accessToken, response.refreshToken);
 }
@@ -111,8 +137,14 @@ export async function updateAccessToken(refreshToken: string) {
     }
   );
   if (error) {
-    throw new Error('토큰 갱신에 실패했습니다', { cause: error });
+    return {
+      error: {
+        info: '토큰 갱신에 실패했습니다.',
+        message: error.message,
+        ...error.cause,
+      },
+    };
   }
   const newAccessToken = data.accessToken;
-  return newAccessToken;
+  return { data: newAccessToken };
 }

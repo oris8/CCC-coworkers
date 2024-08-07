@@ -1,7 +1,7 @@
 'use server';
 
 import { ENDPOINTS } from '@/lib/api/API_CONSTANTS';
-import client from '@/lib/api/client/server';
+import client from '@/lib/api/client/client';
 import { GroupTask, Id, Task } from '@ccc-types';
 
 export async function createTask(
@@ -13,7 +13,7 @@ export async function createTask(
       'name' | 'description' | 'displayIndex' | 'frequencyType' | 'monthDay'
     >
   >
-): Promise<GroupTask> {
+) {
   const { data: response, error } = await client<GroupTask>(
     ENDPOINTS.TASK.ACTIONS(groupId, taskListId),
     {
@@ -22,12 +22,15 @@ export async function createTask(
     }
   );
   if (error) {
-    throw new Error(
-      `TaskList${taskListId}의 tasks를 생성하는 중 중 에러가 발생했습니다`,
-      { cause: error }
-    );
+    return {
+      error: {
+        info: `TaskList${taskListId}의 tasks를 생성하는 중 중 에러가 발생했습니다.`,
+        message: error.message,
+        ...error.cause,
+      },
+    };
   }
-  return response;
+  return { data: response };
 }
 
 export async function updateTask(
@@ -38,7 +41,7 @@ export async function updateTask(
     done: boolean;
     displayIndex?: number;
   }
-): Promise<Task> {
+) {
   const { data: response, error } = await client<Task>(
     ENDPOINTS.TASK.ACTIONS_ITEM(groupId, taskListId, taskId),
     {
@@ -47,19 +50,18 @@ export async function updateTask(
     }
   );
   if (error) {
-    throw new Error(
-      `TaskList${taskListId}의 tasks를 수정하는 중 에러가 발생했습니다`,
-      { cause: error }
-    );
+    return {
+      error: {
+        info: `TaskList${taskListId}의 tasks를 수정하는 중 에러가 발생했습니다`,
+        message: error.message,
+        ...error.cause,
+      },
+    };
   }
-  return response;
+  return { data: response };
 }
 
-export async function deleteTask(
-  groupId: Id,
-  taskListId: Id,
-  taskId: Id
-): Promise<boolean> {
+export async function deleteTask(groupId: Id, taskListId: Id, taskId: Id) {
   const { error } = await client<void>(
     ENDPOINTS.TASK.ACTIONS_ITEM(groupId, taskListId, taskId),
     {
@@ -67,20 +69,19 @@ export async function deleteTask(
     }
   );
   if (error) {
-    throw new Error(
-      `TaskList${taskListId}의 tasks를 삭제하는 중 에러가 발생했습니다.`,
-      { cause: error }
-    );
+    return {
+      error: {
+        info: `TaskList${taskListId}의 tasks를 삭제하는 중 에러가 발생했습니다.`,
+        message: error.message,
+        ...error.cause,
+      },
+    };
   }
-  return true;
+  return { data: true };
 }
 
 // 반복할일 삭제
-export async function deleteTaskAll(
-  groupId: Id,
-  taskListId: Id,
-  taskId: Id
-): Promise<boolean> {
+export async function deleteTaskAll(groupId: Id, taskListId: Id, taskId: Id) {
   const { error } = await client<void>(
     ENDPOINTS.TASK.DELETE_ALL_TASKS(groupId, taskListId, taskId),
     {
@@ -88,10 +89,13 @@ export async function deleteTaskAll(
     }
   );
   if (error) {
-    throw new Error(
-      `TaskList${taskListId}의 tasks를 반복 삭제하는 중 에러가 발생했습니다.`,
-      { cause: error }
-    );
+    return {
+      error: {
+        info: `TaskList${taskListId}의 tasks를 반복 삭제하는 중 에러가 발생했습니다.`,
+        message: error.message,
+        ...error.cause,
+      },
+    };
   }
-  return true;
+  return { data: true };
 }

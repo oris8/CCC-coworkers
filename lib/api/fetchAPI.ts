@@ -1,5 +1,5 @@
 import { ENDPOINTS } from '@/lib/api/API_CONSTANTS';
-import client from '@/lib/api/client/server';
+import client from '@/lib/api/client/client';
 import {
   Article,
   ArticleDetail,
@@ -12,19 +12,23 @@ import {
   User,
 } from '@ccc-types';
 
-async function getUser(): Promise<User> {
+async function getUser() {
   const { data, error } = await client<User>(ENDPOINTS.USER.ACTIONS, {
     method: 'get',
   });
   if (error) {
-    throw new Error('유저의 정보를 가져오는 중 에러가 발생했습니다.', {
-      cause: error,
-    });
+    return {
+      error: {
+        info: '유저의 정보를 가져오는 중 에러가 발생했습니다.',
+        name: error.message,
+        ...error.cause,
+      },
+    };
   }
-  return data;
+  return { data };
 }
 
-async function getUserHistory(): Promise<{ taskDone: Task[] }> {
+async function getUserHistory() {
   const { data, error } = await client<{ taskDone: Task[] }>(
     ENDPOINTS.USER.GET_HISTORY,
     {
@@ -32,14 +36,17 @@ async function getUserHistory(): Promise<{ taskDone: Task[] }> {
     }
   );
   if (error) {
-    throw new Error('유저의 히스토리를 가져오는 중 에러가 발생했습니다.', {
-      cause: error,
-    });
+    return {
+      error: {
+        info: '유저의 히스토리를 가져오는 중 에러가 발생했습니다.',
+        ...error,
+      },
+    };
   }
-  return data;
+  return { data };
 }
 
-async function getTaskList(groupId: Id, taskListId: Id): Promise<GroupTask[]> {
+async function getTaskList(groupId: Id, taskListId: Id) {
   const { data, error } = await client<GroupTask[]>(
     ENDPOINTS.TASKLIST.GROUP_ACTIONS(groupId, taskListId),
     {
@@ -48,15 +55,18 @@ async function getTaskList(groupId: Id, taskListId: Id): Promise<GroupTask[]> {
     }
   );
   if (error) {
-    throw new Error(`TaskList${taskListId}를 가져오는 중 에러가 발생했습니다`, {
-      cause: error,
-    });
+    return {
+      error: {
+        info: `TaskList${taskListId}를 가져오는 중 에러가 발생했습니다`,
+        ...error,
+      },
+    };
   }
-  return data;
+  return { data };
 }
 
 // 특정 일자, 특정 할일 리스트의 할일 리스트
-async function getGroupSpecificTasks(groupId: Id): Promise<Task[]> {
+async function getGroupSpecificTasks(groupId: Id) {
   const { data, error } = await client<Task[]>(
     ENDPOINTS.GROUP.GET_GROUP_TASKS(groupId),
     {
@@ -65,14 +75,17 @@ async function getGroupSpecificTasks(groupId: Id): Promise<Task[]> {
     }
   );
   if (error) {
-    throw new Error('그룹 tasks를 가져오는 중 에러가 발생했습니다', {
-      cause: error,
-    });
+    return {
+      error: {
+        info: '그룹 tasks를 가져오는 중 에러가 발생했습니다.',
+        ...error,
+      },
+    };
   }
-  return data;
+  return { data };
 }
 
-async function getTask(groupId: Id, taskListId: Id): Promise<Task[]> {
+async function getTask(groupId: Id, taskListId: Id) {
   const { data, error } = await client<Task[]>(
     ENDPOINTS.TASK.ACTIONS(groupId, taskListId),
     {
@@ -81,17 +94,17 @@ async function getTask(groupId: Id, taskListId: Id): Promise<Task[]> {
     }
   );
   if (error) {
-    throw new Error(
-      `TaskList${taskListId}의 tasks를 가져오는 중 에러가 발생했습니다`,
-      {
-        cause: error,
-      }
-    );
+    return {
+      error: {
+        info: `TaskList${taskListId}의 tasks를 가져오는 중 에러가 발생했습니다.`,
+        ...error,
+      },
+    };
   }
-  return data;
+  return { data };
 }
 
-async function getGroup(groupId: Id): Promise<Group> {
+async function getGroup(groupId: Id) {
   const { data, error } = await client<Group>(
     ENDPOINTS.GROUP.ACTIONS(groupId),
     {
@@ -99,14 +112,17 @@ async function getGroup(groupId: Id): Promise<Group> {
     }
   );
   if (error) {
-    throw new Error('그룹 정보를 가져오는 중 에러가 발생했습니다', {
-      cause: error,
-    });
+    return {
+      error: {
+        info: '그룹 정보를 가져오는 중 에러가 발생했습니다.',
+        ...error,
+      },
+    };
   }
-  return data;
+  return { data };
 }
 
-async function getComments(taskId: Id): Promise<Comment[]> {
+async function getComments(taskId: Id) {
   const { data, error } = await client<Comment[]>(
     ENDPOINTS.COMMENT.ACTIONS(taskId),
     {
@@ -114,14 +130,17 @@ async function getComments(taskId: Id): Promise<Comment[]> {
     }
   );
   if (error) {
-    throw new Error('댓글을 가져오는데 실패했습니다', {
-      cause: error,
-    });
+    return {
+      error: {
+        info: '댓글을 가져오는 중 에러가 발생했습니다.',
+        ...error,
+      },
+    };
   }
-  return data;
+  return { data };
 }
 
-async function getArticles(): Promise<OffsetBasedPagination<Article>> {
+async function getArticles() {
   const { data, error } = await client<OffsetBasedPagination<Article>>(
     ENDPOINTS.ARTICLE.ACTIONS,
     {
@@ -129,14 +148,17 @@ async function getArticles(): Promise<OffsetBasedPagination<Article>> {
     }
   );
   if (error) {
-    throw new Error('게시글 목록을 가져오는데 실패했습니다', {
-      cause: error,
-    });
+    return {
+      error: {
+        info: '게시글 목록을 가져오는 중 에러가 발생했습니다.',
+        ...error,
+      },
+    };
   }
-  return data;
+  return { data };
 }
 
-async function getArticle(articleID: Id): Promise<ArticleDetail> {
+async function getArticle(articleID: Id) {
   const { data, error } = await client<ArticleDetail>(
     ENDPOINTS.ARTICLE.ACTIONS_ITEM(articleID),
     {
@@ -144,16 +166,17 @@ async function getArticle(articleID: Id): Promise<ArticleDetail> {
     }
   );
   if (error) {
-    throw new Error('게시글 정보를 가져오는데 실패했습니다', {
-      cause: error,
-    });
+    return {
+      error: {
+        info: '게시글 정보를 가져오는 중 에러가 발생했습니다.',
+        ...error,
+      },
+    };
   }
-  return data;
+  return { data };
 }
 
-async function getArticleComments(
-  articleID: Id
-): Promise<CursorBasedPagination<Comment>> {
+async function getArticleComments(articleID: Id) {
   const { data, error } = await client<CursorBasedPagination<Comment>>(
     ENDPOINTS.COMMENT.ARTICLE(articleID),
     {
@@ -161,11 +184,14 @@ async function getArticleComments(
     }
   );
   if (error) {
-    throw new Error('게시글 댓글 목록을 가져오는데 실패했습니다', {
-      cause: error,
-    });
+    return {
+      error: {
+        info: '게시글 댓글 목록을 가져오는 중 에러가 발생했습니다.',
+        ...error,
+      },
+    };
   }
-  return data;
+  return { data };
 }
 
 const fetchAPI = {

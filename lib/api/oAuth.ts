@@ -1,5 +1,5 @@
 import { ENDPOINTS } from '@/lib/api/API_CONSTANTS';
-import client from '@/lib/api/client/server';
+import client from '@/lib/api/client/client';
 import { AppSecret, OAuthApp, OAuthProvider, UrlType } from '@ccc-types';
 
 // 간편로그인 등록/수정
@@ -12,9 +12,7 @@ export interface OAuthAppUpsertRequestBody {
   provider: OAuthProvider;
 }
 
-export async function oAuth(
-  data: OAuthAppUpsertRequestBody
-): Promise<OAuthApp> {
+export async function oAuth(data: OAuthAppUpsertRequestBody) {
   const { data: response, error } = await client<OAuthApp>(
     ENDPOINTS.OAUTH.POST_OAUTH_APPS,
     {
@@ -23,9 +21,13 @@ export async function oAuth(
     }
   );
   if (error) {
-    throw new Error('간편로그인 등록/수정 중 에러가 발생했습니다.', {
-      cause: error,
-    });
+    return {
+      error: {
+        info: '간편로그인 등록/수정 중 에러가 발생했습니다.',
+        message: error.message,
+        ...error.cause,
+      },
+    };
   }
-  return response;
+  return { data: response };
 }

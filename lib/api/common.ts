@@ -11,7 +11,7 @@ import { UrlType } from '@ccc-types';
  * @returns imageString($binary)
  */
 
-async function uploadImage(imageFile: any): Promise<UrlType> {
+async function uploadImage(imageFile: any) {
   const formData = new FormData();
   formData.append('image', imageFile);
 
@@ -24,9 +24,15 @@ async function uploadImage(imageFile: any): Promise<UrlType> {
     }
   );
   if (error) {
-    throw new Error('이미지 업로드에 실패했습니다', { cause: error });
+    return {
+      error: {
+        info: '이미지 업로드에 실패했습니다',
+        message: error.message,
+        ...error.cause,
+      },
+    };
   }
-  return data.url;
+  return { data: data.url };
 }
 
 export default uploadImage;

@@ -1,7 +1,10 @@
-import validateTokenAndSetAuthHeader from '@/lib/middlewares/auth.middleware';
+import { setAuthHeader, withAuth } from '@/lib/middlewares';
 import { NextRequest } from 'next/server';
 
 export async function middleware(request: NextRequest) {
-  const setAuthHeaderResponse = await validateTokenAndSetAuthHeader(request);
+  const withAuthResponse = await withAuth(request);
+  if (withAuthResponse) return withAuthResponse;
+
+  const setAuthHeaderResponse = await setAuthHeader(request);
   if (setAuthHeaderResponse) return setAuthHeaderResponse;
 }
