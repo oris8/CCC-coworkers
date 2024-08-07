@@ -82,7 +82,7 @@ function TaskList() {
   }, [currentDate]);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex h-full flex-grow flex-col">
       <div className="flex items-center">
         <span className="w-[100px] text-[16px] font-medium text-text-primary">
           {formatToDate(currentDate, 'monthAndDay')}
@@ -106,20 +106,45 @@ function TaskList() {
         <DatePicker onClick={handleDateChange} />
         <TodoListModal className="ml-auto" />
       </div>
-      <ul className="my-2 flex gap-3">
-        <li
-          key={taskList?.id}
-          onClick={handleTasks}
-          className={`cursor-pointer text-base font-medium text-text-default ${taskList?.id === MockDataList.id && 'border-b-2 border-text-primary pb-[3px] text-text-primary'}`}
-        >
-          {taskList?.name}
-        </li>
-      </ul>
-      <Suspense fallback={<div>Loading...</div>}>
-        <div className="flex flex-col gap-5">
-          {taskList?.tasks.map((task) => <TaskItem {...task} />)}
+      {MockDataList.name ? (
+        <>
+          <ul className="my-2 flex gap-3">
+            {taskList?.id && (
+              <li
+                key={taskList.id}
+                onClick={handleTasks}
+                className={`cursor-pointer text-base font-medium text-text-default ${taskList.id === MockDataList.id && 'border-b-2 border-text-primary pb-[3px] text-text-primary'}`}
+              >
+                {taskList.name}
+              </li>
+            )}
+          </ul>
+          <Suspense fallback={<div>Loading...</div>}>
+            {taskList?.tasks.length !== 0 ? (
+              <div className="flex flex-col gap-5">
+                {taskList?.tasks.map((task) => (
+                  <TaskItem key={task.id} {...task} />
+                ))}
+              </div>
+            ) : (
+              <div className="mb-[120px] flex h-full items-center justify-center">
+                <p className="text-sm font-medium text-text-default">
+                  아직 할 일이 없습니다.
+                  <br />할 일을 추가해보세요.
+                </p>
+              </div>
+            )}
+          </Suspense>
+        </>
+      ) : (
+        <div className="mb-[120px] flex h-full items-center justify-center">
+          <p className="text-sm font-medium text-text-default">
+            아직 할 일 목록이 없습니다.
+            <br />
+            새로운 목록을 추가해주세요.
+          </p>
         </div>
-      </Suspense>
+      )}
     </div>
   );
 }
