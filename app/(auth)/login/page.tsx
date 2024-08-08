@@ -1,10 +1,17 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { v4 as uuidv4 } from 'uuid';
 
 import LoginForm from './_components/loginForm';
 
 export default function Login() {
+  // 랜덤 문자열
+  const generateRandomState = (): string => uuidv4();
+  const state = generateRandomState();
+
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI}&scope=profile_nickname,profile_image&state=${state}`;
   const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&scope=openid%20email&client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}`;
+
   return (
     <div className="m-auto mt-[90px] w-full max-w-[460px]">
       <h2 className="mb-[80px] text-center text-[40px] font-medium">로그인</h2>
@@ -27,12 +34,15 @@ export default function Login() {
           <Link href={GOOGLE_AUTH_URL}>
             <Image src="/images/google.png" alt="구글" width={42} height={42} />
           </Link>
-          <Image
-            src="/images/kakaotalk.png"
-            alt="카카오"
-            width={42}
-            height={42}
-          />
+          <Image src="/images/google.png" alt="구글" width={42} height={42} />
+          <Link href={KAKAO_AUTH_URL}>
+            <Image
+              src="/images/kakaotalk.png"
+              alt="카카오"
+              width={42}
+              height={42}
+            />
+          </Link>
         </div>
       </div>
     </div>

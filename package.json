@@ -34,6 +34,7 @@
     "sharp": "^0.33.4",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
+    "uuid": "^10.0.0",
     "vercel": "^35.1.0",
     "zod": "^3.23.8"
   },
@@ -52,6 +53,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^7.0.0",
     "chromatic": "^11.5.6",
