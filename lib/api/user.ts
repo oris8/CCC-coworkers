@@ -100,6 +100,17 @@ export async function resetPassword(data: PasswordAuthentication) {
     }
   );
   if (error) {
+    if (error.message === '유효하지 않은 토큰입니다.') {
+      // 유효하지 않은 토큰일 경우 토큰 삭제
+      // (쿠키에 토큰이 없어지므로 사용자는 자동적으로 랜딩페이지로 리다이렉트 됨)
+      cookies().set('sessionToken', '', { maxAge: -1, path: '/' });
+      return {
+        error: {
+          message:
+            '유효하지 않은 토큰입니다. 비밀번호 재설정 링크를 다시 받아주세요.',
+        },
+      };
+    }
     return {
       error: {
         info: '비밀번호 재설정에 실패했습니다.',
@@ -109,7 +120,7 @@ export async function resetPassword(data: PasswordAuthentication) {
     };
   }
   cookies().set('sessionToken', '', { maxAge: -1, path: '/' });
-  redirect('/');
+  redirect('/login');
 }
 
 export async function updatePassword(data: PatchPasswordRequestBody) {

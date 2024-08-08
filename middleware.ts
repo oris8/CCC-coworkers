@@ -1,4 +1,8 @@
-import { setAuthHeader, withAuth } from '@/lib/middlewares';
+import {
+  processTokenFromQuery,
+  setAuthHeader,
+  withAuth,
+} from '@/lib/middlewares';
 import { NextRequest } from 'next/server';
 
 export async function middleware(request: NextRequest) {
@@ -7,4 +11,7 @@ export async function middleware(request: NextRequest) {
 
   const setAuthHeaderResponse = await setAuthHeader(request);
   if (setAuthHeaderResponse) return setAuthHeaderResponse;
+
+  const resetPasswordResponse = await processTokenFromQuery(request);
+  if (resetPasswordResponse) return resetPasswordResponse;
 }
