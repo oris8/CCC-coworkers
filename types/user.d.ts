@@ -29,6 +29,17 @@ declare module '@ccc-types' {
     taskLists: GroupTask[];
   }
 
+  export interface Groups {
+    id: Id;
+    teamId: Id;
+    name: Nickname;
+    image?: UrlType | null;
+    updatedAt: DateString;
+    createdAt: DateString;
+  }
+
+  export type GroupList = Groups[];
+
   export interface Member {
     role: RoleType;
     userImage: DateString;

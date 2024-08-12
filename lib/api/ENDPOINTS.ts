@@ -3,6 +3,7 @@ import { Id, OAuthProvider } from '@ccc-types';
 const ENDPOINTS = {
   USER: {
     ACTIONS: `/user`,
+    GROUP_LIST: `/groups`,
     GET_HISTORY: `/user/history`,
     POST_SEND_RESET_PASSWORD_EMAIL: `/user/send-reset-password-email`,
     PATCH_RESET_PASSWORD: `/user/reset-password`,
