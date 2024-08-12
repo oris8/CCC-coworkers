@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 export default function LandingBottomSection() {
   return (
-    <section className="h-screen">
+    <section className="relative h-screen">
       {/* NOTE - 하단 랜딩 이미지 */}
       <div className="absolute -z-50 size-full">
         <Image

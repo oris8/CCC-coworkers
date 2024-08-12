@@ -37,4 +37,12 @@ declare module '@ccc-types' {
     groupId: Id;
     userId: Id;
   }
+
+  export interface UserWithMemberships extends User {
+    memberships: Membership[];
+  }
+
+  export interface Membership extends Member {
+    group: Omit<Group, 'members' | 'taskLists'>;
+  }
 }

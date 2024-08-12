@@ -9,13 +9,16 @@ import {
   Id,
   OffsetBasedPagination,
   Task,
-  User,
+  UserWithMemberships,
 } from '@ccc-types';
 
 async function getUser() {
-  const { data, error } = await client<User>(ENDPOINTS.USER.ACTIONS, {
-    method: 'get',
-  });
+  const { data, error } = await client<UserWithMemberships>(
+    ENDPOINTS.USER.ACTIONS,
+    {
+      method: 'get',
+    }
+  );
   if (error) {
     return {
       error: {
