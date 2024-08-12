@@ -35,7 +35,7 @@ function DatePicker({ onClick }: DatePickerProps) {
           <CalenderButton />
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto rounded-3xl p-0">
+      <PopoverContent className="w-[258px] rounded-3xl p-0">
         <Calendar
           mode="single"
           selected={date}

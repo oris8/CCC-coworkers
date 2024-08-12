@@ -1,5 +1,3 @@
-'use client';
-
 import cn from '@/lib/utils';
 import NextIcon from '@/public/icons/calender/next_date_icon.svg';
 import PrevIcon from '@/public/icons/calender/prev_date_icon.svg';
@@ -23,11 +21,14 @@ function Calendar({
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
-      className={cn('rounded-3xl bg-background-secondary p-3', className)}
+      className={cn(
+        'w-full rounded-3xl bg-background-secondary p-3',
+        className
+      )}
       onDayClick={(day) => setSelectedDay(day)}
       classNames={{
-        months: 'flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0',
-        month: 'space-y-4',
+        months: 'flex flex-col space-y-4 w-full', // 'w-full' 추가
+        month: 'space-y-4 w-full', // 'w-full' 추가
         caption: 'flex justify-center pt-1 relative items-center',
         caption_label: 'text-sm font-medium',
         nav: 'space-x-1 flex items-center',
@@ -39,10 +40,10 @@ function Calendar({
         table: 'w-full border-collapse space-y-1',
         head_row: 'flex',
         head_cell:
-          'text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]',
-        row: 'flex w-full mt-2',
-        cell: 'h-9 w-9 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-background-secondary first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20',
-        day: cn('h-9 w-9 p-0 font-normal aria-selected:opacity-100'),
+          'text-muted-foreground rounded-md w-full font-normal text-[0.8rem]', // 'w-full' 추가
+        row: 'flex w-full',
+        cell: 'h-9 w-full text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-background-secondary first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20', // 'w-full'로 변경
+        day: cn('h-9 w-full p-0 font-normal aria-selected:opacity-100'), // 'w-full'로 변경
         day_range_end: 'day-range-end',
         day_selected:
           'font-normal rounded-[10px] bg-brand-primary text-background-secondary',
