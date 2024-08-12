@@ -33,7 +33,7 @@ async function getUser() {
 }
 
 async function getUserHistory() {
-  const { data, error } = await client<History[]>(ENDPOINTS.USER.GET_HISTORY, {
+  const { data, error } = await client<History>(ENDPOINTS.USER.GET_HISTORY, {
     method: 'get',
   });
   if (error) {

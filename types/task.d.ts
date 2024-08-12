@@ -31,6 +31,7 @@ declare module '@ccc-types' {
   }
 
   export interface Comment {
+    user: Pick<User, 'image' | 'nickname' | 'id'>;
     userId: number;
     taskId: number;
     updatedAt: DateString;
@@ -40,6 +41,7 @@ declare module '@ccc-types' {
   }
 
   export interface Recurring {
+    writerId: number;
     groupId: number;
     taskListId: number;
     monthDay: number;
@@ -53,10 +55,15 @@ declare module '@ccc-types' {
     id: number;
   }
 
+  interface DoneBy {
+    user: Pick<User, 'image' | 'nickname' | 'id'>;
+  }
+
   export interface DetailTask extends Task {
     comments: Comment[];
     recurring: Recurring;
     user: Pick<User, 'image' | 'nickname' | 'id'>;
+    doneBy: DoneBy;
   }
 
   // tasks: string[]
