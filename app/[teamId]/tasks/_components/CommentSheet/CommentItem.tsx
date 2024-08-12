@@ -1,8 +1,7 @@
 import EditDeleteDropdown from '@/components/dropdown-template/EditDeleteDropdown';
-import { formatTimeOrDate } from '@/utils/dateFormat';
+import { dateFormatter } from '@/lib/utils';
 import { Comment } from '@ccc-types';
 import Image from 'next/image';
-import React from 'react';
 
 function CommentItem({ content, user }: Comment) {
   return (
@@ -24,7 +23,7 @@ function CommentItem({ content, user }: Comment) {
           <span className="text-sm font-medium">{user.nickname}</span>
         </div>
         <span className="text-sm font-medium">
-          {formatTimeOrDate(user.createdAt)}
+          {dateFormatter.toTimeDifference(user.createdAt)}
         </span>
       </div>
     </div>

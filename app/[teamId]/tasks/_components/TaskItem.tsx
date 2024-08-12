@@ -1,11 +1,10 @@
 import EditDeleteDropdown from '@/components/dropdown-template/EditDeleteDropdown';
+import { dateFormatter } from '@/lib/utils';
 import CalenderNoBtnIcon from '@/public/icons/list/calender_no_btn.svg';
 import ClockIcon from '@/public/icons/list/clock_icon.svg';
 import CommentIcon from '@/public/icons/list/comment_icon.svg';
 import DailyIcon from '@/public/icons/list/daily_task_icon.svg';
-import { formatToDate, formatToTime } from '@/utils/dateFormat';
 import { Task } from '@ccc-types';
-import React from 'react';
 
 import CheckboxReactHookFormSingle from './Checkbox';
 import CommentSheet from './CommentSheet';
@@ -41,12 +40,12 @@ function TaskItem({ name, updatedAt, frequency, doneAt }: Task) {
           <div className="flex items-center gap-1">
             <CalenderNoBtnIcon />
             <p className={textClass}>
-              {formatToDate(updatedAt, 'koreanFullDate')}
+              {dateFormatter.toConvertDate(updatedAt, 'koreanFullDate')}
             </p>
           </div>
           <div className="flex items-center gap-1">
             <ClockIcon />
-            <p className={textClass}>{formatToTime(updatedAt)}</p>
+            <p className={textClass}>{dateFormatter.toTime(updatedAt)}</p>
           </div>
           <div className="flex items-center gap-1">
             <DailyIcon />

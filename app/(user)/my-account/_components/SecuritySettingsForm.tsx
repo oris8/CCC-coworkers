@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import * as Form from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { login } from '@/lib/api/auth';
-import { emailSchema, passwordSchema } from '@/lib/schema';
+import { emailSchema, passwordSchema } from '@/lib/schema/auth';
 import { User } from '@ccc-types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';

@@ -1,5 +1,5 @@
 import { Input } from '@/components/ui/input';
-import { formatToDate } from '@/utils/dateFormat';
+import { dateFormatter } from '@/lib/utils';
 import React from 'react';
 import { ControllerRenderProps } from 'react-hook-form';
 
@@ -77,8 +77,13 @@ function StartDatePicker({ field }: StartDatePickerProps) {
           className={`w-[204px] cursor-pointer rounded-xl focus:outline-none focus-visible:ring-0 ${
             isDatePickerOpen ? 'border-2 border-brand-primary' : ''
           }`}
-          placeholder={formatToDate(new Date(), 'koreanFullDate')}
-          value={date ? formatToDate(date, 'koreanFullDate') : ''}
+          placeholder={dateFormatter.toConvertDate(
+            new Date(),
+            'koreanFullDate'
+          )}
+          value={
+            date ? dateFormatter.toConvertDate(date, 'koreanFullDate') : ''
+          }
           onClick={handleDatePickerOpen}
         />
         <Input

@@ -1,6 +1,7 @@
 'use server';
 
-import { DEFAULT_TOKEN_OPTIONS, ENDPOINTS } from '@/lib/api/API_CONSTANTS';
+import DEFAULT_TOKEN_OPTIONS from '@/lib/api/DEFAULT_TOKEN_OPTIONS';
+import ENDPOINTS from '@/lib/api/ENDPOINTS';
 import client from '@/lib/api/client/client';
 import {
   AuthResponse,

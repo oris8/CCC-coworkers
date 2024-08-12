@@ -1,6 +1,5 @@
 import CheckIcon from '@/public/icons/user-history/check_icon.svg';
 import { Task } from '@ccc-types';
-import React from 'react';
 
 function HistoryItem({ task }: { task: Task }) {
   return (

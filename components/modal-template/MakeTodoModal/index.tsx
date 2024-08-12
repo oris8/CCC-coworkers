@@ -14,7 +14,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { todoModalFormSchema } from '@/lib/schema';
+import { todoModalFormSchema } from '@/lib/schema/task';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -75,7 +75,7 @@ function MakeTodoModal({ className = '' }) {
       <DialogTrigger asChild className={className}>
         <Button variant="floating">+ 할 일 추가</Button>
       </DialogTrigger>
-      <DialogContent hasCloseIcon className="z-[80]">
+      <DialogContent hasCloseIcon className="z-modal">
         <DialogTitle>할 일 만들기</DialogTitle>
         <DialogDescription />
         <p className="mt-[-20px] text-[14px] font-medium text-text-default">

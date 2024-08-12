@@ -1,4 +1,4 @@
-import { DEFAULT_TOKEN_OPTIONS } from '@/lib/api/API_CONSTANTS';
+import DEFAULT_TOKEN_OPTIONS from '@/lib/api/DEFAULT_TOKEN_OPTIONS';
 import { checkAccessToken, updateAccessToken } from '@/lib/api/auth';
 import applySetCookie from '@/lib/middlewares/utils';
 import { NextRequest, NextResponse } from 'next/server';

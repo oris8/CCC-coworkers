@@ -3,11 +3,11 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import DatePicker from '@/app/[teamId]/tasks/_component/DatePicker';
+import DatePicker from '@/app/[teamId]/tasks/_components/DatePicker';
 import TodoListModal from '@/components/modal-template/TodoListModal';
+import { dateFormatter } from '@/lib/utils';
 import LeftButtonIcon from '@/public/icons/list/left_button_icon.svg';
 import RightButtonIcon from '@/public/icons/list/right_button_icon.svg';
-import { formatToDate } from '@/utils/dateFormat';
 import { GroupTask } from '@ccc-types';
 import React, { Suspense, useEffect, useState } from 'react';
 
@@ -85,7 +85,7 @@ function TaskList() {
     <div className="flex h-full flex-grow flex-col">
       <div className="flex items-center">
         <span className="w-[100px] text-[16px] font-medium text-text-primary">
-          {formatToDate(currentDate, 'monthAndDay')}
+          {dateFormatter.toConvertDate(currentDate, 'monthAndDay')}
         </span>
         <div className="relative top-[1px] mr-4 flex gap-2">
           <button

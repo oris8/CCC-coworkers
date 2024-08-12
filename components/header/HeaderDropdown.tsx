@@ -20,7 +20,7 @@ function HeaderDropdown({ user }: { user: UserWithMemberships }) {
           {user?.memberships[0].group.name}
         </DropdownMenuTrigger>
       )}
-      <DropdownMenuContent className="z-[10000] mt-5 flex w-[218px] flex-col gap-2 p-4">
+      <DropdownMenuContent className="z-dropdown mt-5 flex w-[218px] flex-col gap-2 p-4">
         {user?.memberships.map((membership) => (
           <DropdownMenuItem
             key={membership.group.id}

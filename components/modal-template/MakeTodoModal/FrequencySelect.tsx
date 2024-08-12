@@ -29,7 +29,7 @@ function FrequencySelect({ field, handleState }: FrequencySelectProps) {
       <SelectTrigger className="w-[109px]">
         <SelectValue placeholder="한 번" />
       </SelectTrigger>
-      <SelectContent className="z-[100]">
+      <SelectContent className="z-select">
         {frequencyTypeArray.map((type) => (
           <SelectItem key={type.value} value={type.value}>
             {type.label}

@@ -1,4 +1,4 @@
-import cn from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import DefaultProfile from '@/public/icons/default_profile.svg';
 
 function MemberCard({ className }: { className?: string }) {

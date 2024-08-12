@@ -10,7 +10,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { passwordConfirmSchema, passwordSchema } from '@/lib/schema';
+import { passwordConfirmSchema, passwordSchema } from '@/lib/schema/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';

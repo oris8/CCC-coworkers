@@ -1,7 +1,7 @@
+import ErrorFallbackUI from '@/components/common/ErrorFallBackUI';
 import Header from '@/components/header/Header';
+import ServerErrorBoundary from '@/components/server-error-boundary';
 import ThemeProvider from '@/components/theme-provider';
-import ErrorFallbackUI from '@/lib/error-boundary/ErrorFallBackUI';
-import ServerErrorBoundary from '@/lib/error-boundary/ServerErrorBoundary';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 

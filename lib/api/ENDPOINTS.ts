@@ -1,7 +1,6 @@
 import { Id, OAuthProvider } from '@ccc-types';
-import { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
-export const ENDPOINTS = {
+const ENDPOINTS = {
   USER: {
     ACTIONS: `/user`,
     GET_HISTORY: `/user/history`,
@@ -60,10 +59,4 @@ export const ENDPOINTS = {
   },
 };
 
-export const DEFAULT_TOKEN_OPTIONS: Partial<ResponseCookie> = {
-  httpOnly: true,
-  maxAge: 60 * 60, // 1 hour
-  path: '/',
-  secure: process.env.NODE_ENV === 'production',
-  sameSite: 'lax',
-};
+export default ENDPOINTS;

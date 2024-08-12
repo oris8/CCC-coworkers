@@ -1,4 +1,4 @@
-import cn from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import EditButton from '@/public/icons/btn_edit.svg';
 
 interface ImageInputWrapperProps {

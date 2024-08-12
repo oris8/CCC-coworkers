@@ -1,6 +1,6 @@
 import MakeTodoModal from '@/components/modal-template/MakeTodoModal';
 
-import TaskList from './_component/TaskList';
+import TaskList from './_components/TaskList';
 
 function ListPage() {
   return (

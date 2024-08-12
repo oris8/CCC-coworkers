@@ -8,7 +8,7 @@ import HeaderProfileDropdown from './HeaderProfileDropdown';
 
 function HeaderContainer({ children }: { children: React.ReactNode }) {
   return (
-    <header className="sticky top-0 z-[70] flex h-[60px] w-full items-center bg-background-secondary">
+    <header className="z-header sticky top-0 flex h-[60px] w-full items-center bg-background-secondary">
       <div className="flex h-full w-full items-center justify-between px-4 py-5 xl:mx-auto xl:w-[1200px] xl:p-0">
         {children}
       </div>
@@ -18,7 +18,7 @@ function HeaderContainer({ children }: { children: React.ReactNode }) {
 
 async function Header() {
   const { data } = await fetchAPI.User();
-  
+
   if (data) {
     return (
       <HeaderContainer>

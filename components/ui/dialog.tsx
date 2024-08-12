@@ -1,4 +1,4 @@
-import cn from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import CloasIcon from '@/public/icons/modal/close_icon.svg';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as DialogPrimitive from '@radix-ui/react-dialog';
@@ -29,7 +29,7 @@ const DialogOverlay = React.forwardRef<
   <DialogPrimitive.Overlay
     ref={ref}
     className={cn(
-      'fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
+      'z-modal-overlay fixed inset-0 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
       className
     )}
     {...props}
@@ -53,7 +53,7 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        `fixed bottom-0 z-50 flex w-full max-w-[380px] flex-col items-center justify-center gap-4 rounded-t-xl border bg-customBackground-secondary px-[16px] pb-[32px] ${hasCloseIcon ? 'pt-[16px]' : 'pt-[32px]'} shadow-lg max-md:left-0 max-md:right-0 max-md:mx-auto ${mdAnimation} ${commonAnimation}`,
+        `z-modal fixed bottom-0 flex w-full max-w-[380px] flex-col items-center justify-center gap-4 rounded-t-xl border bg-customBackground-secondary px-[16px] pb-[32px] ${hasCloseIcon ? 'pt-[16px]' : 'pt-[32px]'} shadow-lg max-md:left-0 max-md:right-0 max-md:mx-auto ${mdAnimation} ${commonAnimation}`,
         className
       )}
       {...props}

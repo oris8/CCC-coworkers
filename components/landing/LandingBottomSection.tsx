@@ -4,7 +4,7 @@ export default function LandingBottomSection() {
   return (
     <section className="relative h-screen">
       {/* NOTE - 하단 랜딩 이미지 */}
-      <div className="absolute -z-50 size-full">
+      <div className="z-landing-image absolute size-full">
         <Image
           src="/images/landing_bottom.png"
           alt="bottom landing image"

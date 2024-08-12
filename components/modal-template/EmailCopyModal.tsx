@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import copyText from '@/utils/copyText';
+import { copyText } from '@/lib/utils';
 // import { Member } from '@ccc-types';
 import Image from 'next/image';
 import React, { ReactNode } from 'react';
@@ -48,7 +48,7 @@ function EmailCopyModal({ children }: { children: ReactNode }) {
         </DialogDescription>
         <Button
           className="mt-3 w-[280px]"
-          onClick={() => copyText(userMockData.userEmail)}
+          onClick={() => copyText(userMockData.userEmail, '이메일')}
         >
           이메일 복사하기
         </Button>

@@ -24,7 +24,7 @@ function HeaderProfileDropdown({ user }: { user: User }) {
           <p className="hidden text-sm font-medium xl:block">{user.nickname}</p>
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="relative z-[10000] mt-5 w-full max-xl:right-5">
+      <DropdownMenuContent className="z-dropdown relative mt-5 w-full max-xl:right-5">
         <DropdownMenuItem
           asChild
           className="flex w-full justify-center py-[14px]"
@@ -37,8 +37,7 @@ function HeaderProfileDropdown({ user }: { user: User }) {
           asChild
           className="flex w-full justify-center py-[14px]"
         >
-          {/* TODO - 계정 설정 페이지 등록 */}
-          <Link href="/">계정 설정</Link>
+          <Link href="/my-account">계정 설정</Link>
         </DropdownMenuItem>
         <DropdownMenuItem
           asChild

@@ -1,4 +1,4 @@
-import GoogleRedirect from '../_component/googleRedirect';
+import GoogleRedirect from '../_components/googleRedirect';
 
 export default function Google() {
   return (

@@ -87,13 +87,13 @@ export default class Client {
         // hasBodyMessage를 통해 백엔드에서 보내주는 메세지가 있는지 확인 가능
         throw new FetchError(errorBody?.message ?? response.statusText, {
           cause: {
-            ...response,
+            // ...response,
             body: errorBody,
             message: errorBody?.message ?? null,
             hasBodyMessage: !!errorBody?.message,
             statusText: response.statusText,
             status: response.status,
-            requestConfig: finalConfig,
+            // requestConfig: finalConfig,
           },
         });
       }

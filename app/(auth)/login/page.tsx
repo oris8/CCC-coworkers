@@ -19,7 +19,7 @@ export default function Login() {
       <p className="mt-[24px] text-center text-[16px] font-medium">
         아직 계정이 없으신가요?
         <Link
-          href="signIn"
+          href="signup"
           className="ml-[12px] text-[16px] text-[#10B981] underline"
         >
           가입하기

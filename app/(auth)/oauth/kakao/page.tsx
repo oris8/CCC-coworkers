@@ -1,4 +1,4 @@
-import KakaoRedirect from '../_component/kakaoRedirect';
+import KakaoRedirect from '../_components/kakaoRedirect';
 
 export default function Kakao() {
   return (

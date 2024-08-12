@@ -7,7 +7,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import React from 'react';
 
 export default function InviteMemberModal({ className = '', ...props }) {
   return (

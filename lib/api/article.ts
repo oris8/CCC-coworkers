@@ -1,6 +1,6 @@
 'use server';
 
-import { ENDPOINTS } from '@/lib/api/API_CONSTANTS';
+import ENDPOINTS from '@/lib/api/ENDPOINTS';
 import client from '@/lib/api/client/client';
 import { Article, ArticleDetail, Id } from '@ccc-types';
 

@@ -1,6 +1,6 @@
 'use server';
 
-import { ENDPOINTS } from '@/lib/api/API_CONSTANTS';
+import ENDPOINTS from '@/lib/api/ENDPOINTS';
 import client from '@/lib/api/client/client';
 import { Email, Nickname, Password, UrlType } from '@ccc-types';
 import { revalidatePath } from 'next/cache';

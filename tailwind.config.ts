@@ -127,6 +127,30 @@ const config = {
       fontFamily: {
         pretendard: ['var(--font-pretendard)'],
       },
+      zIndex: {
+        auto: 'auto',
+        '0': '0',
+        '10': '10',
+        '20': '20',
+        '30': '30',
+        '40': '40',
+        '50': '50',
+        '60': '60',
+        '70': '70',
+        '80': '80',
+        '90': '90',
+        '100': '100',
+        header: '70',
+        'modal-overlay': '950', // 모달 & 시트 오버레이
+        modal: '1000', // 모달 & 시트
+        dropdown: '1050', // 드롭다운
+        select: '1050', // select
+        popover: '1100', // 팝오버
+        tooltip: '1150', // 툴팁
+        sticky: '1200', // 스티키 헤더 등
+        max: '9999', // 최상위 레벨
+        'landing-image': '-50', // 랜딩페이지 이미지
+      },
     },
   },
   plugins: [require('tailwindcss-animate')],

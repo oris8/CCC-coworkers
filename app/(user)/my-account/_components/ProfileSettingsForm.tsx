@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import useRequestFunction from '@/hooks/useRequestFunction';
 import uploadImage from '@/lib/api/common';
 import { updateUser } from '@/lib/api/user';
-import { nameSchema } from '@/lib/schema';
+import { nameSchema } from '@/lib/schema/auth';
 import Profile from '@/public/icons/profile.svg';
 import { User } from '@ccc-types';
 import { zodResolver } from '@hookform/resolvers/zod';

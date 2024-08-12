@@ -15,7 +15,7 @@ function HamburgerSheet({ user }: { user: UserWithMemberships }) {
         <HamburgerIcon className="size-6 cursor-pointer" />
       </SheetTrigger>
       <SheetContent
-        className="z-[9999] w-[200px] bg-background-secondary"
+        className="z-max w-[200px] bg-background-secondary"
         side="left"
         type="headerSheet"
       >

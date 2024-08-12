@@ -1,4 +1,4 @@
-import cn from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import CommentIcon from '@/public/icons/comment.svg';
 import ProfileIcon from '@/public/icons/default_profile.svg';
 import HeartIcon from '@/public/icons/heart.svg';

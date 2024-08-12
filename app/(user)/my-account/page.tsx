@@ -1,7 +1,7 @@
+import ErrorFallbackUI from '@/components/common/ErrorFallBackUI';
 import WithDrawalModal from '@/components/modal-template/WithDrawalModal';
 import fetchAPI from '@/lib/api/fetchAPI';
 import { deleteUser } from '@/lib/api/user';
-import ErrorFallbackUI from '@/lib/error-boundary/ErrorFallBackUI';
 
 import AccountEditForm from './_components/AccountEditForm';
 

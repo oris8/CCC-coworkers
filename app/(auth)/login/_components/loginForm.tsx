@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { login } from '@/lib/api/auth';
-import { loginValidationSchema } from '@/lib/schema';
+import { loginValidationSchema } from '@/lib/schema/auth';
 import { SignInRequestBody } from '@ccc-types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -20,10 +20,10 @@ import { z } from 'zod';
 
 export default function LoginForm() {
   const onSubmit: SubmitHandler<SignInRequestBody> = async (data) => {
-    const { error } = await login(data);
-    if (error) {
-      console.error(error.message || error.info, error);
-      alert(error.message || error.info);
+    const res = await login(data);
+    if (res?.error) {
+      console.error(res.error?.message || res.error.info);
+      alert(res.error?.message || res.error.info);
     }
   };
 
