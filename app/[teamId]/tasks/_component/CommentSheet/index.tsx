@@ -94,7 +94,7 @@ export default function CommentSheet({
         ))}
         <Button
           variant={isTaskDone ? 'floating-outlined' : 'floating'}
-          className="absolute bottom-4 right-4"
+          className="absolute bottom-[80px] right-4"
           onClick={handleTaskToggle}
         >
           <CheckIcon className="stroke-brand-primary" />

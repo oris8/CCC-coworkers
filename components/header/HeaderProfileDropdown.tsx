@@ -24,12 +24,14 @@ function HeaderProfileDropdown({ user }: { user: User }) {
           <p className="hidden text-sm font-medium xl:block">{user.nickname}</p>
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="z-[10000] mt-5 px-6">
+      <DropdownMenuContent className="relative z-[10000] mt-5 w-full max-xl:right-5">
         <DropdownMenuItem
           asChild
           className="flex w-full justify-center py-[14px]"
         >
-          <Link href="/user-history">마이 히스토리</Link>
+          <Link href="/user-history" className="w-full">
+            마이 히스토리
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuItem
           asChild

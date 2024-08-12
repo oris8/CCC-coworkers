@@ -5,7 +5,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import BasicEditIcon from '@/public/icons/basic_edit_icon.svg';
-import HamburgerIcon from '@/public/icons/user-history/hamburger_icon.svg';
+import KebabIcon from '@/public/icons/kebab_icon.svg';
 import * as React from 'react';
 
 import DeleteTodoModal from '../modal-template/DeleteTodoModal';
@@ -28,9 +28,7 @@ function EditDeleteDropdown({
           className="outline-none"
         >
           {buttonType === 'hamburger' ? (
-            <HamburgerIcon
-              className={`${className} hover:fill-text-tertiary`}
-            />
+            <KebabIcon className={`${className} hover:fill-text-tertiary`} />
           ) : (
             <BasicEditIcon />
           )}

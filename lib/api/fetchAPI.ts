@@ -6,6 +6,7 @@ import {
   CursorBasedPagination,
   Group,
   GroupTask,
+  History,
   Id,
   OffsetBasedPagination,
   Task,
@@ -32,12 +33,9 @@ async function getUser() {
 }
 
 async function getUserHistory() {
-  const { data, error } = await client<{ taskDone: Task[] }>(
-    ENDPOINTS.USER.GET_HISTORY,
-    {
-      method: 'get',
-    }
-  );
+  const { data, error } = await client<History[]>(ENDPOINTS.USER.GET_HISTORY, {
+    method: 'get',
+  });
   if (error) {
     return {
       error: {

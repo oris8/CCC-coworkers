@@ -16,14 +16,9 @@ declare module '@ccc-types' {
     id: Id;
   }
 
-  // NOTE - history API 리스폰스 부분의 타입을 정의했는데 더 나은 방법이 있었을까요..?
-  export type TasksDone = Task[];
-
-  export interface DataStructure {
-    tasksDone: TasksDone;
+  export interface History {
+    tasksDone: Task[];
   }
-
-  export type TaskHistory = DataStructure[];
 
   export interface GroupTask {
     groupId: Id;

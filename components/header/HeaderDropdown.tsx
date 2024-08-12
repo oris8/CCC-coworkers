@@ -4,7 +4,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import Kebab from '@/public/icons/kebab.svg';
+import KebabIcon from '@/public/icons/kebab_icon.svg';
 import { UserWithMemberships } from '@ccc-types';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -47,7 +47,7 @@ function HeaderDropdown({ user }: { user: UserWithMemberships }) {
                 </Link>
               </DropdownMenuItem>
             </div>
-            <Kebab />
+            <KebabIcon width={24} height={24} />
           </DropdownMenuItem>
         ))}
         <Link href="/create-team">

@@ -5,7 +5,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
-import Kebab from '@/public/icons/kebab.svg';
+import KebabIcon from '@/public/icons/kebab_icon.svg';
 import ToDoDoneIcon from '@/public/icons/todo_done.svg';
 import stringToHex from '@/utils/StringToColor';
 import { useMemo } from 'react';
@@ -77,7 +77,7 @@ function TeamToDoListCard({
           </div>
           <p>{`${completedToDo}/${totalToDo}`}</p>
         </div>
-        <Kebab />
+        <KebabIcon width={24} height={24} />
       </div>
     </div>
   );

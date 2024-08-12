@@ -1,7 +1,7 @@
 import CommentIcon from '@/public/icons/comment.svg';
 import ProfileIcon from '@/public/icons/default_profile.svg';
 import HeartIcon from '@/public/icons/heart.svg';
-import KebabIcon from '@/public/icons/kebab.svg';
+import KebabIcon from '@/public/icons/kebab_icon.svg';
 
 function BoardDetailDescription() {
   return (
@@ -9,7 +9,7 @@ function BoardDetailDescription() {
       <div>
         <div className="mb-4 mt-6 flex justify-between">
           <p className="font-medium md:text-lg">게시물 제목 영역입니다.</p>
-          <KebabIcon className="size-6 cursor-pointer" />
+          <KebabIcon className="size-6 cursor-pointer" width={24} height={24} />
         </div>
         <hr />
         <div className="mt-4 flex items-center justify-between">

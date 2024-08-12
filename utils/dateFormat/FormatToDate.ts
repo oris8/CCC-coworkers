@@ -22,5 +22,8 @@ export default function formatToDate(
 
     case 'monthAndDay':
       return `${month}월 ${day}일 (${weekDay})`;
+
+    default:
+      return `${year}. ${month.toString().padStart(2, '0')}. ${day.toString().padStart(2, '0')}`;
   }
 }

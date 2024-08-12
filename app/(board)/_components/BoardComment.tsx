@@ -1,7 +1,7 @@
 import CommentIcon from '@/public/icons/comment.svg';
 import ProfileIcon from '@/public/icons/default_profile.svg';
 import HeartIcon from '@/public/icons/heart.svg';
-import KebabIcon from '@/public/icons/kebab.svg';
+import KebabIcon from '@/public/icons/kebab_icon.svg';
 
 function BoardComment() {
   return (
@@ -11,7 +11,7 @@ function BoardComment() {
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime,
           dignissimos vero quas a sequi aperiam fugiat? Sunt mollitia numquam
         </p>
-        <KebabIcon className="size-4 cursor-pointer" />
+        <KebabIcon className="size-4 cursor-pointer" width={16} height={16} />
       </div>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 md:gap-4">
