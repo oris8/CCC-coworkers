@@ -98,6 +98,11 @@ export default class Client {
         });
       }
 
+      // 응답이 No Content인 경우 빈 객체를 반환
+      if (response.status === 204) {
+        return {};
+      }
+
       // 일반적인 응답은 json() 처리를 해서 전달
       let handledResponse = await response.json();
 

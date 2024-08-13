@@ -7,6 +7,8 @@ import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
+import { logout } from './auth';
+
 /* eslint-disable consistent-return */
 
 export async function updateUser(user: {
@@ -44,7 +46,8 @@ export async function deleteUser() {
       },
     };
   }
-  return true;
+  await logout();
+  return { data: true };
 }
 
 type PasswordAuthentication = {
@@ -81,7 +84,7 @@ export async function sendResetPasswordEmail(
       },
     };
   }
-  return response;
+  return { data: response };
 }
 
 // 비밀번호 재설정 요청: 사용자가 비밀번호 재설정을 요청하면, 서버는 유효한 token을 생성하고 이를 포함한 링크를 이메일로 전송합니다.
@@ -140,5 +143,5 @@ export async function updatePassword(data: PatchPasswordRequestBody) {
       },
     };
   }
-  return response;
+  return { data: response };
 }

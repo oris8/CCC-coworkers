@@ -23,7 +23,7 @@ interface ApiResponse<T> {
 // useEffect를 이용해 프로퍼티값 변경을 감지해서 특정 동작 수행이 가능합니다
 // NOTE 테스트를 많이 안해봐서 발견 못한 오류가 있을 수 있습니다 !! 공유 주세요 ㅠㅠ
 const useRequestFunction = <T = any>(
-  apiFunction: (props?: any) => Promise<ApiResponse<T>>
+  apiFunction: (...props: any) => Promise<ApiResponse<T>>
 ) => {
   const [state, setState] = useState<RequestState<T>>({
     isLoading: false,
