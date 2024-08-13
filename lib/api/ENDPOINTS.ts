@@ -1,4 +1,4 @@
-import { Id, OAuthProvider } from '@ccc-types';
+import { DateString, Id, OAuthProvider } from '@ccc-types';
 
 const ENDPOINTS = {
   USER: {
@@ -17,10 +17,10 @@ const ENDPOINTS = {
       `/groups/${groupId}/task-lists/${id}/order`,
   },
   TASK: {
-    ACTIONS_ITEM: (groupId: Id, taskListId: Id, taskId: Id) =>
-      `/groups/${groupId}/task-lists/${taskListId}/tasks/${taskId}`,
-    ACTIONS: (groupId: Id, taskListId: Id) =>
-      `/groups/${groupId}/task-lists/${taskListId}/tasks`,
+    ACTIONS_ITEM: (taskId: Id) =>
+      `/groups/{groupId}/task-lists/{taskListId}/tasks/${taskId}`,
+    ACTIONS: (groupId: Id, taskListId: Id, date?: DateString) =>
+      `/groups/${groupId}/task-lists/${taskListId}/tasks?date=${date}`,
     DELETE_ALL_TASKS: (groupId: Id, taskListId: Id, taskId: Id) =>
       `/groups/${groupId}/task-lists/${taskListId}/tasks/${taskId}/all`,
   },

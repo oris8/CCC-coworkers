@@ -1,51 +1,54 @@
 import EditDeleteDropdown from '@/components/dropdown-template/EditDeleteDropdown';
+import frequencyTypeObj from '@/constants/frequencyType';
 import { dateFormatter } from '@/lib/utils';
 import CalenderNoBtnIcon from '@/public/icons/list/calender_no_btn.svg';
 import ClockIcon from '@/public/icons/list/clock_icon.svg';
 import CommentIcon from '@/public/icons/list/comment_icon.svg';
 import DailyIcon from '@/public/icons/list/daily_task_icon.svg';
 import { Task } from '@ccc-types';
+import React from 'react';
 
 import CheckboxReactHookFormSingle from './Checkbox';
 import CommentSheet from './CommentSheet';
 
-const frequencyTypeObj = {
-  DAILY: '매일 반복',
-  WEEKLY: '주 반복',
-  MONTHLY: '월 반복',
-  ONCE: '한번',
-};
-
 const textClass = `text-xs font-normal text-text-default`;
 
-function TaskItem({ name, updatedAt, frequency, doneAt }: Task) {
-  // NOTE - 따로 task를 완료했는지에 대한 값이 오지 않아 doneAt이 있는지를 기준으로 임시로 작성했습니다!
-  const done = !!doneAt;
-  const taskType = frequencyTypeObj[frequency];
+function TaskItem({ task }: { task: Task }) {
+  const [isDone, setIsDone] = React.useState<boolean>(!!task.doneAt);
+  const taskType = frequencyTypeObj[task.frequency];
+
+  const handleDoneState = (value: boolean) => {
+    setIsDone(value);
+  };
 
   return (
-    <CommentSheet done={done}>
+    <CommentSheet isDone={isDone} task={task} handleClick={handleDoneState}>
       <div className="flex w-full cursor-pointer flex-col gap-3 rounded-[10px] bg-background-secondary px-[14px] py-[12px]">
         <div className="flex w-full justify-between">
-          <CheckboxReactHookFormSingle task={name} done={done} />
+          <CheckboxReactHookFormSingle
+            id={task.id}
+            task={task.name}
+            isDone={isDone}
+            handleClick={handleDoneState}
+          />
           <div className="flex items-center gap-2">
             <div className="flex gap-[2px]">
               <CommentIcon />
-              <p className={textClass}>3</p>
+              <p className={textClass}>{task.commentCount}</p>
             </div>
-            <EditDeleteDropdown title={name} />
+            <EditDeleteDropdown title={task.name} />
           </div>
         </div>
         <div className="flex gap-3">
           <div className="flex items-center gap-1">
             <CalenderNoBtnIcon />
             <p className={textClass}>
-              {dateFormatter.toConvertDate(updatedAt, 'koreanFullDate')}
+              {dateFormatter.toConvertDate(task.updatedAt, 'koreanFullDate')}
             </p>
           </div>
           <div className="flex items-center gap-1">
             <ClockIcon />
-            <p className={textClass}>{dateFormatter.toTime(updatedAt)}</p>
+            <p className={textClass}>{dateFormatter.toTime(task.updatedAt)}</p>
           </div>
           <div className="flex items-center gap-1">
             <DailyIcon />

@@ -7,22 +7,29 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { logout } from '@/lib/api/auth';
 
-function LogoutModal({ className = '', ...props }) {
+function LogoutModal({
+  className = '',
+  children,
+}: {
+  className?: string;
+  children: React.ReactNode;
+}) {
   return (
     <Dialog>
       <DialogTrigger asChild className={className}>
-        <Button size="x-small">로그아웃</Button>
+        {children}
       </DialogTrigger>
       <DialogContent>
-        <DialogTitle>로그아웃 하시겠어요?</DialogTitle>
+        <DialogTitle className="mt-[16px]">로그아웃 하시겠어요?</DialogTitle>
         <DialogDescription />
-        <div className="mt- mt-[24px] flex w-full max-w-[280px] gap-2">
+        <div className="flex w-full max-w-[280px] gap-2">
           <DialogClose asChild>
             <Button variant="outlined-secondary">닫기</Button>
           </DialogClose>
           <DialogClose asChild>
-            <Button variant="danger" {...props}>
+            <Button variant="danger" onClick={() => logout()}>
               로그아웃
             </Button>
           </DialogClose>

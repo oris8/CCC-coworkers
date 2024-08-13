@@ -18,7 +18,7 @@ import { Input } from '../ui/input';
 const formSchema = z.object({
   email: z
     .string()
-    .nonempty({ message: '이메일을 입력해주세요' })
+    .min(0, { message: '이메일을 입력해주세요' })
     .email({ message: '유효한 이메일 주소를 입력해주세요' }),
 });
 

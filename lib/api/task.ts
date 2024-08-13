@@ -34,16 +34,15 @@ export async function createTask(
 }
 
 export async function updateTask(
-  groupId: Id,
-  taskListId: Id,
   taskId: Id,
-  data: Pick<Task, 'name' | 'description'> & {
-    done: boolean;
-    displayIndex?: number;
+  data: {
+    name?: string;
+    description?: string;
+    done?: boolean;
   }
 ) {
   const { data: response, error } = await client<Task>(
-    ENDPOINTS.TASK.ACTIONS_ITEM(groupId, taskListId, taskId),
+    ENDPOINTS.TASK.ACTIONS_ITEM(taskId),
     {
       method: 'patch',
       data,
@@ -52,7 +51,7 @@ export async function updateTask(
   if (error) {
     return {
       error: {
-        info: `TaskList${taskListId}의 tasks를 수정하는 중 에러가 발생했습니다`,
+        info: `task${taskId}의 tasks를 수정하는 중 에러가 발생했습니다`,
         message: error.message,
         ...error.cause,
       },
@@ -62,12 +61,9 @@ export async function updateTask(
 }
 
 export async function deleteTask(groupId: Id, taskListId: Id, taskId: Id) {
-  const { error } = await client<void>(
-    ENDPOINTS.TASK.ACTIONS_ITEM(groupId, taskListId, taskId),
-    {
-      method: 'delete',
-    }
-  );
+  const { error } = await client<void>(ENDPOINTS.TASK.ACTIONS_ITEM(taskId), {
+    method: 'delete',
+  });
   if (error) {
     return {
       error: {

@@ -14,6 +14,7 @@ declare module '@ccc-types' {
     updatedAt: DateString;
     name: string;
     id: Id;
+    commentCount: number;
   }
 
   export interface History {
