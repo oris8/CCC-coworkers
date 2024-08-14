@@ -72,7 +72,7 @@ function TaskList({ data, groupId }: { data: GroupTask[]; groupId: Id }) {
           </button>
         </div>
         <DatePicker onClick={handleDateChange} />
-        <TodoListModal className="ml-auto" />
+        <TodoListModal groupId={groupId} className="ml-auto" />
       </div>
       {data?.length !== 0 ? (
         <>

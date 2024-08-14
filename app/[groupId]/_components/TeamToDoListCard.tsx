@@ -6,10 +6,11 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart';
 import { stringToHex } from '@/lib/utils';
-import KebabIcon from '@/public/icons/kebab_icon.svg';
 import ToDoDoneIcon from '@/public/icons/todo_done.svg';
 import { useMemo } from 'react';
 import { Pie, PieChart } from 'recharts';
+
+import TodoListEditDropdown from './TodoListEditDropdown';
 
 const chartConfig = {
   completed: {
@@ -24,10 +25,14 @@ function TeamToDoListCard({
   name,
   totalToDo,
   completedToDo,
+  groupId,
+  taskListId,
 }: {
   name: string;
   totalToDo: number;
   completedToDo: number;
+  groupId: number;
+  taskListId: number;
 }) {
   // NOTE - 동적으로 색상을 적용하기 위해 따로 빼고 useMemo로 반복되는 계산 제거
   const leftStyleColor = useMemo(() => stringToHex(name), [name]);
@@ -77,7 +82,7 @@ function TeamToDoListCard({
           </div>
           <p>{`${completedToDo}/${totalToDo}`}</p>
         </div>
-        <KebabIcon width={24} height={24} />
+        <TodoListEditDropdown groupId={groupId} taskListId={taskListId} />
       </div>
     </div>
   );

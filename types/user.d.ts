@@ -42,8 +42,8 @@ declare module '@ccc-types' {
 
   export interface Member {
     role: RoleType;
-    userImage: DateString;
-    userEmail: DateString;
+    userImage: UrlType;
+    userEmail: Email;
     userName: Nickname;
     groupId: Id;
     userId: Id;

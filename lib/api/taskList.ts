@@ -48,7 +48,7 @@ export async function updateTaskList(
   return { data: response };
 }
 
-export async function deleteTask(groupId: Id, taskListId: Id) {
+export async function deleteTaskList(groupId: Id, taskListId: Id) {
   const { error } = await client<void>(
     ENDPOINTS.TASKLIST.GROUP_ACTIONS(groupId, taskListId),
     {

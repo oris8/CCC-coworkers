@@ -1,7 +1,14 @@
 import { cn } from '@/lib/utils';
 import DefaultProfile from '@/public/icons/default_profile.svg';
+import { Member } from '@ccc-types';
 
-function MemberCard({ className }: { className?: string }) {
+function MemberCard({
+  member,
+  className,
+}: {
+  member: Member;
+  className?: string;
+}) {
   return (
     <div
       className={cn(
@@ -12,14 +19,14 @@ function MemberCard({ className }: { className?: string }) {
       <div className="flex items-center gap-2">
         <DefaultProfile className="size-6 md:size-8" />
         <div className="flex flex-col">
-          <p className="text-sm font-medium">사람 이름</p>
-          <p className="hidden text-xs text-text-secondary md:block">
-            이메일@이메일.주소
+          <p className="text-sm font-medium">{member.userName}</p>
+          <p className="hidden truncate text-xs text-text-secondary md:block">
+            {member.userEmail}
           </p>
         </div>
       </div>
-      <p className="text-xs text-text-secondary md:hidden">
-        이메일@이메일.주소
+      <p className="truncate text-xs text-text-secondary md:hidden">
+        {member.userEmail}
       </p>
     </div>
   );

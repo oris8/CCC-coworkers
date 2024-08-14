@@ -2,6 +2,7 @@ import ErrorFallbackUI from '@/components/common/ErrorFallBackUI';
 import Header from '@/components/header/Header';
 import ServerErrorBoundary from '@/components/server-error-boundary';
 import ThemeProvider from '@/components/theme-provider';
+import { Toaster } from '@/components/ui/sonner';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
@@ -41,6 +42,7 @@ export default function RootLayout({
           >
             <Header />
             {children}
+            <Toaster />
           </ThemeProvider>
         </ServerErrorBoundary>
       </body>
