@@ -1,3 +1,4 @@
+import { useErrorBoundary } from '@/components/server-error-boundary';
 import { useCallback, useState } from 'react';
 
 /* eslint-disable consistent-return */
@@ -17,23 +18,50 @@ interface ApiResponse<T> {
   error?: any;
 }
 
-// 서버사이드렌더링에서는 작동하지않고,
-// 클라이언트 측에서 서버액션을 호출할때 동작이 가능합니다
-// 컴포넌트 함수에서 useRequestFunction를 선언해서 내부에 필요한 프로퍼티를 가져다 쓰시면 됩니다
-// useEffect를 이용해 프로퍼티값 변경을 감지해서 특정 동작 수행이 가능합니다
-// NOTE 테스트를 많이 안해봐서 발견 못한 오류가 있을 수 있습니다 !! 공유 주세요 ㅠㅠ
+const INITIAL_STATE = {
+  isLoading: false,
+  isPending: false,
+  isSuccess: false,
+  isError: false,
+  errorMessage: null,
+  data: null,
+  error: null,
+};
+
+/**
+ * 훅은 API 요청을 수행하고, 요청의 상태와 결과를 관리합니다.
+ *
+ * @template T - API 응답의 데이터 타입
+ *
+ * @param {Function} apiFunction - API 요청을 수행하는 함수. 매개변수로 `props`를 받고 `Promise<ApiResponse<T>>`를 반환해야 합니다.
+ * @param {boolean} [showErrorFallBack=false] - 에러가 발생했을 때, `ErrorBoundary`를 통해 폴백 UI를 표시할지 여부를 결정합니다. (서버에서 제공하는 오류 메세지가 없는 경우에만 자동으로 폴백 UI를 표시합니다)
+ *
+ * @returns {{
+ *   isLoading: boolean;
+ *   isPending: boolean;
+ *   isSuccess: boolean;
+ *   isError: boolean;
+ *   errorMessage: string | null;
+ *   data: T | null;
+ *   error: any | null;
+ *   request: (props?: any) => Promise<{ data: T | null; error: any | null }>;
+ * }} 훅의 반환값
+ *
+ * - `isLoading`: 요청이 진행 중인 상태인지 나타냅니다.
+ * - `isPending`: 요청이 대기 중인지 나타냅니다.
+ * - `isSuccess`: 요청이 성공적으로 완료되었는지 나타냅니다.
+ * - `isError`: 요청이 실패했는지 나타냅니다.
+ * - `errorMessage`: 에러 메시지, 에러가 없으면 `null`입니다.
+ * - `data`: API 응답 데이터, 데이터가 없으면 `null`입니다.
+ * - `error`: 발생한 에러, 에러가 없으면 `null`입니다.
+ * - `request`: API 요청을 수행하는 함수. `props`를 매개변수로 받고, `Promise<{ data: T | null; error: any | null }>`를 반환합니다.
+ */
 const useRequestFunction = <T = any>(
-  apiFunction: (...props: any) => Promise<ApiResponse<T>>
+  apiFunction: (...props: any) => Promise<ApiResponse<T>>,
+  showErrorFallBack: boolean = false
 ) => {
-  const [state, setState] = useState<RequestState<T>>({
-    isLoading: false,
-    isPending: false,
-    isSuccess: false,
-    isError: false,
-    errorMessage: null,
-    data: null,
-    error: null,
-  });
+  const [state, setState] = useState<RequestState<T>>(INITIAL_STATE);
+  const { showBoundary } = useErrorBoundary();
 
   const request = useCallback(
     async (...props: any) => {
@@ -47,26 +75,20 @@ const useRequestFunction = <T = any>(
 
       if (response?.error) {
         setState({
-          isLoading: false,
-          isPending: false,
-          isSuccess: false,
+          ...INITIAL_STATE,
           isError: true,
-          data: null,
           errorMessage: response.error?.message || 'An error occurred',
           error: response.error,
         });
-
+        if (showErrorFallBack && !response.error.hasBodyMessage)
+          showBoundary(response?.error);
         return { data: null, error: response.error };
       }
       if (!response?.error) {
         setState({
-          isLoading: false,
-          isPending: false,
+          ...INITIAL_STATE,
           isSuccess: true,
-          isError: false,
           data: response?.data || null,
-          errorMessage: null,
-          error: null,
         });
         return { data: response?.data || null, error: null };
       }

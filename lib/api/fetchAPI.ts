@@ -123,7 +123,8 @@ async function getTask(taskId: Id) {
     return {
       error: {
         info: `Task${taskId}의 task를 가져오는 중 에러가 발생했습니다.`,
-        ...error,
+        message: error.message,
+        ...error.cause,
       },
     };
   }
@@ -179,7 +180,8 @@ async function getArticles() {
     return {
       error: {
         info: '게시글 목록을 가져오는 중 에러가 발생했습니다.',
-        ...error,
+        message: error.message,
+        ...error.cause,
       },
     };
   }
