@@ -13,6 +13,7 @@ import { User } from '@ccc-types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 const formSchema = z.object({
@@ -46,9 +47,9 @@ const ProfileSettingsForm = ({ image, nickname }: ProfileSettingsFormProps) => {
       updatedProfile.image = data;
     }
 
-    // 변경사항이 없을 경우 alert
+    // 변경사항이 없을 경우 toast
     if (!updatedProfile.image && !updatedProfile.nickname) {
-      alert('변경된 내용이 없습니다');
+      toast.error('변경된 내용이 없습니다');
       return;
     }
     // API 요청
@@ -63,13 +64,13 @@ const ProfileSettingsForm = ({ image, nickname }: ProfileSettingsFormProps) => {
     setImagePreview(URL.createObjectURL(currentImage));
   }, [currentImage]);
 
-  // API 요청 결과에 따른 alert
+  // API 요청 결과에 따른 로직처리
   useEffect(() => {
     if (api.isError) {
-      alert(api.error?.message || api.error?.info);
+      toast.error(api.error?.message || api.error?.info);
     }
     if (api.isSuccess) {
-      alert('변경사항이 저장되었습니다');
+      toast.success('변경사항이 저장되었습니다');
     }
   }, [
     api.isError,

@@ -13,6 +13,7 @@ import {
 import { passwordConfirmSchema, passwordSchema } from '@/lib/schema/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 const formSchema = z
@@ -45,7 +46,7 @@ const UpdatePasswordForm = ({ onSubmit }: UpdatePasswordFormProps) => {
     });
     if (res?.error) {
       console.error(res.error.message);
-      alert(res.error.message);
+      toast.error(res.error.message);
     }
   }
 

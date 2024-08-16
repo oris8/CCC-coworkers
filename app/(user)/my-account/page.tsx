@@ -1,9 +1,10 @@
 import ErrorFallbackUI from '@/components/common/ErrorFallBackUI';
-import WithDrawalModal from '@/components/modal-template/WithDrawalModal';
 import fetchAPI from '@/lib/api/fetchAPI';
-import { deleteUser } from '@/lib/api/user';
+import { isEmptyObject } from '@/lib/utils';
+import { redirect } from 'next/navigation';
 
 import AccountEditForm from './_components/AccountEditForm';
+import WithdrawalModal from './_components/WithdrawalModal';
 
 const Page = async () => {
   const { data: currentUserAccountInfo, error } = await fetchAPI.User();
@@ -13,6 +14,9 @@ const Page = async () => {
     return <ErrorFallbackUI error={error} />;
   }
 
+  // 유저 데이터가 없으면 랜딩페이지로 리다이렉트
+  if (isEmptyObject(currentUserAccountInfo)) redirect('/');
+
   return (
     <div className="center mx-auto w-full max-w-[792px] flex-col gap-6 px-4">
       <h1 className="mr-auto mt-12 text-[20px] font-bold xl:mt-[140px]">
@@ -20,7 +24,7 @@ const Page = async () => {
       </h1>
       <AccountEditForm currentUserAccountInfo={currentUserAccountInfo} />
       <div className="ml-auto">
-        <WithDrawalModal onClick={deleteUser} />
+        <WithdrawalModal />
       </div>
     </div>
   );

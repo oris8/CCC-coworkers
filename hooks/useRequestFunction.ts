@@ -36,7 +36,7 @@ const useRequestFunction = <T = any>(
   });
 
   const request = useCallback(
-    async (props?: any) => {
+    async (...props: any) => {
       setState((prevState) => ({
         ...prevState,
         isLoading: true,
