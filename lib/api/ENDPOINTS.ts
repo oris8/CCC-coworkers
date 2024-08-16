@@ -10,8 +10,8 @@ const ENDPOINTS = {
     PATCH_PASSWORD: `/user/password`,
   },
   TASKLIST: {
-    GROUP_ACTIONS: (groupId: Id, id: Id) =>
-      `/groups/${groupId}/task-lists/${id}`,
+    GROUP_ACTIONS: (groupId: Id, id: Id, date?: DateString) =>
+      `/groups/${groupId}/task-lists/${id}?date=${date}`,
     POST: (groupId: Id) => `/groups/${groupId}/task-lists`,
     PATCH_ORDER: (groupId: Id, id: Id) =>
       `/groups/${groupId}/task-lists/${id}/order`,
@@ -23,6 +23,8 @@ const ENDPOINTS = {
       `/groups/${groupId}/task-lists/${taskListId}/tasks?date=${date}`,
     DELETE_ALL_TASKS: (groupId: Id, taskListId: Id, taskId: Id) =>
       `/groups/${groupId}/task-lists/${taskListId}/tasks/${taskId}/all`,
+    RECURRING: (groupId: Id, taskListId: Id) =>
+      `/groups/${groupId}/task-lists/${taskListId}/recurring`,
   },
   OAUTH: {
     POST_OAUTH_APPS: `/oauthApps`,

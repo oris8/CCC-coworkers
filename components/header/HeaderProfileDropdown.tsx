@@ -24,7 +24,7 @@ function HeaderProfileDropdown({ user }: { user: User }) {
       <DropdownMenuContent className="relative z-dropdown mt-5 w-full max-xl:right-5">
         <DropdownMenuItem
           asChild
-          className="flex w-full justify-center py-[14px]"
+          className="flex w-full cursor-pointer justify-center py-[14px]"
         >
           <Link href="/user-history" className="w-full">
             마이 히스토리
@@ -32,20 +32,20 @@ function HeaderProfileDropdown({ user }: { user: User }) {
         </DropdownMenuItem>
         <DropdownMenuItem
           asChild
-          className="flex w-full justify-center py-[14px]"
+          className="flex w-full cursor-pointer justify-center py-[14px]"
         >
           <Link href="/my-account">계정 설정</Link>
         </DropdownMenuItem>
         <DropdownMenuItem
           asChild
-          className="flex w-full justify-center py-[14px]"
+          className="flex w-full cursor-pointer justify-center py-[14px]"
         >
           {/* TODO - 팀 참여 페이지 등록 */}
           <Link href="/">팀 참여</Link>
         </DropdownMenuItem>
         <DropdownMenuItem
           asChild
-          className="flex w-full justify-center py-[14px]"
+          className="flex w-full cursor-pointer justify-center py-[14px]"
         >
           <LogoutModal>
             <button type="button">로그아웃</button>

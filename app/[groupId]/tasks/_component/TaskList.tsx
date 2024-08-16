@@ -1,98 +1,57 @@
-'use client';
-
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-
-/* eslint-disable jsx-a11y/click-events-have-key-events */
+import MakeTodoModal from '@/components/modal-template/MakeTodoModal';
 import TodoListModal from '@/components/modal-template/TodoListModal';
 import fetchAPI from '@/lib/api/fetchAPI';
-import { dateFormatter } from '@/lib/utils';
-import LeftButtonIcon from '@/public/icons/list/left_button_icon.svg';
-import RightButtonIcon from '@/public/icons/list/right_button_icon.svg';
-import { DateString, GroupTask, Id, Task } from '@ccc-types';
-import React, { useEffect, useState } from 'react';
+import { DateString, Id } from '@ccc-types';
+import React from 'react';
 
-import DatePicker from './DatePicker';
+import TaskDateController from './TaskDateController';
 import TaskItem from './TaskItem';
+import TaskListTags from './TaskListTags';
 
-function TaskList({ data, groupId }: { data: GroupTask[]; groupId: Id }) {
-  const [currentDate, setCurrentDate] = useState<Date>(new Date());
-  const [taskList, setTaskList] = useState<Task[] | undefined>(undefined);
-  const [taskListId, setTaskListId] = useState<Id>(data[0].id);
-  const oneDay = 24 * 60 * 60 * 1000;
+async function TaskList({
+  groupId,
+  searchParams,
+}: {
+  groupId: Id;
+  searchParams?: { 'task-list': Id; date: DateString };
+}) {
+  // 두 API 요청을 동시에 실행
+  const [groupRes, tasksRes] = await Promise.all([
+    fetchAPI.Group(groupId),
+    fetchAPI.TaskList(
+      groupId,
+      Number(searchParams?.['task-list']),
+      searchParams!.date
+    ),
+  ]);
 
-  const fetchData = async (
-    groupIdValue: Id,
-    taskListIdValue: Id,
-    date: DateString
-  ) => {
-    const res = await fetchAPI.Tasks(groupIdValue, taskListIdValue, date);
-    if (res.error) {
-      console.log(res.error);
-    } else {
-      setTaskList(res.data);
-    }
-  };
+  // 그룹 데이터 처리
+  if (groupRes.error) {
+    console.log(groupRes.error);
+    return <div>그룹 데이터를 불러오는 중 오류가 발생했습니다.</div>;
+  }
 
-  const handlePrevDate = () => {
-    setCurrentDate((prev) => new Date(prev.getTime() - oneDay));
-  };
-
-  const handleNextDate = () => {
-    setCurrentDate((prev) => new Date(prev.getTime() + oneDay));
-  };
-
-  const handleDateChange = React.useCallback((value: Date) => {
-    setCurrentDate(value);
-  }, []);
-
-  useEffect(() => {
-    fetchData(groupId, taskListId, currentDate.toString());
-  }, [groupId, taskListId, currentDate]);
+  // 태스크 리스트 처리
+  const taskListsData = groupRes.data.taskLists;
+  // 태스크 데이터 처리
+  const tasksData = tasksRes.data;
 
   return (
     <div className="flex h-full flex-grow flex-col">
       <div className="flex items-center">
-        <span className="w-[100px] text-[16px] font-medium text-text-primary">
-          {dateFormatter.toConvertDate(currentDate, 'monthAndDay')}
-        </span>
-        <div className="relative top-[1px] mr-4 flex gap-2">
-          <button
-            type="button"
-            aria-label="날짜 변경 버튼(왼쪽)"
-            onClick={handlePrevDate}
-          >
-            <LeftButtonIcon />
-          </button>
-          <button
-            type="button"
-            aria-label="날짜 변경 버튼(오른쪽)"
-            onClick={handleNextDate}
-          >
-            <RightButtonIcon />
-          </button>
-        </div>
-        <DatePicker onClick={handleDateChange} />
+        <TaskDateController />
         <TodoListModal groupId={groupId} className="ml-auto" />
       </div>
-      {data?.length !== 0 ? (
+      {taskListsData?.length !== 0 ? (
         <>
-          <ul className="my-2 flex gap-3">
-            {data?.map((item) => (
-              <li
-                key={item.id}
-                onClick={() => {
-                  setTaskListId(item.id);
-                }}
-                className={`cursor-pointer text-base font-medium text-text-default ${item.id === taskListId && 'border-b-2 border-text-primary pb-[3px] text-text-primary'}`}
-              >
-                {item.name}
-              </li>
-            ))}
-          </ul>
-
-          {taskList?.length !== 0 ? (
-            <div className="mt-3 flex flex-col gap-5">
-              {taskList?.map((task) => <TaskItem key={task.id} task={task} />)}
+          <TaskListTags taskListsData={taskListsData} />
+          {tasksData?.tasks?.length !== 0 ? (
+            <div
+              className={`mt-3 flex ${tasksData?.tasks?.length === 0 && 'min-h-full'} flex-col gap-5 pb-[45px]`}
+            >
+              {tasksData?.tasks?.map((task) => (
+                <TaskItem key={task.id} task={task} />
+              ))}
             </div>
           ) : (
             <div className="mb-[120px] flex h-full items-center justify-center">
@@ -112,6 +71,13 @@ function TaskList({ data, groupId }: { data: GroupTask[]; groupId: Id }) {
           </p>
         </div>
       )}
+      <div className="sticky bottom-5 mx-auto flex w-full max-w-[1232px] justify-end xl:px-0">
+        <MakeTodoModal
+          className="z-10 ml-auto"
+          groupId={groupId}
+          taskListId={Number(searchParams?.['task-list'])}
+        />
+      </div>
     </div>
   );
 }

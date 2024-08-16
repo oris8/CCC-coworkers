@@ -14,8 +14,11 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { createTask } from '@/lib/api/task';
 import { todoModalFormSchema } from '@/lib/schema/task';
+import { Id } from '@ccc-types';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -29,9 +32,18 @@ import StartDatePicker from './StartDatePicker';
 const commonClassName =
   'flex h-[75px] w-full resize-none rounded-xl border border-input/10 bg-background-secondary px-4 py-[10px] text-sm text-primary ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground placeholder:text-text-default focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 sm:text-base';
 
-function MakeTodoModal({ className = '' }) {
+function MakeTodoModal({
+  className = '',
+  groupId,
+  taskListId,
+}: {
+  className: string;
+  groupId: Id;
+  taskListId: Id;
+}) {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [isDayPickerOpen, setIsDayPickerOpen] = React.useState<boolean>(false);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof todoModalFormSchema>>({
     resolver: zodResolver(todoModalFormSchema),
@@ -39,7 +51,7 @@ function MakeTodoModal({ className = '' }) {
       name: '',
       description: '',
       frequencyType: 'ONCE',
-      startDate: new Date(new Date().setHours(0, 0, 0, 0)).toISOString(),
+      startDate: new Date(new Date().setHours(0, 0, 0, 0)).toString(),
     },
   });
 
@@ -58,10 +70,12 @@ function MakeTodoModal({ className = '' }) {
     }
   }, [frequencyType, startDate, setValue]);
 
-  const onSubmit = (values: z.infer<typeof todoModalFormSchema>) => {
+  const onSubmit = async (values: z.infer<typeof todoModalFormSchema>) => {
+    await createTask(groupId, taskListId, values);
     console.log(values);
     form.reset();
     setIsOpen(false);
+    router.refresh();
   };
 
   // NOTE - 모달의 요일 설정 부분 렌더링 여부 결정 함수

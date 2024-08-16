@@ -10,12 +10,17 @@ export async function createTask(
   data: Partial<
     Pick<
       Recurring,
-      'name' | 'description' | 'displayIndex' | 'frequencyType' | 'monthDay'
+      | 'name'
+      | 'description'
+      | 'displayIndex'
+      | 'frequencyType'
+      | 'monthDay'
+      | 'weekDays'
     >
   >
 ) {
   const { data: response, error } = await client<GroupTask>(
-    ENDPOINTS.TASK.ACTIONS(groupId, taskListId),
+    ENDPOINTS.TASK.RECURRING(groupId, taskListId),
     {
       method: 'post',
       data,
@@ -60,14 +65,14 @@ export async function updateTask(
   return { data: response };
 }
 
-export async function deleteTask(groupId: Id, taskListId: Id, taskId: Id) {
+export async function deleteTask(taskId: Id) {
   const { error } = await client<void>(ENDPOINTS.TASK.ACTIONS_ITEM(taskId), {
     method: 'delete',
   });
   if (error) {
     return {
       error: {
-        info: `TaskList${taskListId}의 tasks를 삭제하는 중 에러가 발생했습니다.`,
+        info: `${taskId}번 할일을 삭제하는 중 에러가 발생했습니다.`,
         message: error.message,
         ...error.cause,
       },

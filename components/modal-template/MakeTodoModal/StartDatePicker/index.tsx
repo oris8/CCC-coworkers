@@ -15,7 +15,7 @@ function StartDatePicker({ field }: StartDatePickerProps) {
     React.useState<boolean>(false);
   const [isTimePickerOpen, setIsTimePickerOpen] =
     React.useState<boolean>(false);
-  const [date, setDate] = React.useState<Date | undefined>(undefined);
+  const [date, setDate] = React.useState<Date>(new Date());
   const [time, setTime] = React.useState<string>('12:00');
   const [period, setPeriod] = React.useState<'AM' | 'PM'>('AM');
 
@@ -38,10 +38,10 @@ function StartDatePicker({ field }: StartDatePickerProps) {
   ) => {
     if (day) {
       const [hours, minutes] = timeValue.split(':');
-      const hourOffset = periodValue === 'AM' ? 0 : 12;
+      const hourOffset = periodValue === 'AM' && hours === '12' ? 0 : 12;
       day.setHours(parseInt(hours, 10) + hourOffset);
       day.setMinutes(parseInt(minutes, 10));
-      field.onChange(day.toISOString());
+      field.onChange(new Date(day));
     }
   };
 

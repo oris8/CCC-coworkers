@@ -8,7 +8,10 @@ function CommentItem({ content, user }: Comment) {
     <div className="flex flex-col gap-[16px] border-b pb-[16px]">
       <div className="flex w-full items-start justify-between">
         <p className="text-sm font-normal text-text-primary">{content}</p>
-        <EditDeleteDropdown className="h-[16px] min-w-[16px] md:ml-[5px]" />
+        <EditDeleteDropdown
+          className="h-[16px] min-w-[16px] md:ml-[5px]"
+          onClick={() => console.log('hi')}
+        />
       </div>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">

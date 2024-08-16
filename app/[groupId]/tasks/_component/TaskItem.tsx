@@ -1,11 +1,16 @@
+'use client';
+
 import EditDeleteDropdown from '@/components/dropdown-template/EditDeleteDropdown';
 import frequencyTypeObj from '@/constants/frequencyType';
+import useRequestFunction from '@/hooks/useRequestFunction';
+import { deleteTask } from '@/lib/api/task';
 import { dateFormatter } from '@/lib/utils';
 import CalenderNoBtnIcon from '@/public/icons/list/calender_no_btn.svg';
 import ClockIcon from '@/public/icons/list/clock_icon.svg';
 import CommentIcon from '@/public/icons/list/comment_icon.svg';
 import DailyIcon from '@/public/icons/list/daily_task_icon.svg';
 import { Task } from '@ccc-types';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 import CheckboxReactHookFormSingle from './Checkbox';
@@ -16,14 +21,34 @@ const textClass = `text-xs font-normal text-text-default`;
 function TaskItem({ task }: { task: Task }) {
   const [isDone, setIsDone] = React.useState<boolean>(!!task.doneAt);
   const taskType = frequencyTypeObj[task.frequency];
+  const router = useRouter();
 
   const handleDoneState = (value: boolean) => {
     setIsDone(value);
   };
 
+  const { isLoading, request } = useRequestFunction(deleteTask);
+
+  const handleDeleteClick = async () => {
+    try {
+      await request(task.id);
+      router.refresh();
+    } catch (e) {
+      console.error(e);
+    }
+    // await deleteTask(task.id);
+    // router.refresh();
+  };
+
+  // if (isError) {
+  //   return <ErrorFallbackUI />;
+  // }
+
   return (
     <CommentSheet isDone={isDone} task={task} handleClick={handleDoneState}>
-      <div className="flex w-full cursor-pointer flex-col gap-3 rounded-[10px] bg-background-secondary px-[14px] py-[12px]">
+      <div
+        className={`${isLoading && 'bg-white'}flex w-full cursor-pointer flex-col gap-3 rounded-[10px] bg-background-secondary px-[14px] py-[12px]`}
+      >
         <div className="flex w-full justify-between">
           <CheckboxReactHookFormSingle
             id={task.id}
@@ -36,7 +61,7 @@ function TaskItem({ task }: { task: Task }) {
               <CommentIcon />
               <p className={textClass}>{task.commentCount}</p>
             </div>
-            <EditDeleteDropdown title={task.name} />
+            <EditDeleteDropdown title={task.name} onClick={handleDeleteClick} />
           </div>
         </div>
         <div className="flex gap-3">

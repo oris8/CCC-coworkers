@@ -8,28 +8,34 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import WarningIcon from '@/public/icons/modal/warning_icon.svg';
-import React from 'react';
+import React, { MouseEvent } from 'react';
 
 function DeleteTodoModal({
   title,
   className,
-  ...props
+  onClick,
 }: {
-  title: string;
+  title?: string;
   className?: string;
+  onClick: () => void;
 }) {
-  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
-    e.stopPropagation();
-  };
-
   return (
     <Dialog>
       <DialogTrigger asChild className={className}>
-        <button type="button" onClick={handleClick}>
+        <button
+          type="button"
+          onClick={(e: MouseEvent<HTMLButtonElement>) => {
+            e.stopPropagation();
+          }}
+        >
           삭제하기
         </button>
       </DialogTrigger>
-      <DialogContent onClick={handleClick}>
+      <DialogContent
+        onClick={(e: MouseEvent<HTMLElement>) => {
+          e.stopPropagation();
+        }}
+      >
         <WarningIcon />
         <DialogTitle className="mb-[-10px] flex flex-col gap-3 text-center">
           {title && <p>&apos;{title}&apos;</p>}
@@ -42,7 +48,7 @@ function DeleteTodoModal({
           </DialogClose>
           <DialogClose asChild>
             {/** NOTE - DELETE 로직 추가 전에 임시로 이벤트 버블링 방지를 위해 함수 할당 */}
-            <Button variant="danger" {...props}>
+            <Button variant="danger" onClick={onClick}>
               삭제
             </Button>
           </DialogClose>

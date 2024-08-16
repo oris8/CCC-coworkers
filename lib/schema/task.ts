@@ -12,7 +12,7 @@ const baseSchema = z.object({
     .max(30, { message: '최대로 입력할 수 있는 글자수는 30개입니다.' }),
   startDate: z
     .string()
-    .default(new Date(new Date().setHours(0, 0, 0, 0)).toISOString()),
+    .default(new Date(new Date().setHours(0, 0, 0, 0)).toString()),
 });
 
 // frequencyType에 따른 조건부 필드 정의

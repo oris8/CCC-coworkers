@@ -2,6 +2,7 @@
 
 import TodoListModal from '@/components/modal-template/TodoListModal';
 import { GroupTask } from '@ccc-types';
+import Link from 'next/link';
 
 import TeamToDoListCard from './TeamToDoListCard';
 
@@ -24,16 +25,20 @@ function TeamToDoList({
       <div className="flex flex-col gap-4">
         {taskLists.length !== 0 ? (
           taskLists.map((taskList) => (
-            <TeamToDoListCard
-              key={taskList.id}
-              name={taskList.name}
-              totalToDo={taskList.tasks.length}
-              completedToDo={
-                taskList.tasks.filter((task) => task.doneAt !== null).length
-              }
-              groupId={groupId}
-              taskListId={taskList.id}
-            />
+            <Link
+              href={`/${groupId}/tasks?task-list=${taskList.id}&date=${new Date().toString()}`}
+            >
+              <TeamToDoListCard
+                key={taskList.id}
+                name={taskList.name}
+                totalToDo={taskList.tasks.length}
+                completedToDo={
+                  taskList.tasks.filter((task) => task.doneAt !== null).length
+                }
+                groupId={groupId}
+                taskListId={taskList.id}
+              />
+            </Link>
           ))
         ) : (
           <div className="flex w-full items-center justify-center py-16">

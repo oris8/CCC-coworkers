@@ -17,9 +17,14 @@ function CommentMeta({ detailTask }: { detailTask: DetailTask }) {
         <div className="flex items-center gap-3">
           <div className="relative size-[32px]">
             <Image
-              src="/images/basic_profile.png"
+              src={
+                detailTask?.user?.image
+                  ? detailTask?.user?.image
+                  : '/images/basic_profile.png'
+              }
               alt="기본 프로필 이미지"
               fill
+              sizes="32"
               style={{ objectFit: 'cover' }}
             />
           </div>
