@@ -1,4 +1,3 @@
-import ErrorFallbackUI from '@/components/common/ErrorFallBackUI';
 import Header from '@/components/header/Header';
 import ServerErrorBoundary from '@/components/server-error-boundary';
 import ThemeProvider from '@/components/theme-provider';
@@ -40,7 +39,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Header />
-          <ServerErrorBoundary fallback={<>{ErrorFallbackUI}</>}>
+          <ServerErrorBoundary>
             {children}
             <Toaster />
           </ServerErrorBoundary>

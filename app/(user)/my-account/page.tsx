@@ -1,4 +1,4 @@
-import ErrorFallbackUI from '@/components/common/ErrorFallBackUI';
+import ErrorFallback from '@/components/common/error/ErrorFallback';
 import fetchAPI from '@/lib/api/fetchAPI';
 import { isEmptyObject } from '@/lib/utils';
 import { redirect } from 'next/navigation';
@@ -11,7 +11,7 @@ const Page = async () => {
 
   // 서버사이드렌더링중 에러가 나는 부분은 직접 error component를 리턴
   if (error) {
-    return <ErrorFallbackUI error={error} />;
+    return <ErrorFallback error={error} />;
   }
 
   // 유저 데이터가 없으면 랜딩페이지로 리다이렉트

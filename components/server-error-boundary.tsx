@@ -1,6 +1,6 @@
 'use client';
 
-import ErrorFallbackUI from '@/components/common/ErrorFallBackUI';
+import ErrorFallback from '@/components/common/error/ErrorFallback';
 import FetchError from '@/lib/api/HttpClient/FetchError';
 import React, { ErrorInfo, createContext, useContext, useState } from 'react';
 
@@ -96,7 +96,7 @@ class ServerErrorBoundary extends React.Component<
       };
 
       childToRender = (
-        <ErrorFallbackUI
+        <ErrorFallback
           {...props}
           onClickRetry={() => this.setState(initialState)}
         />

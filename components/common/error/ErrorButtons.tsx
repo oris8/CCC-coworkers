@@ -12,11 +12,15 @@ const goToLandingPage = () => {
   //  window 객체 사용없이 이 문제 해결법 하시는 분 리뷰 부탁드립니다
 };
 
-const ErrorFallBackButtons = ({
-  onClickRetry,
-}: {
+interface ErrorButtonsProps {
   onClickRetry?: () => void;
-}) => {
+  showRetryButton?: boolean;
+}
+
+const ErrorButtons = ({
+  onClickRetry = () => {},
+  showRetryButton = false,
+}: ErrorButtonsProps) => {
   const [isServerOffline, setIsServerOffline] = useState(false);
 
   useEffect(() => {
@@ -35,12 +39,12 @@ const ErrorFallBackButtons = ({
   return (
     <div className="flex gap-4">
       <Button onClick={goToLandingPage}>홈페이지로 돌아가기</Button>
-      {/* 네트워크 관련 오류가 났을 때는 다시 시도하기 버튼을 렌더링 */}
-      {isServerOffline && (
+      {/* 네트워크 관련 오류가 났거나 showRetryButton가 true이면 다시 시도하기 버튼을 렌더링 */}
+      {(isServerOffline || showRetryButton) && (
         <Button
           onClick={onClickRetry}
           variant="outlined"
-          className="w-[max-content] p-[14px]"
+          className="w-[max-content] border-text-default p-[14px] opacity-70 hover:border-text-default hover:opacity-100"
         >
           <RetryIcon />
         </Button>
@@ -49,4 +53,4 @@ const ErrorFallBackButtons = ({
   );
 };
 
-export default ErrorFallBackButtons;
+export default ErrorButtons;
