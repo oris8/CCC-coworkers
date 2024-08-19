@@ -1,18 +1,18 @@
 'use client';
 
 import { loginWithOAuth } from '@/lib/api/auth';
-import { SignInWithOAuthRequestBody } from '@ccc-types';
-import crypto from 'crypto';
+import { generateRandomState } from '@/lib/utils';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 export default function GoogleRedirect() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
-  // NOTE - 카카오 oauth 부분에서는 login 페이지에 있었는데 구글은 url에 필요없어서 일단 여기에 넣었습니당 나중에 합쳐지면 util로 따로 빼던가 할게융
-  // 랜덤 문자열
-  const generateRandomState = (length: number = 32): string =>
-    crypto.randomBytes(length).toString('hex');
+  const Loading = dynamic(() => import('@/components/common/loading'), {
+    ssr: false,
+  });
 
   // google token 가져오기
   const getGoogleToken = async (code: string): Promise<string> => {
@@ -38,31 +38,38 @@ export default function GoogleRedirect() {
       const data = await res.json();
       return data.id_token;
     } catch (e) {
-      console.error('Error in getgoogleToken:', e);
+      toast.error('Error in getgoogleToken');
       throw e;
     }
   };
-  useEffect(() => {
-    const handleGoogleRedirect = async () => {
-      if (typeof window === 'undefined') return;
 
-      // google 인가 code 추출
-      const url = new URL(window.location.href);
-      const code = url.searchParams.get('code');
-      const state = generateRandomState();
-      // 발급받은 인가 코드로 토큰 발급
-      if (code) {
+  useEffect(() => {
+    // 서버에 유저 정보 보내기
+    const handleGoogleRedirect = async () => {
+      try {
+        const url = new URL(window.location.href);
+        const code = url.searchParams.get('code');
+
+        if (!code) {
+          toast.error('No code found in URL');
+          setIsLoading(false);
+          return;
+        }
+
+        const state = generateRandomState();
         const token = await getGoogleToken(code);
-        const data: SignInWithOAuthRequestBody = {
+        const data = {
           state,
           token,
           redirectUri: process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI || '',
         };
         const res = await loginWithOAuth('GOOGLE', data);
         if (res) {
-          setIsLoading(false);
           router.push('/');
         }
+      } catch (error) {
+        toast.error('Error during Google OAuth');
+        setIsLoading(false);
       }
     };
 
@@ -70,7 +77,7 @@ export default function GoogleRedirect() {
   }, [router]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return null;
