@@ -4,30 +4,26 @@ import ImageInputUI from '@/components/ui/ImageInputLabel';
 import { Button } from '@/components/ui/button';
 import * as Form from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import useImageFile from '@/hooks/useImagePreview';
 import useRequestFunction from '@/hooks/useRequestFunction';
-import uploadImage from '@/lib/api/common';
 import { updateUser } from '@/lib/api/user';
-import { nameSchema } from '@/lib/schema/auth';
+import { imageSchema, nameSchema } from '@/lib/schema/auth';
 import Profile from '@/public/icons/profile.svg';
 import { User } from '@ccc-types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
 const formSchema = z.object({
-  image: z.custom<File | string>(
-    (v) => v instanceof File || typeof v === 'string'
-  ),
+  image: imageSchema,
   nickname: nameSchema,
 });
 
 type ProfileSettingsFormProps = Pick<User, 'image' | 'nickname'>;
 
 const ProfileSettingsForm = ({ image, nickname }: ProfileSettingsFormProps) => {
-  const api = useRequestFunction(updateUser);
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -35,18 +31,17 @@ const ProfileSettingsForm = ({ image, nickname }: ProfileSettingsFormProps) => {
       nickname,
     },
   });
-
-  const [imagePreview, setImagePreview] = useState(image);
+  const currentImage = form.watch('image');
+  const { uploadedImage, imagePreview } = useImageFile(currentImage);
+  const api = useRequestFunction(updateUser);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const updatedProfile: { nickname?: string; image?: string } = {};
-
+    // 데이터 세팅
     if (nickname !== values.nickname) updatedProfile.nickname = values.nickname;
-    if (values.image && values.image !== image) {
-      const { data } = await uploadImage(values.image);
-      updatedProfile.image = data;
+    if (values?.image !== image && typeof uploadedImage === 'string') {
+      updatedProfile.image = uploadedImage;
     }
-
     // 변경사항이 없을 경우 toast
     if (!updatedProfile.image && !updatedProfile.nickname) {
       toast.error('변경된 내용이 없습니다');
@@ -56,29 +51,17 @@ const ProfileSettingsForm = ({ image, nickname }: ProfileSettingsFormProps) => {
     await api.request(updatedProfile);
   }
 
-  const currentImage = form.watch('image');
-
-  // 이미지 프리뷰 설정
-  useEffect(() => {
-    if (!currentImage || typeof currentImage === 'string') return;
-    setImagePreview(URL.createObjectURL(currentImage));
-  }, [currentImage]);
-
   // API 요청 결과에 따른 로직처리
   useEffect(() => {
     if (api.isError) {
       toast.error(api.error?.message || api.error?.info);
+      api.reset();
     }
     if (api.isSuccess) {
       toast.success('변경사항이 저장되었습니다');
+      api.reset();
     }
-  }, [
-    api.isError,
-    api.isSuccess,
-    api.data,
-    api.error?.info,
-    api.error?.message,
-  ]);
+  }, [api, api.isError, api.isSuccess, api.error?.info, api.error?.message]);
 
   return (
     <Form.Form {...form}>

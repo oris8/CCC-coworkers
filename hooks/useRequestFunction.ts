@@ -80,8 +80,9 @@ const useRequestFunction = <T = any>(
           errorMessage: response.error?.message || '오류가 발생했습니다',
           error: response.error,
         });
-        if (showErrorFallBack && !response.error.hasBodyMessage)
+        if (showErrorFallBack && !response.error.hasBodyMessage) {
           showBoundary(response?.error);
+        }
         return { data: null, error: response.error };
       }
       if (!response?.error) {
@@ -96,7 +97,11 @@ const useRequestFunction = <T = any>(
     [apiFunction]
   );
 
-  return { ...state, request };
+  const reset = useCallback(() => {
+    setState(INITIAL_STATE);
+  }, []);
+
+  return { ...state, request, reset };
 };
 
 export default useRequestFunction;

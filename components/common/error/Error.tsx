@@ -1,10 +1,10 @@
 import DogLottie from '@/public/animation/dog.json';
-import error from 'next/error';
 
 import { LazyLottie } from '../lottie/LazyLottie';
 import ErrorFallBackButtons from './ErrorButtons';
 
 interface ErrorProps {
+  error?: any;
   title?: string;
   subTitle?: string;
   description: string;
@@ -13,6 +13,7 @@ interface ErrorProps {
 }
 
 const Error = ({
+  error,
   title = '! ERROR',
   subTitle,
   description,
@@ -38,7 +39,7 @@ const Error = ({
             <h2 className="mb-4 text-lg text-text-default">
               개발 모드에서만 보여지는 정보에요
             </h2>
-            <p>{JSON.stringify(error, null, 2)}</p>
+            <p>{error && JSON.stringify(error, null, 2)}</p>
           </div>
         )}
 

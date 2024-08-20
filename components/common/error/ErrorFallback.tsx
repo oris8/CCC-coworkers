@@ -44,7 +44,11 @@ const ErrorFallbackUI = ({ error, onClickRetry }: ErrorBoundaryState) => {
   if (!error) return;
 
   return (
-    <Error description={getErrorMessage(error)} onClickRetry={onClickRetry} />
+    <Error
+      error={error}
+      description={getErrorMessage(error)}
+      onClickRetry={onClickRetry}
+    />
   );
 };
 
