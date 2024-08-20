@@ -123,13 +123,13 @@ export async function createTokenForMemberInvitation(groupId: Id) {
 }
 
 // GET {id}/invitation으로 생성한 토큰으로, 초대를 수락하는 엔드포인트
-export async function inviteMemberViaLink(userId: Id, token: string) {
+export async function inviteMemberViaLink(userEmail: string, token: string) {
   const { error } = await client<void>(
     ENDPOINTS.GROUP.POST_GROUP_ACCEPT_INVITATION,
     {
       method: 'post',
       data: {
-        userId,
+        userEmail,
         token,
       },
     }
