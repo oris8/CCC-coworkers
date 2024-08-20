@@ -7,6 +7,9 @@ import {
 } from '@/components/ui/chart';
 import { stringToHex } from '@/lib/utils';
 import ToDoDoneIcon from '@/public/icons/todo_done.svg';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import Link from 'next/link';
 import { useMemo } from 'react';
 import { Pie, PieChart } from 'recharts';
 
@@ -34,6 +37,16 @@ function TeamToDoListCard({
   groupId: number;
   taskListId: number;
 }) {
+  // 정렬 드래그앤 드롭을 위한 훅
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: taskListId });
+
+  // 드래그앤 드랍 스타일
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
   // NOTE - 동적으로 색상을 적용하기 위해 따로 빼고 useMemo로 반복되는 계산 제거
   const leftStyleColor = useMemo(() => stringToHex(name), [name]);
   const done = completedToDo === totalToDo;
@@ -48,43 +61,51 @@ function TeamToDoListCard({
   ];
 
   return (
-    <div className="relative flex h-10 items-center justify-between rounded-xl bg-background-secondary py-3 pl-6 pr-2">
-      <div
-        className="absolute left-0 top-0 h-full w-[10px] rounded-l-xl"
-        // NOTE - className에 동적 값이 적용되지 않아 style로 적용
-        style={{ backgroundColor: leftStyleColor }}
-      />
-      <p className="text-sm font-medium">{name}</p>
-      <div className="flex items-center gap-x-1">
-        <div className="flex h-[25px] items-center gap-x-[1px] rounded-xl bg-background px-2 py-1 text-brand-primary">
-          <div className="size-4">
-            {done ? (
-              <ToDoDoneIcon />
-            ) : (
-              <ChartContainer config={chartConfig} className="aspect-square">
-                <PieChart>
-                  <ChartTooltip
-                    cursor={false}
-                    content={<ChartTooltipContent hideLabel />}
-                  />
-                  <Pie
-                    data={chartData}
-                    dataKey="total"
-                    nameKey="name"
-                    // TODO - 원의 크기는 밖 div, innerRadius와 outerRadius로 조정 가능합니다!
-                    innerRadius={6}
-                    outerRadius={8}
-                    strokeWidth={0}
-                  />
-                </PieChart>
-              </ChartContainer>
-            )}
+    <Link
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
+      style={style}
+      href={`/${groupId}/tasks?task-list=${taskListId}&date=${new Date().toString()}`}
+    >
+      <div className="relative flex h-10 items-center justify-between rounded-xl bg-background-secondary py-3 pl-6 pr-2">
+        <div
+          className="absolute left-0 top-0 h-full w-[10px] rounded-l-xl"
+          // NOTE - className에 동적 값이 적용되지 않아 style로 적용
+          style={{ backgroundColor: leftStyleColor }}
+        />
+        <p className="text-sm font-medium">{name}</p>
+        <div className="flex items-center gap-x-1">
+          <div className="flex h-[25px] items-center gap-x-[1px] rounded-xl bg-background px-2 py-1 text-brand-primary">
+            <div className="size-4">
+              {done ? (
+                <ToDoDoneIcon />
+              ) : (
+                <ChartContainer config={chartConfig} className="aspect-square">
+                  <PieChart>
+                    <ChartTooltip
+                      cursor={false}
+                      content={<ChartTooltipContent hideLabel />}
+                    />
+                    <Pie
+                      data={chartData}
+                      dataKey="total"
+                      nameKey="name"
+                      // TODO - 원의 크기는 밖 div, innerRadius와 outerRadius로 조정 가능합니다!
+                      innerRadius={6}
+                      outerRadius={8}
+                      strokeWidth={0}
+                    />
+                  </PieChart>
+                </ChartContainer>
+              )}
+            </div>
+            <p>{`${completedToDo}/${totalToDo}`}</p>
           </div>
-          <p>{`${completedToDo}/${totalToDo}`}</p>
+          <TodoListEditDropdown groupId={groupId} taskListId={taskListId} />
         </div>
-        <TodoListEditDropdown groupId={groupId} taskListId={taskListId} />
       </div>
-    </div>
+    </Link>
   );
 }
 export default TeamToDoListCard;
