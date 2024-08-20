@@ -1,4 +1,5 @@
 import { DateString, Id } from '@ccc-types';
+import { Suspense } from 'react';
 
 import TaskList from './_component/TaskList';
 
@@ -17,7 +18,12 @@ async function ListPage({
         <h1 className="mr-auto mt-6 text-[18px] font-bold text-text-primary">
           할 일
         </h1>
-        <TaskList groupId={groupId} searchParams={searchParams} />
+        <Suspense
+          key={`${groupId}-${searchParams?.['task-list']}-${searchParams?.date}`}
+          fallback={<div>로딩중...</div>}
+        >
+          <TaskList groupId={groupId} searchParams={searchParams} />
+        </Suspense>
       </div>
     </section>
   );

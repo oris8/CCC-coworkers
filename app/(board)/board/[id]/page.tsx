@@ -1,6 +1,6 @@
-import BoardCommentInput from '../../_components/BoardCommentInput';
-import BoardComments from '../../_components/BoardComments';
-import BoardDetailDescription from '../../_components/BoardDetailDescription';
+import BoardCommentInput from './components/BoardCommentInput';
+import BoardComments from './components/BoardComments';
+import BoardDetailDescription from './components/BoardDetailDescription';
 
 function BoardDetail() {
   return (
