@@ -7,9 +7,11 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Form, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { sendResetPasswordEmail } from '@/lib/api/user';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { Button } from '../ui/button';
@@ -31,8 +33,18 @@ function ResetPasswordModal({ className = '' }) {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const data = {
+      email: values.email,
+      // NOTE - 현재는 로컬에서 작업하기 위해 3000으로 설정했는데 개발이 끝나면 실도메인으로 변경이 필요합니다.
+      redirectUrl: 'http://localhost:3000',
+    };
+    const res = await sendResetPasswordEmail(data);
+
+    if (res) {
+      toast.success('비밀번호 재설정 링크 전송 완료');
+    }
+
     form.reset();
     setIsOpen(false);
   }
@@ -42,7 +54,7 @@ function ResetPasswordModal({ className = '' }) {
       <DialogTrigger className={className} asChild>
         <button
           type="button"
-          className="w-full cursor-pointer text-[14px] font-medium text-brand-primary underline"
+          className="w-full cursor-pointer text-right text-[14px] font-medium text-brand-primary underline"
         >
           비밀번호를 잊으셨나요?
         </button>

@@ -16,14 +16,14 @@ import { authValidationSchema } from '@/lib/schema/auth';
 import { SignUpRequestBody } from '@ccc-types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 export default function SignupForm() {
   const onSubmit: SubmitHandler<SignUpRequestBody> = async (data) => {
-    try {
-      await signup(data);
-    } catch (error) {
-      console.error('회원가입 오류:', error);
+    const res = await signup(data);
+    if (res?.error) {
+      toast.error(res.error?.message || res.error.info);
     }
   };
 

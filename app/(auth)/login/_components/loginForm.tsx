@@ -1,5 +1,6 @@
 'use client';
 
+import PasswordResetModal from '@/components/modal-template/ResetPasswordModal';
 import { PasswordInput } from '@/components/ui/PasswordInput';
 import { Button } from '@/components/ui/button';
 import {
@@ -16,14 +17,14 @@ import { loginValidationSchema } from '@/lib/schema/auth';
 import { SignInRequestBody } from '@ccc-types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 export default function LoginForm() {
   const onSubmit: SubmitHandler<SignInRequestBody> = async (data) => {
     const res = await login(data);
     if (res?.error) {
-      console.error(res.error?.message || res.error.info);
-      alert(res.error?.message || res.error.info);
+      toast.error(res.error?.message || res.error.info);
     }
   };
 
@@ -68,9 +69,8 @@ export default function LoginForm() {
             </FormItem>
           )}
         />
-        <p className="float-right text-[16px] text-[#10B981] underline">
-          비밀번호를 잊으셨나요?
-        </p>
+        <PasswordResetModal />
+
         <Button type="submit">로그인</Button>
       </form>
     </Form>
