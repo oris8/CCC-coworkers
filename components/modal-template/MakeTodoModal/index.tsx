@@ -72,7 +72,6 @@ function MakeTodoModal({
 
   const onSubmit = async (values: z.infer<typeof todoModalFormSchema>) => {
     await createTask(groupId, taskListId, values);
-    console.log(values);
     form.reset();
     setIsOpen(false);
     router.refresh();
