@@ -2,6 +2,7 @@ import Header from '@/components/header/Header';
 import ServerErrorBoundary from '@/components/server-error-boundary';
 import ThemeProvider from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
+import { Provider } from 'jotai';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
@@ -53,19 +54,21 @@ export default function RootLayout({
     // https://github.com/vercel/next.js/discussions/22388
     <html lang="ko-KR" suppressHydrationWarning>
       <body className={pretendardFont.className}>
-        <ThemeProvider
-          attribute="class"
-          // NOTE - 기본적으로 다크모드로 설정하였습니다.
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Header />
-          <ServerErrorBoundary>
-            {children}
-            <Toaster />
-          </ServerErrorBoundary>
-        </ThemeProvider>
+        <Provider>
+          <ThemeProvider
+            attribute="class"
+            // NOTE - 기본적으로 다크모드로 설정하였습니다.
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Header />
+            <ServerErrorBoundary>
+              {children}
+              <Toaster />
+            </ServerErrorBoundary>
+          </ThemeProvider>
+        </Provider>
       </body>
     </html>
   );
