@@ -143,13 +143,13 @@ const BoardAddForm = () => {
           render={({ field: { value, onChange, ...fieldProps } }) => (
             <Form.FormItem>
               <Form.FormLabel className="inline-block w-[max-content]">
-                <ImageInputUI>
-                  <ImageInputUI.BoardContent imagePreview={imagePreview}>
+                <ImageInputUI variants="board">
+                  <ImageInputUI.Content imagePreview={imagePreview}>
                     <div className="flex size-40 cursor-pointer flex-col items-center justify-center gap-y-3 rounded-xl bg-background-secondary text-[#9CA3AF] md:size-60">
                       <p className="text-2xl md:text-5xl">+</p>
                       <p className="text-sm md:text-base">이미지 등록</p>
                     </div>
-                  </ImageInputUI.BoardContent>
+                  </ImageInputUI.Content>
                 </ImageInputUI>
               </Form.FormLabel>
               <Form.FormControl>

@@ -37,7 +37,8 @@ export default function EditTeamForm({ groupData }: EditTeamProps) {
   });
   const currentImage = form.watch('image');
   const router = useRouter();
-  const { uploadedImage, imagePreview } = useImageFile(currentImage);
+  const { isUploading, uploadedImage, imagePreview } =
+    useImageFile(currentImage);
 
   const api = useRequestFunction(updateGroup);
 
@@ -87,8 +88,11 @@ export default function EditTeamForm({ groupData }: EditTeamProps) {
           render={({ field: { value, onChange, ...fieldProps } }) => (
             <FormItem>
               <FormLabel className="inline-block w-[max-content]">
-                <ImageInputUI className="cursor-pointer">
-                  <ImageInputUI.Content imagePreview={imagePreview}>
+                <ImageInputUI variants="circular" className="cursor-pointer">
+                  <ImageInputUI.Content
+                    imagePreview={imagePreview}
+                    isUploading={isUploading}
+                  >
                     <TeamProfile width="60" height="60" />
                   </ImageInputUI.Content>
                 </ImageInputUI>
@@ -121,7 +125,7 @@ export default function EditTeamForm({ groupData }: EditTeamProps) {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={api.isPending}>
+        <Button type="submit" disabled={api.isPending || isUploading}>
           {api.isPending ? '저장중...' : '수정하기'}
         </Button>
       </form>

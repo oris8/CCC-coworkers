@@ -8,7 +8,7 @@ import useImageFile from '@/hooks/useImagePreview';
 import useRequestFunction from '@/hooks/useRequestFunction';
 import { updateUser } from '@/lib/api/user';
 import { imageSchema, nameSchema } from '@/lib/schema/auth';
-import Profile from '@/public/icons/profile.svg';
+import Profile from '@/public/icons/default_profile.svg';
 import { User } from '@ccc-types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
@@ -32,7 +32,8 @@ const ProfileSettingsForm = ({ image, nickname }: ProfileSettingsFormProps) => {
     },
   });
   const currentImage = form.watch('image');
-  const { uploadedImage, imagePreview } = useImageFile(currentImage);
+  const { isUploading, uploadedImage, imagePreview } =
+    useImageFile(currentImage);
   const api = useRequestFunction(updateUser);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -70,14 +71,18 @@ const ProfileSettingsForm = ({ image, nickname }: ProfileSettingsFormProps) => {
           control={form.control}
           name="image"
           render={({ field: { value, onChange, ...fieldProps } }) => (
-            <Form.FormItem>
+            <Form.FormItem className="h-[68.5px]">
               <Form.FormLabel className="inline-block w-[max-content]">
-                <ImageInputUI>
-                  <ImageInputUI.Content imagePreview={imagePreview}>
+                <ImageInputUI variants="circular">
+                  <ImageInputUI.Content
+                    isUploading={isUploading}
+                    imagePreview={imagePreview}
+                  >
                     <Profile />
                   </ImageInputUI.Content>
                 </ImageInputUI>
               </Form.FormLabel>
+
               <Form.FormControl>
                 <Input
                   {...fieldProps}
@@ -109,7 +114,7 @@ const ProfileSettingsForm = ({ image, nickname }: ProfileSettingsFormProps) => {
         <Button
           type="submit"
           className="absolute bottom-0 z-10"
-          disabled={api.isPending}
+          disabled={api.isPending || isUploading}
         >
           {api.isPending ? '저장중...' : '변경사항 저장하기'}
         </Button>
