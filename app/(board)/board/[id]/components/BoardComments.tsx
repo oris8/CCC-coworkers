@@ -1,11 +1,19 @@
+import fetchAPI from '@/lib/api/fetchAPI';
+
 import BoardComment from './BoardComment';
 
-function BoardComments() {
+async function BoardComments({ articleId }: { articleId: number }) {
+  const { data, error } = await fetchAPI.ArticleComments(articleId, 10);
+
+  if (error) {
+    return <div>Error</div>;
+  }
+
   return (
     <div className="flex flex-col gap-4">
-      <BoardComment />
-      <BoardComment />
-      <BoardComment />
+      {data?.list.map((comment) => (
+        <BoardComment key={comment.id} comment={comment} />
+      ))}
     </div>
   );
 }

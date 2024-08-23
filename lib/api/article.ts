@@ -3,13 +3,14 @@
 import ENDPOINTS from '@/lib/api/ENDPOINTS';
 import client from '@/lib/api/client/client';
 import { Article, ArticleDetail, Id } from '@ccc-types';
+import { revalidatePath } from 'next/cache';
 
 type CreateArticleBody = Pick<Article, 'image' | 'content' | 'title'>;
 type UpdateArticleBody = Partial<CreateArticleBody>;
 
 export async function createArticle(data: CreateArticleBody) {
   const { data: response, error } = await client<Article>(
-    ENDPOINTS.ARTICLE.ACTIONS,
+    ENDPOINTS.ARTICLE.ACTIONS(),
     {
       method: 'post',
       data,
@@ -24,12 +25,13 @@ export async function createArticle(data: CreateArticleBody) {
       },
     };
   }
+  revalidatePath('/boards');
   return { data: response };
 }
 
 export async function updateArticle(articleId: Id, data: UpdateArticleBody) {
   const { data: response, error } = await client<ArticleDetail>(
-    ENDPOINTS.ARTICLE.ACTIONS_ITEM(articleId),
+    ENDPOINTS.ARTICLE.ACTIONS_ITEM(`${articleId}`),
     {
       method: 'patch',
       data,
@@ -49,7 +51,7 @@ export async function updateArticle(articleId: Id, data: UpdateArticleBody) {
 
 export async function deleteArticle(articleId: Id) {
   const { data, error } = await client<{ id: Id }>(
-    ENDPOINTS.ARTICLE.ACTIONS_ITEM(articleId),
+    ENDPOINTS.ARTICLE.ACTIONS_ITEM(`${articleId}`),
     {
       method: 'delete',
     }

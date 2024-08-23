@@ -57,7 +57,7 @@ const BoardAddForm = () => {
     const result = await api.request(requestData);
 
     if (!result?.error) {
-      router.push('/boards');
+      router.push('/boards?page=1');
     }
   }
 
@@ -75,7 +75,7 @@ const BoardAddForm = () => {
       toast.error(api.error?.message || api.error?.info);
     }
     if (api.isSuccess) {
-      toast.success('변경사항이 저장되었습니다');
+      toast.success('글이 등록되었습니다');
     }
   }, [
     api.isError,

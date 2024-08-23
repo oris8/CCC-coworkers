@@ -28,7 +28,7 @@ function HamburgerSheet({ user }: { user: UserWithMemberships }) {
             </SheetClose>
           ))}
           <SheetClose asChild>
-            <Link href="/boards">자유게시판</Link>
+            <Link href="/boards?page=1">자유게시판</Link>
           </SheetClose>
         </div>
       </SheetContent>

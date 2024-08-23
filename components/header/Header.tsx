@@ -8,7 +8,7 @@ import HeaderProfileDropdown from './HeaderProfileDropdown';
 
 function HeaderContainer({ children }: { children: React.ReactNode }) {
   return (
-    <header className="z-header sticky top-0 flex h-[60px] w-full items-center bg-background-secondary">
+    <header className="sticky top-0 z-header flex h-[60px] w-full items-center bg-background-secondary">
       <div className="flex h-full w-full items-center justify-between px-4 py-5 xl:mx-auto xl:w-[1200px] xl:p-0">
         {children}
       </div>
@@ -33,7 +33,7 @@ async function Header() {
             <Logo className="h-[20px] w-[102px] xl:h-[32px] xl:w-[158px]" />
           </Link>
           <HeaderDropdown user={data} />
-          <Link href="/boards">자유게시판</Link>
+          <Link href="/boards?page=1">자유게시판</Link>
         </div>
         <HeaderProfileDropdown user={data} />
       </HeaderContainer>

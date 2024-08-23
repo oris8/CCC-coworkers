@@ -2,6 +2,7 @@ import ENDPOINTS from '@/lib/api/ENDPOINTS';
 import client from '@/lib/api/client/client';
 import {
   Article,
+  ArticleComment,
   ArticleDetail,
   CursorBasedPagination,
   DateString,
@@ -169,9 +170,9 @@ async function getComments(taskId: Id) {
   return { data };
 }
 
-async function getArticles() {
+async function getArticles(params?: string) {
   const { data, error } = await client<OffsetBasedPagination<Article>>(
-    ENDPOINTS.ARTICLE.ACTIONS,
+    ENDPOINTS.ARTICLE.ACTIONS(params),
     {
       method: 'get',
     }
@@ -190,7 +191,7 @@ async function getArticles() {
 
 async function getArticle(articleID: Id) {
   const { data, error } = await client<ArticleDetail>(
-    ENDPOINTS.ARTICLE.ACTIONS_ITEM(articleID),
+    ENDPOINTS.ARTICLE.ACTIONS_ITEM(`${articleID}`),
     {
       method: 'get',
     }
@@ -207,9 +208,9 @@ async function getArticle(articleID: Id) {
   return { data };
 }
 
-async function getArticleComments(articleID: Id) {
-  const { data, error } = await client<CursorBasedPagination<Comment>>(
-    ENDPOINTS.COMMENT.ARTICLE(articleID),
+async function getArticleComments(articleID: Id, limit: number) {
+  const { data, error } = await client<CursorBasedPagination<ArticleComment>>(
+    ENDPOINTS.COMMENT.ARTICLE(articleID, limit),
     {
       method: 'get',
     }

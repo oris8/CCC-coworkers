@@ -10,4 +10,12 @@ declare module '@ccc-types' {
     content: string;
     id: Id;
   }
+
+  export interface ArticleComment {
+    writer: ArticleWriter;
+    updatedAt: DateString;
+    createdAt: DateString;
+    content: string;
+    id: Id;
+  }
 }

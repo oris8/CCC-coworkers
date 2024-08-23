@@ -12,6 +12,7 @@ declare module '@ccc-types' {
     image?: UrlType | null;
     title: ArticleTitle;
     id: Id;
+    commentCount: number;
     isLiked: boolean | null; // nullable
     content: ArticleContent;
   };
