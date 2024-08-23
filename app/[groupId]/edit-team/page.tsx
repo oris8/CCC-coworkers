@@ -11,7 +11,7 @@ export default async function EditTeam({
 }) {
   const { data: groupData, error } = await fetchAPI.Group(params.groupId);
 
-  if (error) {
+  if (error || !groupData) {
     return <ErrorFallbackUI error={error} />;
   }
   return (

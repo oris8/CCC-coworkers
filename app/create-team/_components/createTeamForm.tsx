@@ -33,7 +33,7 @@ export default function CreateTeamForm() {
 
     if (data.image) {
       const imageResult = await uploadImage(data.image);
-      if ('data' in imageResult) {
+      if (imageResult.data) {
         imageUrl = imageResult.data;
       }
     }

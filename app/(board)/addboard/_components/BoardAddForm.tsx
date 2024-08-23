@@ -48,7 +48,10 @@ const BoardAddForm = () => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const imageUrl = await handleImageUpload(values.image);
-    const requestData = { ...values, image: imageUrl };
+    const requestData: z.infer<typeof formSchema> = {
+      ...values,
+      image: imageUrl ?? undefined,
+    };
 
     if (!imageUrl) {
       delete requestData.image;

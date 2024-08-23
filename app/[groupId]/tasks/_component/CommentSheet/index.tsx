@@ -29,7 +29,7 @@ interface FormData {
   done: boolean;
 }
 
-type OmiitedComment = Omit<Comment, 'taskId' | 'userId'>;
+type OmittedComment = Omit<Comment, 'taskId' | 'userId'>;
 
 export default function CommentSheet({
   children,
@@ -45,7 +45,7 @@ export default function CommentSheet({
   userId?: Id;
 }) {
   const [commentList, setCommentList] = React.useState<
-    Comment[] | OmiitedComment[] | null
+    Comment[] | OmittedComment[] | null
   >(null);
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [isDeleting, setIsDeleting] = React.useState<boolean>(false);
@@ -58,7 +58,7 @@ export default function CommentSheet({
   const fetchData = async (idValue: Id) => {
     setIsLoading(true);
     const res = await fetchAPI.Comments(idValue);
-    if (res.error) {
+    if (res.error || !res.data) {
       setIsLoading(false);
       toast.error(`${res.error.info}`);
     } else {

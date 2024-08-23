@@ -2,26 +2,19 @@
 
 import ENDPOINTS from '@/lib/api/ENDPOINTS';
 import client from '@/lib/api/client/client';
+import { handleApiResponse } from '@/lib/api/utils';
 import { GroupTask, Id } from '@ccc-types';
 
 export async function createTaskList(groupId: Id, data: { name: string }) {
-  const { data: response, error } = await client<GroupTask>(
-    ENDPOINTS.TASKLIST.POST(groupId),
-    {
-      method: 'post',
-      data,
-    }
+  const res = await client<GroupTask>(ENDPOINTS.TASKLIST.POST(groupId), {
+    method: 'post',
+    data,
+  });
+
+  return handleApiResponse(
+    res,
+    'TaskList를 생성하는 중 중 에러가 발생했습니다.'
   );
-  if (error) {
-    return {
-      error: {
-        info: 'TaskList를 생성하는 중 중 에러가 발생했습니다.',
-        message: error.message,
-        ...error.cause,
-      },
-    };
-  }
-  return { data: response };
 }
 
 export async function updateTaskList(
@@ -29,42 +22,32 @@ export async function updateTaskList(
   taskListId: Id,
   data: { name: string }
 ) {
-  const { data: response, error } = await client<GroupTask>(
+  const res = await client<GroupTask>(
     ENDPOINTS.TASKLIST.GROUP_ACTIONS(groupId, taskListId),
     {
       method: 'patch',
       data,
     }
   );
-  if (error) {
-    return {
-      error: {
-        info: `TaskList${taskListId}를 수정하는 중 에러가 발생했습니다`,
-        message: error.message,
-        ...error.cause,
-      },
-    };
-  }
-  return { data: response };
+
+  return handleApiResponse(
+    res,
+    `TaskList${taskListId}를 수정하는 중 에러가 발생했습니다`
+  );
 }
 
 export async function deleteTaskList(groupId: Id, taskListId: Id) {
-  const { error } = await client<void>(
+  const res = await client<void>(
     ENDPOINTS.TASKLIST.GROUP_ACTIONS(groupId, taskListId),
     {
       method: 'delete',
     }
   );
-  if (error) {
-    return {
-      error: {
-        info: `TaskList${taskListId}를 삭제하는 중 에러가 발생했습니다.`,
-        message: error.message,
-        ...error.cause,
-      },
-    };
-  }
-  return { data: true };
+
+  return handleApiResponse(
+    res,
+    `TaskList${taskListId}를 삭제하는 중 에러가 발생했습니다.`
+  );
 }
 
 // 할일 목록의 순서를 변경합니다.
@@ -75,21 +58,16 @@ export async function reorderTaskList(
   taskListId: Id,
   data: { displayIndex: number }
 ) {
-  const { error } = await client<void>(
+  const res = await client<void>(
     ENDPOINTS.TASKLIST.PATCH_ORDER(groupId, taskListId),
     {
       method: 'patch',
       data,
     }
   );
-  if (error) {
-    return {
-      error: {
-        info: `TaskList${taskListId}의 순서를 변경하는 중 에러가 발생했습니다`,
-        message: error.message,
-        ...error.cause,
-      },
-    };
-  }
-  return { data: true };
+
+  return handleApiResponse(
+    res,
+    `TaskList${taskListId}의 순서를 변경하는 중 에러가 발생했습니다`
+  );
 }

@@ -28,7 +28,7 @@ const useImageFile = (currentImage?: any) => {
         setIsUploading(false);
       } else {
         const { data, error } = await uploadImage(currentImage);
-        if (error) {
+        if (error || !data) {
           toast.error(error.message);
           return;
         }

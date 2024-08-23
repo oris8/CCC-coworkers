@@ -52,7 +52,7 @@ function CommentForm({
     }
     if (id) {
       const res = await postComment(id, commentData);
-      if (res.error) {
+      if (res.error || !res.data) {
         toast.error(`댓글 등록에 실패하였습니다.`);
       } else {
         toast.success(`댓글 등록에 성공하였습니다.`);

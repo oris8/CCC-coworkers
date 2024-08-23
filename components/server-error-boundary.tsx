@@ -2,6 +2,7 @@
 
 import ErrorFallback from '@/components/common/error/ErrorFallback';
 import FetchError from '@/lib/api/HttpClient/FetchError';
+import * as Sentry from '@sentry/nextjs';
 import React, { ErrorInfo, createContext, useContext, useState } from 'react';
 
 /* eslint-disable */
@@ -69,9 +70,9 @@ class ServerErrorBoundary extends React.Component<
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
-    // 오류나면 콘솔에 기록
     console.log('---------------  오류가 발생했습니다   ---------------');
     console.log(error, info);
+    Sentry.captureException(error);
   }
 
   showBoundary = (error: Error) => {

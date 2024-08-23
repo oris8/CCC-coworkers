@@ -18,7 +18,7 @@ async function BoardPagination({
     `page=${searchParams.page}&pageSize=10${searchParams.keyword ? `&keyword=${searchParams.keyword}` : ''}&${searchParams.orderBy ? `&orderBy=${searchParams.orderBy}` : ''}`
   );
 
-  if (error) {
+  if (error || !data) {
     return <div>Error</div>;
   }
 

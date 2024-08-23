@@ -9,7 +9,7 @@ async function BoardDetail({ params }: { params: { id: number } }) {
   const { id } = params;
   const { data, error } = await fetchAPI.Article(id);
 
-  if (error) {
+  if (error || !data) {
     notFound();
   }
 

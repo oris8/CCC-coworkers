@@ -7,7 +7,7 @@ async function BestBoards() {
     'page=1&pageSize=3&orderBy=like'
   );
 
-  if (error) {
+  if (error || !data) {
     return <div>Error</div>;
   }
 

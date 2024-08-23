@@ -10,7 +10,7 @@ const Page = async () => {
   const { data: currentUserAccountInfo, error } = await fetchAPI.User();
 
   // 서버사이드렌더링중 에러가 나는 부분은 직접 error component를 리턴
-  if (error) {
+  if (error || !currentUserAccountInfo) {
     return <ErrorFallback error={error} />;
   }
 

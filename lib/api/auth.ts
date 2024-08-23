@@ -3,6 +3,7 @@
 import DEFAULT_TOKEN_OPTIONS from '@/lib/api/DEFAULT_TOKEN_OPTIONS';
 import ENDPOINTS from '@/lib/api/ENDPOINTS';
 import client from '@/lib/api/client/client';
+import { handleApiResponse } from '@/lib/api/utils';
 import {
   AuthResponse,
   Id,
@@ -29,49 +30,33 @@ function setTokenAndRedirection(accessToken: string, refreshToken: string) {
 }
 
 export async function signup(data: SignUpRequestBody) {
-  const { data: response, error } = await client<AuthResponse>(
-    ENDPOINTS.AUTH.POST_SIGNUP,
-    {
-      method: 'post',
-      data,
-    }
-  );
-  if (error) {
-    return {
-      error: {
-        info: '회원가입에 실패했습니다.',
-        message: error.message,
-        ...error.cause,
-      },
-    };
+  const res = await client<AuthResponse>(ENDPOINTS.AUTH.POST_SIGNUP, {
+    method: 'post',
+    data,
+  });
+
+  if (res.data) {
+    setTokenAndRedirection(res.data.accessToken, res.data.refreshToken);
   }
-  setTokenAndRedirection(response.accessToken, response.refreshToken);
+
+  return handleApiResponse(res, '회원가입에 실패했습니다.');
 }
 
 export async function login(
   data: SignInRequestBody,
   options: { redirect?: boolean } = { redirect: true }
 ) {
-  const { data: response, error } = await client<AuthResponse>(
-    ENDPOINTS.AUTH.POST_SIGNIN,
-    {
-      method: 'post',
-      data,
-    }
-  );
-  if (error) {
-    return {
-      error: {
-        info: '로그인에 실패했습니다.',
-        message: error.message,
-        ...error.cause,
-      },
-    };
-  }
-  if (options.redirect)
-    setTokenAndRedirection(response.accessToken, response.refreshToken);
+  const res = await client<AuthResponse>(ENDPOINTS.AUTH.POST_SIGNIN, {
+    method: 'post',
+    data,
+  });
 
-  return { data };
+  if (res.data && options.redirect) {
+    const { accessToken, refreshToken } = res.data;
+    setTokenAndRedirection(accessToken, refreshToken);
+  }
+
+  return handleApiResponse(res, '로그인에 실패했습니다.');
 }
 
 // 가입되어있지 않을 경우엔 가입됩니다.
@@ -79,23 +64,20 @@ export async function loginWithOAuth(
   provider: OAuthProvider,
   data: SignInWithOAuthRequestBody
 ) {
-  const { data: response, error } = await client<AuthResponse>(
+  const res = await client<AuthResponse>(
     ENDPOINTS.AUTH.POST_SIGNIN_PROVIDER(provider),
     {
       method: 'post',
       data,
     }
   );
-  if (error) {
-    return {
-      error: {
-        info: '간편로그인에 실패했습니다.',
-        message: error.message,
-        ...error.cause,
-      },
-    };
+
+  if (res.data) {
+    const { accessToken, refreshToken } = res.data;
+    setTokenAndRedirection(accessToken, refreshToken);
   }
-  setTokenAndRedirection(response.accessToken, response.refreshToken);
+
+  return handleApiResponse(res, '간편로그인에 실패했습니다.');
 }
 
 export async function logout() {
@@ -127,25 +109,4 @@ export async function checkAccessToken(accessToken: string) {
     console.error('액세스 토큰 검사 중 오류 발생:', error);
     return false;
   }
-}
-
-export async function updateAccessToken(refreshToken: string) {
-  const { data, error } = await client<{ accessToken: string }>(
-    ENDPOINTS.AUTH.POST_REFRESH_TOKEN,
-    {
-      method: 'post',
-      data: { refreshToken },
-    }
-  );
-  if (error) {
-    return {
-      error: {
-        info: '토큰 갱신에 실패했습니다.',
-        message: error.message,
-        ...error.cause,
-      },
-    };
-  }
-  const newAccessToken = data.accessToken;
-  return { data: newAccessToken };
 }
