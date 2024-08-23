@@ -5,23 +5,26 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import KebabIcon from '@/public/icons/kebab_icon.svg';
-import Link from 'next/link';
+import { Id } from '@ccc-types';
 import * as React from 'react';
 
 import DeleteTodoModal from '../modal-template/DeleteTodoModal';
+import ModifyTodoModal from '../modal-template/ModifyTodoModal';
 
-function GroupEditDropdown({
+function TaskEditDeleteDropdown({
   title = '',
   className = 'w-[16px] h-[16px]',
-  groupId,
   onClick,
+  taskId,
 }: {
   title?: string;
   className?: string;
-  groupId: number;
   onClick: () => void;
+  taskId?: Id;
 }) {
   const [open, setOpen] = React.useState<boolean>(false);
+  const [isModifyDialogOpen, setIsModifyDialogOpen] =
+    React.useState<boolean>(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] =
     React.useState<boolean>(false);
 
@@ -45,10 +48,12 @@ function GroupEditDropdown({
         >
           <DropdownMenuItem
             className="flex cursor-pointer flex-col justify-center"
-            asChild
+            onClick={() => {
+              setIsModifyDialogOpen(true);
+              setOpen(false);
+            }}
           >
-            {/* TODO - 팀 수정 페이지 구현 시 연결 */}
-            <Link href={`/${groupId}/edit`}>수정하기</Link>
+            수정하기
           </DropdownMenuItem>
           <DropdownMenuItem
             className="flex cursor-pointer flex-col justify-center"
@@ -65,13 +70,18 @@ function GroupEditDropdown({
       {isDeleteDialogOpen && (
         <DeleteTodoModal
           title={title}
-          className="w-full cursor-pointer"
           onClick={onClick}
           onClose={() => setIsDeleteDialogOpen(false)}
+        />
+      )}
+      {isModifyDialogOpen && (
+        <ModifyTodoModal
+          taskId={taskId}
+          onClose={() => setIsModifyDialogOpen(false)}
         />
       )}
     </>
   );
 }
 
-export default GroupEditDropdown;
+export default TaskEditDeleteDropdown;

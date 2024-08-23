@@ -120,6 +120,9 @@ export const dateFormatter = {
     const month = formattedDate.getMonth() + 1;
     const day = formattedDate.getDate();
 
+    if (agoMin < 1) {
+      return '방금 전';
+    }
     if (agoMin < 60) {
       return `${agoMin}분 전`;
     }
@@ -150,6 +153,10 @@ export const copyText = (text: string, label: string) => {
     });
 };
 
+export const lineBreaker = (content: string) => {
+  const lineBreakedContent = content.split('\n');
+  return lineBreakedContent;
+};
 // 랜덤 문자열 생성
 export function generateRandomState(): string {
   return uuidv4();

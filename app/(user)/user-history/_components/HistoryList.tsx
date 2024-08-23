@@ -33,14 +33,21 @@ const HistoryList = ({ tasksDone }: { tasksDone: Task[] }) => {
 
   return (
     <div className="flex w-full flex-col gap-4">
-      {Object.keys(sortedHistoryList).map((date) => (
-        <>
-          <h2>{date}</h2>
-          {sortedHistoryList[date].map((task) => (
-            <HistoryItem key={task.id} task={task} />
-          ))}
-        </>
-      ))}
+      {Object.keys(sortedHistoryList)
+        .sort((a, b) => new Date(b).getTime() - new Date(a).getTime())
+        .map((date) => (
+          <div key={date} className="flex flex-col gap-4">
+            <h2>{date}</h2>
+            {sortedHistoryList[date]
+              .sort(
+                (a, b) =>
+                  new Date(b.doneAt!).getTime() - new Date(a.doneAt!).getTime()
+              ) // 각 날짜의 task를 최신순으로 정렬
+              .map((task) => (
+                <HistoryItem key={task.id} task={task} />
+              ))}
+          </div>
+        ))}
     </div>
   );
 };

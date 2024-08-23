@@ -16,11 +16,13 @@ import {
 } from '@/components/ui/form';
 import { createTask } from '@/lib/api/task';
 import { todoModalFormSchema } from '@/lib/schema/task';
+import Spinner from '@/public/icons/spinner_icon.svg';
 import { Id } from '@ccc-types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { Button } from '../../ui/button';
@@ -29,7 +31,7 @@ import DayGroupToggle from './DayGroupToggle';
 import FrequencySelect from './FrequencySelect';
 import StartDatePicker from './StartDatePicker';
 
-const commonClassName =
+export const commonClassName =
   'flex h-[75px] w-full resize-none rounded-xl border border-input/10 bg-background-secondary px-4 py-[10px] text-sm text-primary ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground placeholder:text-text-default focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 sm:text-base';
 
 function MakeTodoModal({
@@ -43,6 +45,7 @@ function MakeTodoModal({
 }) {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [isDayPickerOpen, setIsDayPickerOpen] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const router = useRouter();
 
   const form = useForm<z.infer<typeof todoModalFormSchema>>({
@@ -51,7 +54,7 @@ function MakeTodoModal({
       name: '',
       description: '',
       frequencyType: 'ONCE',
-      startDate: new Date(new Date().setHours(0, 0, 0, 0)).toString(),
+      startDate: new Date(new Date().setHours(15, 0, 0, 0)).toISOString(),
     },
   });
 
@@ -71,10 +74,19 @@ function MakeTodoModal({
   }, [frequencyType, startDate, setValue]);
 
   const onSubmit = async (values: z.infer<typeof todoModalFormSchema>) => {
-    await createTask(groupId, taskListId, values);
-    form.reset();
-    setIsOpen(false);
-    router.refresh();
+    setIsLoading(true);
+    const res = await createTask(groupId, taskListId, values);
+    if (res.data) {
+      form.reset();
+      router.refresh();
+      toast.success('할 일 만들기에 성공했습니다.');
+      setIsOpen(false);
+      setIsLoading(false);
+    } else {
+      toast.error(res.error.info);
+      setIsOpen(false);
+      setIsLoading(false);
+    }
   };
 
   // NOTE - 모달의 요일 설정 부분 렌더링 여부 결정 함수
@@ -88,7 +100,13 @@ function MakeTodoModal({
       <DialogTrigger asChild className={className}>
         <Button variant="floating">+ 할 일 추가</Button>
       </DialogTrigger>
-      <DialogContent hasCloseIcon className="z-modal">
+      <DialogContent
+        hasCloseIcon
+        className="z-modal"
+        onClick={(e: MouseEvent<HTMLElement>) => {
+          e.stopPropagation();
+        }}
+      >
         <DialogTitle>할 일 만들기</DialogTitle>
         <DialogDescription />
         <p className="mt-[-20px] text-[14px] font-medium text-text-default">
@@ -169,8 +187,8 @@ function MakeTodoModal({
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="mt-3">
-                만들기
+              <Button type="submit" className="mt-3" disabled={isLoading}>
+                {isLoading ? <Spinner className="rolling" /> : '만들기'}
               </Button>
             </form>
           </Form>

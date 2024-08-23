@@ -5,21 +5,18 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import KebabIcon from '@/public/icons/kebab_icon.svg';
-import Link from 'next/link';
 import * as React from 'react';
 
 import DeleteTodoModal from '../modal-template/DeleteTodoModal';
 
-function GroupEditDropdown({
+function CommentEditDeleteDropdown({
   title = '',
-  className = 'w-[16px] h-[16px]',
-  groupId,
-  onClick,
+  handleEdit,
+  handleDelete,
 }: {
   title?: string;
-  className?: string;
-  groupId: number;
-  onClick: () => void;
+  handleEdit: (value: boolean) => void;
+  handleDelete: () => void;
 }) {
   const [open, setOpen] = React.useState<boolean>(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] =
@@ -34,7 +31,7 @@ function GroupEditDropdown({
             aria-label="수정 및 삭제 기능 제공 드롭다운"
             className="outline-none"
           >
-            <KebabIcon className={`${className} hover:fill-text-tertiary`} />
+            <KebabIcon className="h-[16px] w-[16px] hover:fill-text-tertiary md:ml-[5px]" />
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
@@ -45,10 +42,9 @@ function GroupEditDropdown({
         >
           <DropdownMenuItem
             className="flex cursor-pointer flex-col justify-center"
-            asChild
+            onClick={() => handleEdit(true)}
           >
-            {/* TODO - 팀 수정 페이지 구현 시 연결 */}
-            <Link href={`/${groupId}/edit`}>수정하기</Link>
+            수정하기
           </DropdownMenuItem>
           <DropdownMenuItem
             className="flex cursor-pointer flex-col justify-center"
@@ -64,9 +60,9 @@ function GroupEditDropdown({
 
       {isDeleteDialogOpen && (
         <DeleteTodoModal
+          type="comment"
           title={title}
-          className="w-full cursor-pointer"
-          onClick={onClick}
+          onClick={handleDelete}
           onClose={() => setIsDeleteDialogOpen(false)}
         />
       )}
@@ -74,4 +70,4 @@ function GroupEditDropdown({
   );
 }
 
-export default GroupEditDropdown;
+export default CommentEditDeleteDropdown;

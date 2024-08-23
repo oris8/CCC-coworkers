@@ -28,7 +28,7 @@ declare module '@ccc-types' {
     createdAt: DateString;
     name: Nickname;
     id: Id;
-    tasks: Task[];
+    tasks: DetailTask[];
   }
 
   export interface Comment {
@@ -61,9 +61,8 @@ declare module '@ccc-types' {
   }
 
   export interface DetailTask extends Task {
-    comments: Comment[];
     recurring: Recurring;
-    user: Pick<User, 'image' | 'nickname' | 'id'>;
+    writer: Pick<User, 'image' | 'nickname' | 'id'>;
     doneBy: DoneBy;
   }
 

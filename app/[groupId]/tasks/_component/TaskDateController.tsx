@@ -9,21 +9,22 @@ import { useState } from 'react';
 import DatePicker from './DatePicker';
 
 function TaskDateController() {
-  const oneDay = 24 * 60 * 60 * 1000;
-
   const params = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
-
+  const oneDay = 24 * 60 * 60 * 1000;
   const [currentDate, setCurrentDate] = useState<string | null>(
     new URLSearchParams(params).get('date')
   );
 
+  const isToday = new Date().getDate() === new Date(currentDate!).getDate();
+
   const handleDateChange = (newDate: Date) => {
     const newParams = new URLSearchParams(params);
-    newParams.set('date', newDate.toString());
+    newDate.setHours(15, 0, 0, 0);
+    newParams.set('date', newDate.toISOString());
     setCurrentDate(newDate.toISOString());
-    replace(`${pathname}?${newParams.toString()}`);
+    replace(`${pathname}?${newParams}`);
   };
 
   return (
@@ -37,6 +38,8 @@ function TaskDateController() {
         <button
           type="button"
           aria-label="날짜 변경 버튼(왼쪽)"
+          className="disabled:opacity-70"
+          disabled={isToday}
           onClick={() => {
             if (currentDate) {
               handleDateChange(

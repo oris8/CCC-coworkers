@@ -21,8 +21,13 @@ const ENDPOINTS = {
       `/groups/{groupId}/task-lists/{taskListId}/tasks/${taskId}`,
     ACTIONS: (groupId: Id, taskListId: Id, date?: DateString) =>
       `/groups/${groupId}/task-lists/${taskListId}/tasks?date=${date}`,
-    DELETE_ALL_TASKS: (groupId: Id, taskListId: Id, taskId: Id) =>
-      `/groups/${groupId}/task-lists/${taskListId}/tasks/${taskId}/all`,
+    DELETE_RECURRING_TASKS: (
+      recurringId: Id,
+      groupId?: Id,
+      taskListId?: Id,
+      taskId?: Id
+    ) =>
+      `/groups/${groupId}/task-lists/${taskListId}/tasks/${taskId}/recurring/${recurringId}`,
     RECURRING: (groupId: Id, taskListId: Id) =>
       `/groups/${groupId}/task-lists/${taskListId}/recurring`,
   },
@@ -47,7 +52,9 @@ const ENDPOINTS = {
     TASK: (taskId: Id) => `/tasks/${taskId}/comments`,
     ARTICLE: (articleId: Id, limit: number) =>
       `/articles/${articleId}/comments?limit=${limit}`,
-    ACTIONS: (commentId: Id) => `/comments/${commentId}`,
+    ACTIONS: (taskId: Id) => `/tasks/${taskId}/comments/`,
+    DETAIL_ACTION: (commentId: Id, taskId?: Id) =>
+      `/tasks/${taskId}/comments/${commentId}`,
   },
   AUTH: {
     POST_SIGNUP: `/auth/signUp`,

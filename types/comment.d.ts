@@ -1,8 +1,6 @@
 declare module '@ccc-types' {
   export interface Comment {
-    user: User & {
-      encryptedPassword: string;
-    };
+    user: Pick<User, 'id' | 'image' | 'nickname'>;
     userId: Id;
     taskId: Id;
     updatedAt: DateString;

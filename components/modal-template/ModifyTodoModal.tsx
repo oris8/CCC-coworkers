@@ -5,83 +5,80 @@ import {
   DialogContent,
   DialogDescription,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
-import { Form, FormField, FormItem, FormMessage } from '@/components/ui/form';
-import { createTaskList } from '@/lib/api/taskList';
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { updateTask } from '@/lib/api/task';
 import Spinner from '@/public/icons/spinner_icon.svg';
-import { GroupTask } from '@ccc-types';
+import { Id } from '@ccc-types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import React from 'react';
+import { useRouter } from 'next/navigation';
+import React, { MouseEvent } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
+import { commonClassName } from './MakeTodoModal';
 
 const formSchema = z.object({
   name: z
     .string()
     .min(2, { message: '최소 2자 이상 입력해주세요.' })
     .max(20, { message: '최대로 입력할 수 있는 글자수는 20개입니다.' }),
+  description: z
+    .string()
+    .min(2, { message: '최소 2자 이상 입력해주세요.' })
+    .max(20, { message: '최대로 입력할 수 있는 글자수는 20개입니다.' }),
 });
 
-function TodoListModal({
-  groupId,
-  className = '',
-  handleList,
+function ModifyTodoModal({
+  taskId,
+  onClose,
 }: {
-  groupId: number;
-  className?: string;
-  handleList?: (value: Omit<GroupTask, 'tasks'>) => void;
+  taskId?: Id;
+  onClose: (value: boolean) => void;
 }) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const { replace } = useRouter();
-  const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
+      description: '',
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    setIsLoading(true);
-    const res = await createTaskList(groupId, { name: values.name });
-    if (res.data && handleList) {
-      handleList(res.data);
-      const params = new URLSearchParams(searchParams);
-      params.set('task-list', res.data.id.toString());
-      replace(`${pathname}?${params.toString()}`);
-      setIsOpen(false);
-    } else if (res.data) {
+    if (taskId) {
+      setIsLoading(true);
+      await updateTask(taskId, values);
       router.refresh();
-      form.reset();
-      setIsOpen(false);
+      setTimeout(() => {
+        setIsLoading(false);
+        form.reset();
+        onClose(true);
+      }, 2000);
     }
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger className={className} asChild>
-        <button
-          type="button"
-          className="text-[14px] font-normal text-brand-primary"
-        >
-          + 새로운 목록 추가하기
-        </button>
-      </DialogTrigger>
-      <DialogContent hasCloseIcon>
-        <DialogTitle>할 일 목록</DialogTitle>
+    <Dialog open onOpenChange={onClose}>
+      <DialogContent
+        hasCloseIcon
+        onClick={(e: MouseEvent<HTMLElement>) => e.stopPropagation()}
+      >
+        <DialogTitle>할 일 변경</DialogTitle>
         <DialogDescription />
+        <p className="mt-[-20px] text-[14px] font-medium text-text-default">
+          할 일 이름과 추가하셨던 메모를 변경 가능합니다.
+        </p>
         <div className="gap- flex w-full max-w-[280px] flex-col gap-6">
           <Form {...form}>
             <form
@@ -93,7 +90,23 @@ function TodoListModal({
                 name="name"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>제목 변경</FormLabel>
                     <Input placeholder="목록 명을 입력해주세요" {...field} />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>메모 변경</FormLabel>
+                    <textarea
+                      placeholder="메모를 입력해주세요."
+                      {...field}
+                      className={commonClassName}
+                    />
                     <FormMessage />
                   </FormItem>
                 )}
@@ -109,4 +122,4 @@ function TodoListModal({
   );
 }
 
-export default TodoListModal;
+export default ModifyTodoModal;

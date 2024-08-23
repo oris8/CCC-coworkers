@@ -24,7 +24,7 @@ function HeaderDropdown({ user }: { user: UserWithMemberships }) {
   const currentGroup =
     user?.memberships.find(
       (membership) => membership.group.id === Number(selectedGroupId)
-    )?.group || user?.memberships[0].group;
+    )?.group || user?.memberships[0]?.group;
 
   const handleGroupChange = (newGroupId: number) => {
     setSelectedGroupId(newGroupId);
@@ -33,7 +33,7 @@ function HeaderDropdown({ user }: { user: UserWithMemberships }) {
   const handleGroupDelete = async (groupId: number) => {
     await deleteGroup(groupId);
     if (groupId === selectedGroupId) {
-      setSelectedGroupId(user?.memberships[0].group.id);
+      setSelectedGroupId(user?.memberships[0]?.group.id);
       router.push('/');
     }
     router.refresh();
@@ -42,7 +42,7 @@ function HeaderDropdown({ user }: { user: UserWithMemberships }) {
   return (
     <DropdownMenu>
       {/* TODO - 현재 접속해있는 그룹으로 */}
-      {user?.memberships[0].group.name && (
+      {user?.memberships[0]?.group.name && (
         <DropdownMenuTrigger>{currentGroup?.name}</DropdownMenuTrigger>
       )}
       <DropdownMenuContent className="z-dropdown mt-5 flex w-[218px] flex-col gap-2 p-4">

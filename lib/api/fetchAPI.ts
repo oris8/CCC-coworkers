@@ -4,6 +4,7 @@ import {
   Article,
   ArticleComment,
   ArticleDetail,
+  Comment,
   CursorBasedPagination,
   DateString,
   DetailTask,

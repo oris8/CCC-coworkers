@@ -66,7 +66,7 @@ function TeamToDoListCard({
       {...attributes}
       {...listeners}
       style={style}
-      href={`/${groupId}/tasks?task-list=${taskListId}&date=${new Date().toString()}`}
+      href={`/${groupId}/tasks?task-list=${taskListId}&date=${new Date(new Date().setHours(15, 0, 0, 0)).toISOString()}`}
     >
       <div className="relative flex h-10 items-center justify-between rounded-xl bg-background-secondary py-3 pl-6 pr-2">
         <div

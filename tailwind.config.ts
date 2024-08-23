@@ -141,9 +141,10 @@ const config = {
         '90': '90',
         '100': '100',
         header: '70',
-        'modal-overlay': '950', // 모달 & 시트 오버레이
+        sheet: '960',
+        'modal-overlay': '980', // 모달 & 시트 오버레이
         modal: '1000', // 모달 & 시트
-        dropdown: '1050', // 드롭다운
+        dropdown: '970', // 드롭다운
         select: '1050', // select
         popover: '1100', // 팝오버
         tooltip: '1150', // 툴팁

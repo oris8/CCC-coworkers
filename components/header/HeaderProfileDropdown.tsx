@@ -41,7 +41,7 @@ function HeaderProfileDropdown({ user }: { user: User }) {
           className="flex w-full cursor-pointer justify-center py-[14px]"
         >
           {/* TODO - 팀 참여 페이지 등록 */}
-          <Link href="/">팀 참여</Link>
+          <Link href="/invitation-team">팀 참여</Link>
         </DropdownMenuItem>
         <DropdownMenuItem
           asChild

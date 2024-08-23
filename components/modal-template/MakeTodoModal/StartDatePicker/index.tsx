@@ -21,9 +21,9 @@ function StartDatePicker({ field }: StartDatePickerProps) {
 
   // NOTE - 날짜와 시간을 지정하면 날짜 + 오전/오후 + 시간을 합쳐 startDate 키로 최종 값을 넘겨줌
   const updateDateTime = (day: Date | undefined) => {
+    day!.setHours(15, 0, 0, 0);
     const dayToISOString = day?.toISOString();
     const splitDay = dayToISOString && `${dayToISOString.split('.')[0]}Z`;
-    console.log(splitDay);
     field.onChange(splitDay);
   };
 

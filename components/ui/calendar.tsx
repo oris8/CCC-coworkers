@@ -18,6 +18,8 @@ function Calendar({
     selectedDay &&
     new Date(selectedDay).toDateString() === new Date().toDateString();
 
+  const today = new Date();
+
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
@@ -68,6 +70,7 @@ function Calendar({
         // eslint-disable-next-line @typescript-eslint/no-shadow, react/no-unstable-nested-components, @typescript-eslint/no-unused-vars
         IconRight: ({ ...props }) => <NextIcon />,
       }}
+      fromDate={today}
       {...props}
     />
   );

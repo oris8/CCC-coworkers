@@ -1,12 +1,24 @@
 import { postComment } from '@/lib/api/comment';
 import SubmitIcon from '@/public/icons/list/comment_submit_icon.svg';
-import { Id } from '@ccc-types';
+import Spinner from '@/public/icons/spinner_icon.svg';
+import { Comment, Id } from '@ccc-types';
+import { useRouter } from 'next/navigation';
 import React, { ChangeEvent, KeyboardEvent } from 'react';
+import { toast } from 'sonner';
 
-function CommentForm({ id }: { id?: Id }) {
+function CommentForm({
+  id,
+  handleData,
+}: {
+  id?: Id;
+  handleData: (type: 'post' | 'patch' | 'delete', value: Comment) => void;
+}) {
   const [isButtonDisabled, setIsButtonDisabled] = React.useState<boolean>(true);
   const [commentData, setCommentData] = React.useState<string>('');
   const buttonRef = React.useRef<HTMLButtonElement>(null);
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const router = useRouter();
 
   // NOTE - 만들어주신 form을 사용하기엔 따로 에러메세지가 출력되지도 않고 그냥 글자가 있고 없고에 따라 버튼만 막아주면 될 듯하여 따로 사용하진 않았습니다!
 
@@ -22,19 +34,33 @@ function CommentForm({ id }: { id?: Id }) {
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter') {
-      e.preventDefault();
-      const buttonNode = buttonRef.current;
-      if (buttonNode) {
-        buttonNode.click();
+      if (!e.shiftKey) {
+        e.preventDefault(); // 줄바꿈 방지
+        const buttonNode = buttonRef.current;
+        if (buttonNode) {
+          buttonNode.click();
+        }
       }
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (id) {
-      await postComment(id, commentData);
+    setIsLoading(true);
+    if (textareaRef.current) {
+      textareaRef.current.value = '';
     }
+    if (id) {
+      const res = await postComment(id, commentData);
+      if (res.error) {
+        toast.error(`댓글 등록에 실패하였습니다.`);
+      } else {
+        toast.success(`댓글 등록에 성공하였습니다.`);
+        handleData('post', res.data);
+        router.refresh();
+      }
+    }
+    setIsLoading(false);
   };
 
   return (
@@ -48,17 +74,22 @@ function CommentForm({ id }: { id?: Id }) {
         placeholder="댓글을 달아주세요"
         onChange={handleChange}
         onKeyDown={handleKeyDown}
+        ref={textareaRef}
       />
       <button
         type="submit"
         ref={buttonRef}
         aria-label="댓글 전송하기 버튼"
-        className="absolute right-0 z-10"
-        disabled={isButtonDisabled}
+        className={`absolute right-0 z-10 ${isLoading && 'flex size-[24px] items-center justify-center rounded-full border bg-brand-primary'}`}
+        disabled={isButtonDisabled || isLoading}
       >
-        <SubmitIcon
-          className={`${isButtonDisabled ? 'text-text-default' : 'text-brand-primary'}`}
-        />
+        {isLoading ? (
+          <Spinner className="rolling" width={16} height={16} />
+        ) : (
+          <SubmitIcon
+            className={`${isButtonDisabled ? 'text-text-default' : 'text-brand-primary'}`}
+          />
+        )}
       </button>
     </form>
   );

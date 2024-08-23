@@ -26,7 +26,8 @@ function DatePicker({ onClick }: DatePickerProps) {
     if (date) {
       onClick(date);
     }
-  }, [date, onClick]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [date]);
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
