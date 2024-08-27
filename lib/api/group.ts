@@ -4,6 +4,7 @@ import ENDPOINTS from '@/lib/api/ENDPOINTS';
 import client from '@/lib/api/client/client';
 import { handleApiResponse } from '@/lib/api/utils';
 import { Group, Id, Member } from '@ccc-types';
+import { revalidatePath } from 'next/cache';
 
 export async function createGroup(
   data: Partial<Pick<Group, 'image' | 'name'>>
@@ -51,6 +52,26 @@ export async function getMember(groupId: Id, memberId: Id) {
   );
 
   return handleApiResponse(res, '멤버 정보를 가져오는 중 에러가 발생했습니다.');
+}
+
+export async function deleteMember(groupId: Id, memberId: Id) {
+  const { error } = await client<Member>(
+    ENDPOINTS.GROUP.MEMBER_ACTIONS(groupId, memberId),
+    {
+      method: 'delete',
+    }
+  );
+  if (error) {
+    return {
+      error: {
+        info: '멤버 삭제 중 에러가 발생했습니다.',
+        message: error.message,
+        ...error.cause,
+      },
+    };
+  }
+  revalidatePath('/', 'layout');
+  return { data: true };
 }
 
 // 초대 링크없이 그룹에 유저를 추가

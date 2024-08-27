@@ -21,7 +21,7 @@ function TeamMember({
       </div>
       <div className="my-6 grid grid-cols-2 grid-rows-2 gap-6 md:grid-cols-3">
         {members.map((member) => (
-          <MemberCard key={member.userId} member={member} />
+          <MemberCard key={member.userId} member={member} groupId={groupId} />
         ))}
       </div>
     </div>
