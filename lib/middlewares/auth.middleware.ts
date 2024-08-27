@@ -13,7 +13,12 @@ const WITH_AUTH_PATH = [
   '/addboard',
   '/user-history',
   '/create-team',
+  '/boards',
+  '/board',
+  '/invitation-team',
 ];
+// 유저만 접근 가능한 상세 게시판 및 할 일 페이지 관련 정규식
+const WITH_AUTH_REGEX = [/^\/\d+($|\/.*$)/, /^\/board(\/.*)?$/];
 
 /**
  * 인증이 필요한 페이지를 보호하기 위한 미들웨어.
@@ -30,7 +35,9 @@ const WITH_AUTH_PATH = [
  */
 export default async function withAuth(request: NextRequest) {
   const url = new URL(request.url);
-  const isMatched = WITH_AUTH_PATH.includes(url.pathname);
+  const isMatched =
+    WITH_AUTH_PATH.includes(url.pathname) ||
+    WITH_AUTH_REGEX.some((regex) => regex.test(url.pathname));
   if (!isMatched) return;
 
   const accessToken = request.cookies.get('accessToken')?.value || null;
