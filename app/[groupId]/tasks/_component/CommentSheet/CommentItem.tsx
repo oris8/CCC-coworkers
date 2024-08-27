@@ -3,6 +3,7 @@
 import CommentEditDeleteDropdown from '@/components/dropdown-template/CommentEditDeleteDropdown';
 import { deleteComment } from '@/lib/api/comment';
 import { dateFormatter, lineBreaker } from '@/lib/utils';
+import DefaultProfile from '@/public/icons/default_profile.svg';
 import { Comment, DateString, Id, User } from '@ccc-types';
 import Image from 'next/image';
 import React from 'react';
@@ -72,14 +73,19 @@ function CommentItem({
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="relative size-[32px]">
-                <Image
-                  src="/images/basic_profile.png"
-                  alt="기본 프로필 이미지"
-                  fill
-                  style={{ objectFit: 'cover' }}
-                />
-              </div>
+              {user.image ? (
+                <div className="relative size-[32px] rounded-full md:size-8">
+                  <Image
+                    src={user.image}
+                    alt="유저 프로필 이미지"
+                    fill
+                    className="rounded-full"
+                    style={{ objectFit: 'cover' }}
+                  />
+                </div>
+              ) : (
+                <DefaultProfile className="size-[32px]" />
+              )}
               <span className="text-sm font-medium">{user.nickname}</span>
             </div>
             <span className="mr-1 text-sm font-medium text-text-default">

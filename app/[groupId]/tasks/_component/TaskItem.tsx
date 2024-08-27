@@ -2,7 +2,7 @@
 
 import TaskEditDeleteDropdown from '@/components/dropdown-template/TaskEditDeleteDropdown';
 import frequencyTypeObj from '@/constants/frequencyType';
-import { deleteRecurringTask } from '@/lib/api/task';
+import { deleteRecurringTask, deleteTask } from '@/lib/api/task';
 import { dateFormatter } from '@/lib/utils';
 import CalenderNoBtnIcon from '@/public/icons/list/calender_no_btn.svg';
 import CommentIcon from '@/public/icons/list/comment_icon.svg';
@@ -21,6 +21,7 @@ const textClass = `text-xs font-normal text-text-default`;
 function TaskItem({ task, userId }: { task: DetailTask; userId?: Id }) {
   const [isDone, setIsDone] = React.useState<boolean>(!!task.doneAt);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [deleteAll, setDeleteAll] = React.useState<boolean>(false);
   const taskType = frequencyTypeObj[task.frequency];
   const router = useRouter();
 
@@ -32,17 +33,26 @@ function TaskItem({ task, userId }: { task: DetailTask; userId?: Id }) {
     setIsLoading(value);
   };
 
+  const handleDeleteAll = (value: boolean) => {
+    setDeleteAll(value);
+  };
+
   const handleDeleteClick = async () => {
     handleLoading(true);
-    const { error } = await deleteRecurringTask(task.recurringId);
+
+    const deleteFunction = deleteAll ? deleteRecurringTask : deleteTask;
+    const { error } = await deleteFunction(
+      deleteAll ? task.recurringId : task.id
+    );
 
     if (error) {
       toast.error(`${error.info}`);
-      setIsLoading(false);
     } else {
       router.refresh();
       toast.success('할 일 삭제에 성공했습니다!');
     }
+
+    handleLoading(false);
   };
 
   return (
@@ -72,9 +82,11 @@ function TaskItem({ task, userId }: { task: DetailTask; userId?: Id }) {
             </div>
             {userId === task.writer.id && (
               <TaskEditDeleteDropdown
+                taskType={taskType}
                 title={task.name}
                 onClick={handleDeleteClick}
                 taskId={task.id}
+                setDelete={{ deleteAll, handleDeleteAll }}
               />
             )}
           </div>

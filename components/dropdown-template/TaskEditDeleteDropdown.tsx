@@ -16,11 +16,15 @@ function TaskEditDeleteDropdown({
   className = 'w-[16px] h-[16px]',
   onClick,
   taskId,
+  taskType,
+  setDelete,
 }: {
   title?: string;
   className?: string;
   onClick: () => void;
+  taskType: string;
   taskId?: Id;
+  setDelete: { deleteAll: boolean; handleDeleteAll: (value: boolean) => void };
 }) {
   const [open, setOpen] = React.useState<boolean>(false);
   const [isModifyDialogOpen, setIsModifyDialogOpen] =
@@ -70,8 +74,10 @@ function TaskEditDeleteDropdown({
       {isDeleteDialogOpen && (
         <DeleteTodoModal
           title={title}
+          taskType={taskType}
           onClick={onClick}
           onClose={() => setIsDeleteDialogOpen(false)}
+          setDelete={setDelete}
         />
       )}
       {isModifyDialogOpen && (

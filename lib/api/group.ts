@@ -5,6 +5,7 @@ import client from '@/lib/api/client/client';
 import { handleApiResponse } from '@/lib/api/utils';
 import { Group, Id, Member } from '@ccc-types';
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 export async function createGroup(
   data: Partial<Pick<Group, 'image' | 'name'>>
@@ -40,6 +41,10 @@ export async function deleteGroup(groupId: Id) {
     method: 'delete',
   });
 
+  if (res.data) {
+    revalidatePath('/', 'layout');
+    redirect('/');
+  }
   return handleApiResponse(res, '그룹 삭제 중 에러가 발생했습니다.');
 }
 

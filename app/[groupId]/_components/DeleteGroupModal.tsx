@@ -9,7 +9,6 @@ import {
 } from '@/components/ui/dialog';
 import { deleteGroup } from '@/lib/api/group';
 import WarningIcon from '@/public/icons/modal/warning_icon.svg';
-import { useRouter } from 'next/navigation';
 import React from 'react';
 
 function DeleteGroupModal({
@@ -22,11 +21,8 @@ function DeleteGroupModal({
   className?: string;
   groupId: number;
 }) {
-  const router = useRouter();
-
   const handleDeleteGroup = () => {
     deleteGroup(groupId);
-    router.push('/');
   };
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {

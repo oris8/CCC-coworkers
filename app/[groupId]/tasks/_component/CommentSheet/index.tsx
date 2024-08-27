@@ -9,8 +9,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
+import frequencyTypeObj from '@/constants/frequencyType';
 import fetchAPI from '@/lib/api/fetchAPI';
-import { deleteTask, updateTask } from '@/lib/api/task';
+import { deleteRecurringTask, deleteTask, updateTask } from '@/lib/api/task';
 import CheckIcon from '@/public/icons/button/check_icon.svg';
 import NoCommentIcon from '@/public/icons/no_comment_icon.svg';
 import Spinner from '@/public/icons/spinner_icon.svg';
@@ -53,6 +54,8 @@ export default function CommentSheet({
     done: isDone,
   });
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [deleteAll, setDeleteAll] = React.useState<boolean>(false);
+  const taskType = frequencyTypeObj[task.frequency];
   const router = useRouter();
 
   const fetchData = async (idValue: Id) => {
@@ -86,14 +89,23 @@ export default function CommentSheet({
     }
   };
 
+  const handleDeleteAll = (value: boolean) => {
+    setDeleteAll(value);
+  };
+
   const handleDeleteClick = async () => {
     setIsOpen(false);
     setIsDeleting(true);
-    try {
-      await deleteTask(task.id);
+    const deleteFunction = deleteAll ? deleteRecurringTask : deleteTask;
+    const { error } = await deleteFunction(
+      deleteAll ? task.recurringId : task.id
+    );
+
+    if (error) {
+      toast.error(`${error.info}`);
+    } else {
       router.refresh();
-    } catch (e) {
-      toast.error('할 일 삭제에 실패하였습니다.');
+      toast.success('할 일 삭제에 성공했습니다!');
     }
   };
 
@@ -146,6 +158,8 @@ export default function CommentSheet({
           <p className={isDone ? 'line-through' : ''}>{task.name}</p>
           {userId === task.writer.id && (
             <TaskEditDeleteDropdown
+              taskType={taskType}
+              setDelete={{ deleteAll, handleDeleteAll }}
               title={task.name}
               taskId={task.id}
               className="h-[24px] w-[24px]"

@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import DefaultUserIcon from '@/public/icons/header_user.svg';
 import { User } from '@ccc-types';
+import Image from 'next/image';
 import Link from 'next/link';
 
 import LogoutModal from '../modal-template/LogoutModal';
@@ -16,8 +17,20 @@ function HeaderProfileDropdown({ user }: { user: User }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <div className="flex items-center gap-2">
-          <DefaultUserIcon className="size-4" />
+        <div className="flex items-center gap-3">
+          {user.image ? (
+            <div className="relative size-5 rounded-xl">
+              <Image
+                src={user.image}
+                alt="유저 프로필 이미지"
+                fill
+                className="rounded-xl"
+                style={{ objectFit: 'cover' }}
+              />
+            </div>
+          ) : (
+            <DefaultUserIcon className="size-5" />
+          )}
           <p className="hidden text-sm font-medium xl:block">{user.nickname}</p>
         </div>
       </DropdownMenuTrigger>

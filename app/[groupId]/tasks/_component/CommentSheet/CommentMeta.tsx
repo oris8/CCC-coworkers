@@ -23,6 +23,7 @@ function CommentMeta({ task }: { task: DetailTask }) {
               }
               alt="기본 프로필 이미지"
               fill
+              className="rounded-full"
               sizes="32"
               style={{ objectFit: 'cover' }}
             />
