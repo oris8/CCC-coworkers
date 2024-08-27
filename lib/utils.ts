@@ -169,12 +169,13 @@ export function isUserAdminOfGroup(
         membership.role === 'ADMIN' && +membership.group.id === +groupId
     ) ?? false
   );
-  
+}
+
 export const lineBreaker = (content: string) => {
   const lineBreakedContent = content.split('\n');
   return lineBreakedContent;
 };
-  
+
 // 랜덤 문자열 생성
 export function generateRandomState(): string {
   return uuidv4();

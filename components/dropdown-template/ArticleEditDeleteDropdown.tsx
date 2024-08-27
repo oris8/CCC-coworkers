@@ -5,24 +5,27 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import KebabIcon from '@/public/icons/kebab_icon.svg';
-import Link from 'next/link';
+import { ArticleDetail } from '@ccc-types';
 import * as React from 'react';
 
+import BoardModifyModal from '../modal-template/BoardModifyModal';
 import DeleteTodoModal from '../modal-template/DeleteTodoModal';
 
-function GroupEditDropdown({
+function ArticleEditDeleteDropdown({
   title = '',
   className = 'w-[16px] h-[16px]',
-  groupId,
-  onClick,
+  handleDelete,
+  article,
 }: {
   title?: string;
   className?: string;
-  groupId: number;
-  onClick: () => void;
+  handleDelete: () => void;
+  article: ArticleDetail;
 }) {
   const [open, setOpen] = React.useState<boolean>(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] =
+    React.useState<boolean>(false);
+  const [isModifyDialogOpen, setIsModifyDialogOpen] =
     React.useState<boolean>(false);
 
   return (
@@ -45,10 +48,12 @@ function GroupEditDropdown({
         >
           <DropdownMenuItem
             className="flex cursor-pointer flex-col justify-center"
-            asChild
+            onClick={() => {
+              setIsModifyDialogOpen(true);
+              setOpen(false);
+            }}
           >
-            {/* TODO - 팀 수정 페이지 구현 시 연결 */}
-            <Link href={`/${groupId}/edit`}>수정하기</Link>
+            수정하기
           </DropdownMenuItem>
           <DropdownMenuItem
             className="flex cursor-pointer flex-col justify-center"
@@ -64,14 +69,20 @@ function GroupEditDropdown({
 
       {isDeleteDialogOpen && (
         <DeleteTodoModal
+          type="article"
           title={title}
-          className="w-full cursor-pointer"
-          onClick={onClick}
+          onClick={handleDelete}
           onClose={() => setIsDeleteDialogOpen(false)}
+        />
+      )}
+      {isModifyDialogOpen && (
+        <BoardModifyModal
+          onClose={() => setIsModifyDialogOpen(false)}
+          article={article}
         />
       )}
     </>
   );
 }
 
-export default GroupEditDropdown;
+export default ArticleEditDeleteDropdown;

@@ -6,7 +6,7 @@ import { Skeleton } from './skeleton';
 interface ImageInputWrapperProps {
   className?: string;
   children: React.ReactNode;
-  variants?: 'circular' | 'board' | 'default';
+  variants?: 'circular' | 'board' | 'default' | 'modify';
   [key: string]: unknown;
 }
 
@@ -22,6 +22,7 @@ const imageInputVariants = {
     'bg-customBackground-tertiary relative flex items-center justify-center',
   board: 'size-40 rounded-xl object-cover md:size-60 overflow-hidden',
   default: '',
+  modify: 'size-40 rounded-xl object-cover overflow-hidden',
 };
 
 const ImageInputWrapper = ({

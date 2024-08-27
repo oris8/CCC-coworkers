@@ -18,10 +18,6 @@ const mdAnimation =
 const commonAnimation =
   ' duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom';
 
-const handleClick = (e: React.MouseEvent<HTMLElement>) => {
-  e.stopPropagation();
-};
-
 const DialogOverlay = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
@@ -33,7 +29,6 @@ const DialogOverlay = React.forwardRef<
       className
     )}
     {...props}
-    onClick={handleClick}
   />
 ));
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;

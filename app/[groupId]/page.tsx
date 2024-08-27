@@ -18,7 +18,7 @@ async function TeamPage({ params }: { params: { groupId: number } }) {
 
   const { taskLists = [], members = [] } = data || {};
 
-  const isAdmin = isUserAdminOfGroup(userData, params.groupId);
+  const isAdmin = isUserAdminOfGroup(userData!, params.groupId);
 
   return (
     <div>

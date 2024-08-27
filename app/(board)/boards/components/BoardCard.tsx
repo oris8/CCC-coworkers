@@ -1,4 +1,3 @@
-import fetchAPI from '@/lib/api/fetchAPI';
 import { dateFormatter } from '@/lib/utils';
 import ProfileIcon from '@/public/icons/default_profile.svg';
 import HeartIcon from '@/public/icons/heart.svg';
@@ -6,13 +5,9 @@ import { Article } from '@ccc-types';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import BoardEditDropdown from './BoardEditDropdown';
-
 async function BoardCard({ article }: { article: Article }) {
-  const { data } = await fetchAPI.User();
-
   return (
-    <Link href={`/board/${article.id}`}>
+    <Link href={`/board/${article.id}?limit=10`}>
       <div className="flex h-[162px] flex-col justify-between rounded-xl bg-background-secondary px-4 py-6 font-medium text-text-secondary md:h-[176px] md:px-8">
         <div className="flex justify-between gap-x-10">
           <p className="md:text-lg">{article.title}</p>
@@ -27,7 +22,6 @@ async function BoardCard({ article }: { article: Article }) {
                 />
               )}
             </div>
-            {data?.id === article.writer.id && <BoardEditDropdown />}
           </div>
         </div>
         <div className="flex items-center justify-between text-xs md:text-sm">

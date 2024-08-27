@@ -27,14 +27,14 @@ function BoardCommentInput() {
       api.reset();
     }
     if (api.isSuccess) {
-      toast.success('변경사항이 저장되었습니다');
+      toast.success('댓글 등록에 성공하였습니다!');
       api.reset();
     }
   }, [api, api.isError, api.isSuccess, api.error?.info, api.error?.message]);
 
   return (
     <div className="mt-20 flex flex-col gap-4">
-      <p className="font-medium md:text-xl md:font-bold">댓글달기</p>
+      <p className="font-medium md:text-xl md:font-bold">댓글 달기</p>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <textarea
           className="min-h-[104px] w-full resize-none rounded-xl border bg-background-secondary px-4 py-2 md:px-6 md:py-4"

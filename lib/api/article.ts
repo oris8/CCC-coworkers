@@ -42,6 +42,9 @@ export async function deleteArticle(articleId: Id) {
     }
   );
 
+  if (res.data) {
+    revalidatePath('/boards');
+  }
   return handleApiResponse(res, '게시글을 삭제하는 중 에러가 발생했습니다.');
 }
 
@@ -50,9 +53,12 @@ export async function likeArticle(articleId: Id) {
     method: 'post',
   });
 
-  return handleApiResponse<ArticleDetail>(
+  if (res.data) {
+    revalidatePath(`/boards/${articleId}`);
+  }
+  return handleApiResponse(
     res,
-    '게시글 좋아요 중 에러가 발생했습니다.'
+    '게시글 좋아요를 누르는 중에 오류가 발생했습니다.'
   );
 }
 
@@ -61,8 +67,11 @@ export async function unlikeArticle(articleId: Id) {
     method: 'delete',
   });
 
-  return handleApiResponse<ArticleDetail>(
+  if (res.data) {
+    revalidatePath(`/boards/${articleId}`);
+  }
+  return handleApiResponse(
     res,
-    '게시글 좋아요 삭제 중 에러가 발생했습니다.'
+    '게시글 좋아요를 취소하는중에 오류가 발생했습니다.'
   );
 }

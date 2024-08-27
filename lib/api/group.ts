@@ -66,7 +66,6 @@ export async function deleteMember(groupId: Id, memberId: Id) {
       error: {
         info: '멤버 삭제 중 에러가 발생했습니다.',
         message: error.message,
-        ...error.cause,
       },
     };
   }

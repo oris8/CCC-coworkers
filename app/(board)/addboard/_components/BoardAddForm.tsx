@@ -18,7 +18,7 @@ const formSchema = z.object({
   image: z
     .custom<
       File | string | undefined
-    >((v) => v instanceof File || typeof v === 'string' || undefined)
+    >((v) => v instanceof File || typeof v === 'string' || undefined || null)
     .optional(),
   title: z.string().min(1, { message: '제목을 입력해주세요' }),
   content: z.string().min(1, { message: '내용을 입력해주세요' }),
@@ -38,7 +38,7 @@ const BoardAddForm = () => {
     },
   });
 
-  const handleImageUpload = async (image: File | string | undefined) => {
+  const handleImageUpload = async (image: File | string | undefined | null) => {
     if (image instanceof File) {
       const { data } = await uploadImage(image);
       return data;
@@ -71,6 +71,11 @@ const BoardAddForm = () => {
     if (!currentImage || typeof currentImage === 'string') return;
     setImagePreview(URL.createObjectURL(currentImage));
   }, [currentImage]);
+
+  const handleImage = () => {
+    setImagePreview('');
+    form.setValue('image', '');
+  };
 
   // API 요청 결과에 따른 로직처리
   useEffect(() => {
@@ -139,7 +144,20 @@ const BoardAddForm = () => {
             </Form.FormItem>
           )}
         />
-        <p>이미지</p>
+        <div className="flex items-center gap-4">
+          <p>이미지</p>
+          {imagePreview && (
+            <Button
+              variant="outlined"
+              size="x-small"
+              aria-label="적용한 이미지 지우기 버튼"
+              onClick={handleImage}
+              className="bg-transparent"
+            >
+              이미지 제거
+            </Button>
+          )}
+        </div>
         <Form.FormField
           control={form.control}
           name="image"

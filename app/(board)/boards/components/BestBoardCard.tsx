@@ -16,7 +16,7 @@ function BestBoardCard({
 }) {
   return (
     <Link
-      href={`/board/${article.id}`}
+      href={`/board/${article.id}?limit=10`}
       className={cn(
         'relative h-[178px] w-full rounded-xl bg-background-secondary px-4 pt-10 md:h-[220px] md:px-6 md:pt-12',
         className

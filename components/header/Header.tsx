@@ -32,7 +32,9 @@ async function Header() {
           <Link href="/">
             <Logo className="h-[20px] w-[102px] xl:h-[32px] xl:w-[158px]" />
           </Link>
-          <HeaderDropdown user={data} />
+          <div className="w-fit max-w-[200px] truncate">
+            <HeaderDropdown user={data} />
+          </div>
           <Link href="/boards?page=1">자유게시판</Link>
         </div>
         <HeaderProfileDropdown user={data} />

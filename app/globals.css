@@ -102,6 +102,22 @@
       transform: rotate(360deg);
     }
   }
+
+  .updown {
+    animation: 2.5s updown infinite ease-in-out;
+  }
+
+  @keyframes updown {
+    25% {
+      transform: translateY(10px);
+    }
+    50% {
+      transform: translateY(0px);
+    }
+    75% {
+      transform: translateY(10px);
+    }
+  }
 }
 
 @layer utilities {

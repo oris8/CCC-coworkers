@@ -16,21 +16,10 @@ function CommentForm({
   const [isButtonDisabled, setIsButtonDisabled] = React.useState<boolean>(true);
   const [commentData, setCommentData] = React.useState<string>('');
   const buttonRef = React.useRef<HTMLButtonElement>(null);
-  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const router = useRouter();
 
   // NOTE - 만들어주신 form을 사용하기엔 따로 에러메세지가 출력되지도 않고 그냥 글자가 있고 없고에 따라 버튼만 막아주면 될 듯하여 따로 사용하진 않았습니다!
-
-  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    const { value } = e.target;
-    setCommentData(value);
-    if (value.length !== 0) {
-      setIsButtonDisabled(false);
-    } else {
-      setIsButtonDisabled(true);
-    }
-  };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter') {
@@ -44,12 +33,15 @@ function CommentForm({
     }
   };
 
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const { value } = e.target;
+    setCommentData(value);
+    setIsButtonDisabled(value.length === 0);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    if (textareaRef.current) {
-      textareaRef.current.value = '';
-    }
     if (id) {
       const res = await postComment(id, commentData);
       if (res.error || !res.data) {
@@ -58,6 +50,8 @@ function CommentForm({
         toast.success(`댓글 등록에 성공하였습니다.`);
         handleData('post', res.data);
         router.refresh();
+        setCommentData('');
+        setIsButtonDisabled(true);
       }
     }
     setIsLoading(false);
@@ -72,9 +66,9 @@ function CommentForm({
       <textarea
         className="text max-h-full w-full resize-none bg-transparent pt-3 text-text-default outline-none"
         placeholder="댓글을 달아주세요"
+        value={commentData}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
-        ref={textareaRef}
       />
       <button
         type="submit"

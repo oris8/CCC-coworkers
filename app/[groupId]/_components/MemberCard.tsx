@@ -46,7 +46,7 @@ async function MemberCard({
         <DeleteMemberModal
           groupId={groupId}
           memberId={member.userId}
-          userData={data}
+          userData={data!}
         />
       )}
     </div>

@@ -7,18 +7,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { deleteGroup } from '@/lib/api/group';
 import { UserWithMemberships } from '@ccc-types';
 import { useAtom } from 'jotai';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 import { Button } from '../ui/button';
-import GroupEditDropdown from './GroupEditDropdown';
 
 function HeaderDropdown({ user }: { user: UserWithMemberships }) {
-  const router = useRouter();
   const [selectedGroupId, setSelectedGroupId] = useAtom(selectedGroupIdAtom);
 
   const currentGroup =
@@ -28,15 +24,6 @@ function HeaderDropdown({ user }: { user: UserWithMemberships }) {
 
   const handleGroupChange = (newGroupId: number) => {
     setSelectedGroupId(newGroupId);
-  };
-
-  const handleGroupDelete = async (groupId: number) => {
-    await deleteGroup(groupId);
-    if (groupId === selectedGroupId) {
-      setSelectedGroupId(user?.memberships[0]?.group.id);
-      router.push('/');
-    }
-    router.refresh();
   };
 
   return (
@@ -61,17 +48,13 @@ function HeaderDropdown({ user }: { user: UserWithMemberships }) {
               <DropdownMenuItem asChild>
                 <Link
                   href={`/${group.id}`}
-                  className="w-[110px] cursor-pointer"
+                  className="w-[135px] cursor-pointer"
                   onClick={() => handleGroupChange(group.id)}
                 >
                   <p className="w-full truncate font-medium">{group.name}</p>
                 </Link>
               </DropdownMenuItem>
             </div>
-            <GroupEditDropdown
-              groupId={group.id}
-              onClick={() => handleGroupDelete(group.id)}
-            />
           </DropdownMenuItem>
         ))}
         <Link href="/create-team">
