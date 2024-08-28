@@ -1,15 +1,17 @@
 'use client';
 
 import lottieLoading from '@/public/animation/lottie_loading.json';
-import Lottie from 'react-lottie-player';
+
+// import Lottie from 'react-lottie-player';
+import { LazyLottie } from './lottie/LazyLottie';
 
 export default function Loading() {
-  if (typeof window === 'undefined') {
-    return null;
-  }
+  // if (typeof window === 'undefined') {
+  //   return null;
+  // }
   return (
     <div className="flex h-[calc(100vh-60px)] flex-col items-center justify-center">
-      <Lottie
+      <LazyLottie
         loop
         animationData={lottieLoading}
         play

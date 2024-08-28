@@ -41,6 +41,7 @@ function TodoListEditDropdown({
           asChild
         >
           <EditTodoListModal
+            title={title}
             groupId={groupId}
             taskListId={taskListId}
             className="w-full cursor-pointer"

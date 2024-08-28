@@ -102,7 +102,11 @@ function TeamToDoListCard({
             </div>
             <p>{`${completedToDo}/${totalToDo}`}</p>
           </div>
-          <TodoListEditDropdown groupId={groupId} taskListId={taskListId} />
+          <TodoListEditDropdown
+            title={name}
+            groupId={groupId}
+            taskListId={taskListId}
+          />
         </div>
       </div>
     </Link>

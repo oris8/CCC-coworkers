@@ -23,9 +23,11 @@ const formSchema = z.object({
 });
 
 function EditGroupNameModal({
+  title = '',
   groupId,
   className = '',
 }: {
+  title?: string;
   groupId: number;
   className?: string;
 }) {
@@ -34,7 +36,7 @@ function EditGroupNameModal({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      groupName: '',
+      groupName: title,
     },
   });
 

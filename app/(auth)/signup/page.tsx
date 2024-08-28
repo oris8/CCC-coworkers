@@ -11,7 +11,7 @@ export default function Signup() {
   const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&scope=openid%20email&client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}`;
 
   return (
-    <div className="m-auto mt-[90px] w-full max-w-[460px]">
+    <div className="m-auto mt-[90px] w-full max-w-[460px] p-4">
       <h2 className="mb-[80px] text-center text-[40px] font-medium">
         회원가입
       </h2>

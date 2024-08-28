@@ -17,6 +17,10 @@ export async function createGroup(
       data,
     }
   );
+  if (res.data) {
+    revalidatePath('/', 'layout');
+    redirect(`/${res.data?.id || ''}`);
+  }
 
   return handleApiResponse(res, '그룹 생성 중 에러가 발생했습니다.');
 }

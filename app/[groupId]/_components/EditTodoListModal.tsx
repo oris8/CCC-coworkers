@@ -22,10 +22,12 @@ const formSchema = z.object({
 });
 
 function EditTodoListModal({
+  title = '',
   groupId,
   taskListId,
   className = '',
 }: {
+  title?: string;
   groupId: number;
   taskListId: number;
   className?: string;
@@ -34,7 +36,7 @@ function EditTodoListModal({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      taskName: '',
+      taskName: title,
     },
   });
 

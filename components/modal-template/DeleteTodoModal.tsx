@@ -29,7 +29,7 @@ function DeleteTodoModal({
   setDelete?: { deleteAll: boolean; handleDeleteAll: (value: boolean) => void };
   onClose: () => void;
 }) {
-  const { deleteAll, handleDeleteAll } = setDelete!;
+  const { deleteAll, handleDeleteAll } = setDelete || {};
 
   return (
     <Dialog open onOpenChange={onClose}>
@@ -53,12 +53,14 @@ function DeleteTodoModal({
           )}
         </DialogTitle>
         <DialogDescription>삭제 후에는 되돌릴 수 없습니다.</DialogDescription>
-        {taskType! === '한번' || (
+        {taskType! !== '한번' && setDelete && (
           <div className="mb-1 flex items-center space-x-2">
             <Checkbox
               id="terms"
               onClick={() => {
-                handleDeleteAll(!deleteAll);
+                if (setDelete) {
+                  handleDeleteAll!(!deleteAll);
+                }
               }}
             />
             <label

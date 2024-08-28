@@ -40,6 +40,7 @@ function GroupEditDropdown({
         >
           <EditGroupNameModal
             groupId={groupId}
+            title={title}
             className="w-full cursor-pointer"
           />
         </DropdownMenuItem>

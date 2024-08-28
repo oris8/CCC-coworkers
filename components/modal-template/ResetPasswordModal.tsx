@@ -36,8 +36,10 @@ function ResetPasswordModal({ className = '' }) {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const data = {
       email: values.email,
-      // NOTE - 현재는 로컬에서 작업하기 위해 3000으로 설정했는데 개발이 끝나면 실도메인으로 변경이 필요합니다.
-      redirectUrl: 'http://localhost:3000',
+      redirectUrl:
+        process.env.NODE_ENV === 'production'
+          ? process.env.NEXT_PUBLIC_APP_BASE_URL || ''
+          : 'http://localhost:3000',
     };
     const res = await sendResetPasswordEmail(data);
 
@@ -62,7 +64,7 @@ function ResetPasswordModal({ className = '' }) {
       <DialogContent>
         <DialogTitle>비밀번호 재설정</DialogTitle>
         <DialogDescription>
-          비밀번호 재설정 링크를 보내드립니다.
+          가입하신 이메일주소로 비밀번호 재설정 링크를 보내드립니다.
         </DialogDescription>
         <div className="gap- flex w-full max-w-[280px] flex-col gap-6">
           <Form {...form}>

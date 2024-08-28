@@ -18,7 +18,7 @@ const Page = async () => {
   if (isEmptyObject(currentUserAccountInfo)) redirect('/');
 
   return (
-    <div className="center mx-auto w-full max-w-[792px] flex-col gap-6 px-4">
+    <div className="center mx-auto mb-8 w-full max-w-[792px] flex-col gap-6 px-4 md:mb-0">
       <h1 className="mr-auto mt-12 text-[20px] font-bold xl:mt-[140px]">
         계정 정보
       </h1>

@@ -19,6 +19,7 @@ import TeamProfile from '@/public/icons/group_profile.svg';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 export default function CreateTeamForm() {
@@ -56,10 +57,10 @@ export default function CreateTeamForm() {
   // API 요청 결과에 따른 alert
   useEffect(() => {
     if (api.isError) {
-      alert(api.error?.message || api.error?.info);
+      toast.error(api.error?.message || api.error?.info);
     }
     if (api.isSuccess) {
-      alert('팀 생성이 완료되었습니다.');
+      toast.success('팀 생성이 완료되었습니다.');
     }
   }, [
     api.isError,

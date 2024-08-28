@@ -4,6 +4,7 @@ import ENDPOINTS from '@/lib/api/ENDPOINTS';
 import client from '@/lib/api/client/client';
 import { handleApiResponse } from '@/lib/api/utils';
 import { GroupTask, Id } from '@ccc-types';
+import { revalidatePath } from 'next/cache';
 
 export async function createTaskList(groupId: Id, data: { name: string }) {
   const res = await client<GroupTask>(ENDPOINTS.TASKLIST.POST(groupId), {
@@ -29,6 +30,10 @@ export async function updateTaskList(
       data,
     }
   );
+
+  if (res.data) {
+    revalidatePath('/', 'layout');
+  }
 
   return handleApiResponse(
     res,
