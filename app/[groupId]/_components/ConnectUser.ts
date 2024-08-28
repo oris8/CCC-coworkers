@@ -14,6 +14,7 @@ const ConnectUser = ({ groupId, userId }: ConnectUserProps) => {
 
   useEffect(() => {
     // 유저 접속
+
     const handleConnect = async () => {
       if (socketId) {
         await emitConnect({
@@ -45,7 +46,7 @@ const ConnectUser = ({ groupId, userId }: ConnectUserProps) => {
     };
   }, [groupId, socketId, userId]);
 
-  return null; // 이 컴포넌트는 화면에 렌더링되지 않습니다
+  return null;
 };
 
 export default ConnectUser;

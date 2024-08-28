@@ -25,10 +25,10 @@ async function ChatWrap({ groupId, userId, userName }: ChatWrapProps) {
 
   return (
     <ChatModal
-      serializedMessages={serializedMessages}
       groupId={groupId}
       userId={userId}
       userName={userName}
+      serializedMessages={serializedMessages}
     />
   );
 }

@@ -78,7 +78,6 @@ function ChatModal({
   serializedMessages,
 }: ChatModalProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger
