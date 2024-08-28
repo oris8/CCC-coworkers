@@ -39,7 +39,7 @@ function TeamReport({ taskLists }: { taskLists: GroupTask[] }) {
     // REVIEW - todo가 없으면 차트가 나오지않는 문제가 있습니다. todo가 0일 때 일단 1이라도 주어 차트를 보이게 하였는데 다른 좋은 방법 있으면 말씀해주시면 감사하겠습니다.
     {
       name: 'todo',
-      total: Math.max(totalTaskCount - completedTaskCount, 1),
+      total: completedTaskCount ? totalTaskCount - completedTaskCount : 1,
       fill: '#334155',
     },
   ];
@@ -64,10 +64,12 @@ function TeamReport({ taskLists }: { taskLists: GroupTask[] }) {
                   <stop offset="100%" stopColor="#A3E635" />
                 </linearGradient>
               </defs>
-              <ChartTooltip
-                cursor={false}
-                content={<ChartTooltipContent hideLabel />}
-              />
+              {totalTaskCount > 0 && (
+                <ChartTooltip
+                  cursor={false}
+                  content={<ChartTooltipContent hideLabel />}
+                />
+              )}
               <Pie
                 data={chartData}
                 dataKey="total"

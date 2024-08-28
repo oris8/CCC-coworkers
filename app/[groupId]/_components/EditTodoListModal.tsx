@@ -10,7 +10,6 @@ import { Form, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { updateTaskList } from '@/lib/api/taskList';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -31,7 +30,6 @@ function EditTodoListModal({
   taskListId: number;
   className?: string;
 }) {
-  const router = useRouter();
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -42,7 +40,7 @@ function EditTodoListModal({
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     updateTaskList(groupId, taskListId, { name: values.taskName });
-    router.refresh();
+    window.location.reload();
 
     form.reset();
     setIsOpen(false);

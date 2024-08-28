@@ -9,7 +9,6 @@ import {
 } from '@/components/ui/dialog';
 import { deleteTaskList } from '@/lib/api/taskList';
 import WarningIcon from '@/public/icons/modal/warning_icon.svg';
-import { useRouter } from 'next/navigation';
 import React from 'react';
 
 function DeleteTodoListModal({
@@ -24,11 +23,9 @@ function DeleteTodoListModal({
   groupId: number;
   taskListId: number;
 }) {
-  const router = useRouter();
-
   const handleDeleteTaskList = () => {
     deleteTaskList(groupId, taskListId);
-    router.refresh();
+    window.location.reload();
   };
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {

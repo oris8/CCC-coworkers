@@ -1,11 +1,15 @@
 import { Button } from '@/components/ui/button';
+import fetchAPI from '@/lib/api/fetchAPI';
 import Image from 'next/image';
+import Link from 'next/link';
 
-export default function LandingTopSection() {
+export default async function LandingTopSection() {
+  const { data } = await fetchAPI.User();
+
   return (
     <section className="relative flex h-[calc(100vh-60px)] flex-col items-center">
       {/* NOTE - 상단 랜딩 이미지 */}
-      <div className="z-landing-image absolute size-full">
+      <div className="absolute z-landing-image size-full">
         <Image
           src="/images/landing_top.png"
           alt="top landing image"
@@ -23,12 +27,25 @@ export default function LandingTopSection() {
         </h1>
       </div>
       <div className="absolute bottom-12 w-full px-4 md:flex md:justify-center">
-        <Button
-          variant="floating"
-          className="w-full bg-gradient-to-r from-[#10B981] to-[#A3E635] md:bottom-[120px] md:w-[373px]"
-        >
-          지금 시작하기
-        </Button>
+        {data ? (
+          <Link href="/create-team">
+            <Button
+              variant="floating"
+              className="w-full bg-gradient-to-r from-[#10B981] to-[#A3E635] md:bottom-[120px] md:w-[373px]"
+            >
+              지금 시작하기
+            </Button>
+          </Link>
+        ) : (
+          <Link href="/signup">
+            <Button
+              variant="floating"
+              className="w-full bg-gradient-to-r from-[#10B981] to-[#A3E635] md:bottom-[120px] md:w-[373px]"
+            >
+              지금 시작하기
+            </Button>
+          </Link>
+        )}
       </div>
     </section>
   );

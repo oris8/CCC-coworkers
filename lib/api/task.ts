@@ -4,6 +4,7 @@ import ENDPOINTS from '@/lib/api/ENDPOINTS';
 import client from '@/lib/api/client/client';
 import { handleApiResponse } from '@/lib/api/utils';
 import { GroupTask, Id, Recurring, Task } from '@ccc-types';
+import { revalidatePath } from 'next/cache';
 
 export async function createTask(
   groupId: Id,
@@ -47,6 +48,7 @@ export async function updateTask(
     data,
   });
 
+  revalidatePath(`/${taskId}/tasks`);
   return handleApiResponse(
     res,
     `task${taskId}의 tasks를 수정하는 중 에러가 발생했습니다.`

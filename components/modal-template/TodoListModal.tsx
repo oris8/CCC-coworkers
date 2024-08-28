@@ -36,7 +36,6 @@ function TodoListModal({
   className?: string;
   handleList?: (value: Omit<GroupTask, 'tasks'>) => void;
 }) {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -60,7 +59,7 @@ function TodoListModal({
       replace(`${pathname}?${params.toString()}`);
       setIsOpen(false);
     } else if (res.data) {
-      router.refresh();
+      window.location.reload();
       form.reset();
       setIsOpen(false);
     }

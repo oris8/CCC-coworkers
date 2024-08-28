@@ -61,7 +61,7 @@ function DeleteMemberModal({
   return (
     <Dialog>
       <DialogTrigger asChild className={className}>
-        {isAdmin ? (
+        {isAdmin && memberId !== userData?.id ? (
           <Ban className="size-4 cursor-pointer text-text-secondary md:size-6" />
         ) : (
           <UserX className="size-4 cursor-pointer text-text-secondary md:size-6" />
@@ -71,7 +71,7 @@ function DeleteMemberModal({
         <WarningIcon />
         <DialogTitle className="mb-[-10px] flex flex-col gap-3 text-center">
           {title && <p>&apos;{title}&apos;</p>}
-          {isAdmin ? (
+          {isAdmin && memberId !== userData?.id ? (
             <p>회원을 정말 추방시키겠어요?</p>
           ) : (
             <p>그룹을 정말 탈퇴하시겠어요?</p>
@@ -85,7 +85,7 @@ function DeleteMemberModal({
           <DialogClose asChild>
             {/** NOTE - DELETE 로직 추가 전에 임시로 이벤트 버블링 방지를 위해 함수 할당 */}
             <Button variant="danger" {...props} onClick={handleDeleteGroup}>
-              {isAdmin ? '추방' : '탈퇴'}
+              {isAdmin && memberId !== userData?.id ? '추방' : '탈퇴'}
             </Button>
           </DialogClose>
         </div>
