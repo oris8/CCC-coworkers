@@ -123,6 +123,7 @@ export async function inviteMemberViaLink({
       },
     }
   );
+  revalidatePath('/', 'layout');
 
   return handleApiResponse(res, '초대 수락 중 에러가 발생했습니다.');
 }

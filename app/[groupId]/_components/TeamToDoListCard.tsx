@@ -9,7 +9,7 @@ import { stringToHex } from '@/lib/utils';
 import ToDoDoneIcon from '@/public/icons/todo_done.svg';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 import { Pie, PieChart } from 'recharts';
 
@@ -30,13 +30,16 @@ function TeamToDoListCard({
   completedToDo,
   groupId,
   taskListId,
+  isDragging,
 }: {
   name: string;
   totalToDo: number;
   completedToDo: number;
   groupId: number;
   taskListId: number;
+  isDragging: boolean;
 }) {
+  const router = useRouter();
   // 정렬 드래그앤 드롭을 위한 훅
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: taskListId });
@@ -60,13 +63,22 @@ function TeamToDoListCard({
     { name: 'todo', total: totalToDo - completedToDo, fill: '#FFF' },
   ];
 
+  const handleClick = () => {
+    if (!isDragging) {
+      router.push(
+        `/${groupId}/tasks?task-list=${taskListId}&date=${new Date(new Date().setHours(15, 0, 0, 0)).toISOString()}`
+      );
+    }
+  };
+
   return (
-    <Link
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+    <div
       ref={setNodeRef}
       {...attributes}
       {...listeners}
       style={style}
-      href={`/${groupId}/tasks?task-list=${taskListId}&date=${new Date(new Date().setHours(15, 0, 0, 0)).toISOString()}`}
+      onClick={handleClick}
     >
       <div className="relative flex h-10 items-center justify-between rounded-xl bg-background-secondary py-3 pl-6 pr-2">
         <div
@@ -109,7 +121,7 @@ function TeamToDoListCard({
           />
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
 export default TeamToDoListCard;

@@ -6,6 +6,7 @@ import { GroupTask } from '@ccc-types';
 import {
   DndContext,
   DragEndEvent,
+  MouseSensor,
   PointerSensor,
   useSensor,
   useSensors,
@@ -26,15 +27,19 @@ function TeamToDoList({
 }) {
   // 드래그앤 드랍을 위해 state 추가
   const [taskListsData, setTaskListsData] = useState(taskLists);
-
+  const [isDragging, setIsDragging] = useState(false);
   // 마우스가 30픽셀 이상 이동해야 드래그 시작, 없으면 링크가 작동되며 수정 삭제가 안됨
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 30,
-      },
-    })
-  );
+  const mouseSensor = useSensor(MouseSensor, {
+    activationConstraint: {
+      distance: 30,
+    },
+  });
+  const pointerSensor = useSensor(PointerSensor, {
+    activationConstraint: {
+      distance: 30,
+    },
+  });
+  const sensors = useSensors(mouseSensor, pointerSensor);
 
   // 디바운스
   const debouncedReorderTaskList = debounce(
@@ -46,8 +51,13 @@ function TeamToDoList({
     1000
   );
 
+  const handleDragStart = () => {
+    setIsDragging(true);
+  };
+
   // 드래그앤 드랍 로직, 전 인덱스와 바꿀 인덱스를 바꿔주며 서버에 요청
   const handleDragEnd = async (event: DragEndEvent) => {
+    setIsDragging(false);
     const { active, over } = event;
 
     if (over && active.id !== over.id) {
@@ -79,6 +89,7 @@ function TeamToDoList({
           <DndContext
             sensors={sensors}
             modifiers={[restrictToVerticalAxis]}
+            onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
           >
             <SortableContext items={taskListsData}>
@@ -92,6 +103,7 @@ function TeamToDoList({
                   }
                   groupId={groupId}
                   taskListId={taskList.id}
+                  isDragging={isDragging}
                 />
               ))}
             </SortableContext>
