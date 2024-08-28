@@ -28,32 +28,34 @@ export const passwordConfirmSchema = z
   .string()
   .min(1, '비밀번호 확인을 입력해주세요.');
 
-export const imageSchema = z
-  .union([
-    // NOTE: union: file혹은 string 중 일치하는 값
-    z.instanceof(File, {
-      message: '유효한 이미지 파일을 업로드해주세요.',
-    }),
-    z
-      .string()
-      .url('유효한 이미지 URL을 입력해주세요.')
-      .min(1, '이미지 URL을 입력해주세요.'),
-  ])
-  .refine(
-    // NOTE: 파일 유형 및 크기 검사
-    (value) => {
-      if (value instanceof File) {
-        const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
-        const maxSize = 10 * 1024 * 1024; // 10MB
-        return validTypes.includes(value.type) && value.size <= maxSize;
+export const imageSchema = z.optional(
+  z
+    .union([
+      // NOTE: union: file혹은 string 중 일치하는 값
+      z.instanceof(File, {
+        message: '유효한 이미지 파일을 업로드해주세요.',
+      }),
+      z
+        .string()
+        .url('유효한 이미지 URL을 입력해주세요.')
+        .min(1, '이미지 URL을 입력해주세요.'),
+    ])
+    .refine(
+      // NOTE: 파일 유형 및 크기 검사
+      (value) => {
+        if (value instanceof File) {
+          const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+          const maxSize = 10 * 1024 * 1024; // 10MB
+          return validTypes.includes(value.type) && value.size <= maxSize;
+        }
+        return true; // URL인 경우 추가 검증 없이 통과
+      },
+      {
+        message:
+          '지원되는 이미지 형식(JPEG, PNG, GIF)이어야 하며, 크기는 10MB를 초과할 수 없습니다.',
       }
-      return true; // URL인 경우 추가 검증 없이 통과
-    },
-    {
-      message:
-        '지원되는 이미지 형식(JPEG, PNG, GIF)이어야 하며, 크기는 10MB를 초과할 수 없습니다.',
-    }
-  );
+    )
+);
 
 export const loginValidationSchema = z.object({
   email: emailSchema,

@@ -106,14 +106,23 @@ export async function createTokenForMemberInvitation(groupId: Id) {
 }
 
 // GET {id}/invitation으로 생성한 토큰으로, 초대를 수락하는 엔드포인트
-export async function inviteMemberViaLink(userEmail: string, token: string) {
-  const res = await client<void>(ENDPOINTS.GROUP.POST_GROUP_ACCEPT_INVITATION, {
-    method: 'post',
-    data: {
-      userEmail,
-      token,
-    },
-  });
+export async function inviteMemberViaLink({
+  userEmail,
+  token,
+}: {
+  userEmail: string;
+  token: string;
+}) {
+  const res = await client<{ groupId: string }>(
+    ENDPOINTS.GROUP.POST_GROUP_ACCEPT_INVITATION,
+    {
+      method: 'post',
+      data: {
+        userEmail,
+        token,
+      },
+    }
+  );
 
   return handleApiResponse(res, '초대 수락 중 에러가 발생했습니다.');
 }

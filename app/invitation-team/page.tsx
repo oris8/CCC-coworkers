@@ -6,7 +6,7 @@ export default async function InvitationTeam() {
   const { data } = await fetchAPI.User();
 
   return (
-    <div className="mx-auto mt-[140px] w-full max-w-[460px] items-center justify-between">
+    <div className="mx-auto mb-[50px] mt-[140px] w-full max-w-[460px] items-center justify-between p-4">
       <h2 className="mb-[80px] text-center text-[40px] font-medium">
         팀 참여하기
       </h2>

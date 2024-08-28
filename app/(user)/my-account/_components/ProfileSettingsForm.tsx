@@ -72,7 +72,7 @@ const ProfileSettingsForm = ({ image, nickname }: ProfileSettingsFormProps) => {
           name="image"
           render={({ field: { value, onChange, ...fieldProps } }) => (
             <Form.FormItem className="h-[68.5px]">
-              <Form.FormLabel className="inline-block w-[max-content]">
+              <Form.FormLabel className="center inline-block w-[max-content] [&_svg]:translate-x-[2px] [&_svg]:translate-y-[2px]">
                 <ImageInputUI variants="circular">
                   <ImageInputUI.Content
                     isUploading={isUploading}

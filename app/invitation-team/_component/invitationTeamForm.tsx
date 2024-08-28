@@ -43,12 +43,17 @@ export default function InvitationTeamForm({
 
   // API 요청 결과에 따른 alert
   useEffect(() => {
+    console.log('API Error:', api.isError);
+    console.log('API Success:', api.isSuccess);
+    console.log('API Data:', api.data);
+    console.log('API Error Info:', api.error?.info);
+    console.log('API Error Message:', api.error?.message);
     if (api.isError) {
       toast.error(api.error?.message || api.error?.info);
     }
     if (api.isSuccess) {
       toast.success('팀 참여가 완료되었습니다.');
-      router.push('/');
+      router.push(`/${api.data?.groupId}`);
     }
   }, [
     api.isError,

@@ -1,3 +1,4 @@
+import InitializePusher from '@/components/InitializePusher';
 import { DateString, Id } from '@ccc-types';
 
 import TaskDateController from './_component/TaskDateController';
@@ -15,6 +16,7 @@ async function ListPage({
 
   return (
     <section className="min-screen relative flex flex-col gap-6">
+      <InitializePusher groupId={groupId} />
       <h1 className="mr-auto mt-6 text-[18px] font-bold text-text-primary">
         할 일
       </h1>

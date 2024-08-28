@@ -1,8 +1,10 @@
 'use client';
 
+import emitGroups from '@/app/api/pusher/group/emit';
 import TaskEditDeleteDropdown from '@/components/dropdown-template/TaskEditDeleteDropdown';
 import frequencyTypeObj from '@/constants/frequencyType';
 import { deleteRecurringTask, deleteTask } from '@/lib/api/task';
+import usePusherStore from '@/lib/store';
 import { dateFormatter } from '@/lib/utils';
 import CalenderNoBtnIcon from '@/public/icons/list/calender_no_btn.svg';
 import CommentIcon from '@/public/icons/list/comment_icon.svg';
@@ -18,12 +20,23 @@ import CommentSheet from './CommentSheet';
 
 const textClass = `text-xs font-normal text-text-default`;
 
-function TaskItem({ task, userId }: { task: DetailTask; userId?: Id }) {
+function TaskItem({
+  task,
+  userId,
+  userName,
+  groupId,
+}: {
+  task: DetailTask;
+  userId?: Id;
+  userName?: string;
+  groupId: number;
+}) {
   const [isDone, setIsDone] = React.useState<boolean>(!!task.doneAt);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [deleteAll, setDeleteAll] = React.useState<boolean>(false);
   const taskType = frequencyTypeObj[task.frequency];
   const router = useRouter();
+  const { socketId } = usePusherStore();
 
   const handleDoneState = (value: boolean) => {
     setIsDone(value);
@@ -48,6 +61,13 @@ function TaskItem({ task, userId }: { task: DetailTask; userId?: Id }) {
     if (error) {
       toast.error(`${error.info}`);
     } else {
+      await emitGroups({
+        member: userName,
+        action: 'delete',
+        task: task.name,
+        roomId: String(groupId),
+        socketId: socketId as string,
+      });
       router.refresh();
       toast.success('할 일 삭제에 성공했습니다!');
     }
@@ -74,6 +94,8 @@ function TaskItem({ task, userId }: { task: DetailTask; userId?: Id }) {
             task={task.name}
             isDone={isDone}
             handleClick={handleDoneState}
+            userName={userName}
+            groupId={groupId}
           />
           <div className="flex items-center gap-2">
             <div className="flex gap-[2px]">

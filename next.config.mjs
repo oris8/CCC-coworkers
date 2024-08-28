@@ -8,6 +8,9 @@ const nextConfig = {
       {
         hostname: 'sprint-fe-project.s3.ap-northeast-2.amazonaws.com',
       },
+      {
+        hostname: 'k.kakaocdn.net',
+      },
     ],
   },
   webpack: (config) => {

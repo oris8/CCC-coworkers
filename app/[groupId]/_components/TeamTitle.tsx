@@ -5,7 +5,10 @@ import { Group } from '@ccc-types';
 
 import GroupEditDropdown from './GroupEditDropdown';
 
-function TeamTitle({ groupData }: { groupData: Group }) {
+interface TeamTitleProps {
+  groupData: Group;
+}
+function TeamTitle({ groupData }: TeamTitleProps) {
   const { name, id } = groupData;
   return (
     // NOTE - bg color가 border랑 같아서 일단 적용하였습니다.

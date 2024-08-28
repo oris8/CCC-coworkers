@@ -1,4 +1,5 @@
 import MakeTodoModal from '@/components/modal-template/MakeTodoModal';
+import SocketBind from '@/components/socket-bind';
 import fetchAPI from '@/lib/api/fetchAPI';
 import { DateString, Id } from '@ccc-types';
 import React from 'react';
@@ -26,10 +27,17 @@ async function TaskList({
 
   return (
     <div className="relative flex h-full flex-grow flex-col">
+      <SocketBind groupId={groupId} />
       {tasksData?.tasks?.length !== 0 ? (
         <div className="mt-3 flex flex-col gap-5 pb-[45px]">
           {tasksData?.tasks?.map((task) => (
-            <TaskItem key={task.id} task={task!} userId={userData?.id!} />
+            <TaskItem
+              key={task.id}
+              task={task!}
+              userId={userData?.id!}
+              userName={userData?.nickname!}
+              groupId={groupId}
+            />
           ))}
         </div>
       ) : (
@@ -45,6 +53,7 @@ async function TaskList({
         <MakeTodoModal
           className="z-10 ml-auto"
           groupId={groupId}
+          userName={userData?.nickname!}
           taskListId={Number(searchParams?.['task-list'])}
         />
       </div>

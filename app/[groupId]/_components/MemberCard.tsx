@@ -1,27 +1,57 @@
-import fetchAPI from '@/lib/api/fetchAPI';
+'use client';
+
+import { pusherClient } from '@/lib/pusher';
 import { cn } from '@/lib/utils';
 import DefaultProfile from '@/public/icons/default_profile.svg';
-import { Member } from '@ccc-types';
+import StateBullet from '@/public/icons/state_bullet.svg';
+import { Member, UserWithMemberships } from '@ccc-types';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 import DeleteMemberModal from './DeleteMemberModal';
 
-async function MemberCard({
+function MemberCard({
   member,
   groupId,
   className,
+  initialOnlineState,
+  user,
 }: {
   member: Member;
   groupId: number;
   className?: string;
+  initialOnlineState: boolean;
+  user: UserWithMemberships;
 }) {
-  const { data } = await fetchAPI.User();
-  const isAdminOrOwner = data?.memberships.some(
+  const isAdminOrOwner = user.memberships.some(
     (membership) =>
       +membership.groupId === +groupId &&
       (+membership.userId === +member.userId || membership.role === 'ADMIN')
   );
 
+  const [userOnlineState, setUserOnlineState] = useState(initialOnlineState);
+  useEffect(() => {
+    const handleUserStatus = ({
+      userId,
+      isOnline,
+    }: {
+      userId: number;
+      isOnline: boolean;
+    }) => {
+      if (userId === member.userId) {
+        setUserOnlineState(isOnline);
+      }
+    };
+
+    // 구독하고 있는 채널에 유저 접속 상태가 변경될 때마다 데이터 다시 가져옴
+    pusherClient.bind('user-connected', handleUserStatus);
+    pusherClient.bind('user-disconnected', handleUserStatus);
+    return () => {
+      // 언마운트시 해제
+      pusherClient.unbind('user-connected', handleUserStatus);
+      pusherClient.unbind('user-disconnected', handleUserStatus);
+    };
+  }, [member]);
   return (
     <div
       className={cn(
@@ -44,20 +74,24 @@ async function MemberCard({
           <DefaultProfile className="size-6 md:size-8" />
         )}
         <div className="flex flex-col">
-          <p className="text-sm font-medium">{member.userName}</p>
-          <p className="hidden truncate text-xs text-text-secondary md:block">
+          <div className="flex items-center gap-2">
+            <p className="text-sm font-medium">{member.userName}</p>
+            <StateBullet
+              width={15}
+              height={15}
+              fill={userOnlineState ? '#10B981' : '#7c838e'}
+            />
+          </div>
+          <p className="truncate text-xs text-text-secondary">
             {member.userEmail}
           </p>
         </div>
-        <p className="truncate text-xs text-text-secondary md:hidden">
-          {member.userEmail}
-        </p>
       </div>
       {isAdminOrOwner && (
         <DeleteMemberModal
           groupId={groupId}
           memberId={member.userId}
-          userData={data!}
+          userData={user}
         />
       )}
     </div>

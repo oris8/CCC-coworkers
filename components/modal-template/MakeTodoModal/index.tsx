@@ -1,5 +1,6 @@
 'use client';
 
+import emitGroups from '@/app/api/pusher/group/emit';
 import {
   Dialog,
   DialogContent,
@@ -16,6 +17,7 @@ import {
 } from '@/components/ui/form';
 import { createTask } from '@/lib/api/task';
 import { todoModalFormSchema } from '@/lib/schema/task';
+import usePusherStore from '@/lib/store';
 import Spinner from '@/public/icons/spinner_icon.svg';
 import { Id } from '@ccc-types';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -38,15 +40,18 @@ function MakeTodoModal({
   className = '',
   groupId,
   taskListId,
+  userName,
 }: {
   className: string;
   groupId: Id;
   taskListId: Id;
+  userName: string;
 }) {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [isDayPickerOpen, setIsDayPickerOpen] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const router = useRouter();
+  const { socketId } = usePusherStore();
 
   const form = useForm<z.infer<typeof todoModalFormSchema>>({
     resolver: zodResolver(todoModalFormSchema),
@@ -78,6 +83,14 @@ function MakeTodoModal({
     const res = await createTask(groupId, taskListId, values);
     if (res.data) {
       form.reset();
+
+      await emitGroups({
+        member: userName,
+        action: 'create',
+        task: values.name,
+        roomId: String(groupId),
+        socketId: socketId as string,
+      });
       router.refresh();
       toast.success('할 일 만들기에 성공했습니다.');
       setIsOpen(false);
