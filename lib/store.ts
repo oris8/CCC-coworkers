@@ -13,14 +13,15 @@ const usePusherStore = create<PusherState>((set) => ({
     pusherClient.subscribe(groupId);
 
     pusherClient.connection.bind('connected', () => {
+      console.log('Pusher connected');
+
       set({
         socketId: pusherClient.connection.socket_id,
       });
     });
     return () => {
-      pusherClient.connection.unbind('connected');
-      pusherClient.connection.unbind('groups');
-      pusherClient.connection.unbind('incoming-message');
+      pusherClient.unbind('groups');
+      pusherClient.unbind('incoming-message');
       pusherClient.unsubscribe(groupId);
     };
   },

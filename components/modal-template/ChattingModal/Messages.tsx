@@ -15,14 +15,15 @@ interface Message {
 interface MessagesProps {
   initialMessages: Message[];
   userId: number;
+  groupId: number;
 }
 
-function Messages({ initialMessages, userId }: MessagesProps) {
-  const [messages, setMessages] = useState<Message[]>(initialMessages);
+function Messages({ initialMessages, userId, groupId }: MessagesProps) {
+  const [messages, setMessages] = useState<Message[]>(initialMessages); // 초기 상태를 initialMessages로 설정
 
   useEffect(() => {
+    // 이벤트 연결
     pusherClient.bind('incoming-message', (newMessage: Message) => {
-      // 서버에서 전달된 createdAt이 undefined일 경우 클라이언트에서 현재 시간을 기본값으로 설정
       const formattedMessage = {
         ...newMessage,
         createdAt: newMessage.createdAt
@@ -30,18 +31,14 @@ function Messages({ initialMessages, userId }: MessagesProps) {
           : new Date(),
       };
 
-      setMessages((prevMessages) => {
-        if (!prevMessages.some((msg) => msg.id === formattedMessage.id)) {
-          return [...prevMessages, formattedMessage];
-        }
-        return prevMessages;
-      });
+      setMessages((prevMessages) => [...prevMessages, formattedMessage]);
     });
 
+    // 클린업
     return () => {
       pusherClient.unbind('incoming-message');
     };
-  }, []);
+  }, [groupId]);
 
   // 채팅창을 열었을때 스크롤바가 아래로 향하게
   const chatContainerRef = useRef<HTMLDivElement | null>(null);

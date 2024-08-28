@@ -97,7 +97,11 @@ function ChatModal({
           </DialogClose>
         </DialogHeader>
         <div className="flex w-full flex-col gap-6">
-          <Messages initialMessages={serializedMessages} userId={userId} />
+          <Messages
+            initialMessages={serializedMessages}
+            userId={userId}
+            groupId={groupId}
+          />
           <MessageField groupId={groupId} userId={userId} userName={userName} />
         </div>
       </DialogContent>
